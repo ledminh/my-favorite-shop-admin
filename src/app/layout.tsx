@@ -18,7 +18,7 @@ export default function RootLayout({
       <body
         className={
           inter.className +
-          " bg-gradient-to-b from-gray-500 via-black to-gray-500 min-h-screen"
+          " bg-gradient-to-b from-gray-500 via-black to-gray-500 min-h-screen min-w-[383px]"
         }
       >
         {children}

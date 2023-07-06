@@ -14,10 +14,10 @@ export default function Layout({ children }: Props) {
         <div>
           <Logo />
         </div>
-        <div>
+        <div className="flex justify-center">
           <LogoutButton />
         </div>
-        <div>
+        <div className="flex justify-center border-2 border-red-500">
           <Navigator />
         </div>
       </Header>
