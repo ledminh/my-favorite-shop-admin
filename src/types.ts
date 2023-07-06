@@ -62,14 +62,14 @@ export type Product = {
   variants?: Variant[];
 };
 
+/**********************
+ * Order types
+ */
+
 export type OrderedProduct = Product & {
   quantity: number;
   selectedVariant?: Variant;
 };
-
-/**********************
- * Order types
- */
 
 export type ShippingAddress = {
   firstName: string;
