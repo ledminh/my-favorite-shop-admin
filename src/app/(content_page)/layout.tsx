@@ -11,13 +11,13 @@ export default function Layout({ children }: Props) {
   return (
     <Wrapper>
       <Header>
-        <div>
+        <div className="flex justify-center basis-full">
           <Logo />
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-end items-center basis-[50%] pr-1 ">
           <LogoutButton />
         </div>
-        <div className="flex justify-center border-2 border-red-500">
+        <div className="flex justify-start items-center basis-[50%] pl-1">
           <Navigator />
         </div>
       </Header>
@@ -41,5 +41,9 @@ const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 const Header: FC<{ children: ReactNode }> = ({ children }) => {
-  return <header className="bg-blue-950">{children}</header>;
+  return (
+    <header className="flex flex-wrap justify-between py-6 gap-y-6 bg-blue-950">
+      {children}
+    </header>
+  );
 };

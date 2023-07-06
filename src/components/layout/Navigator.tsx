@@ -3,6 +3,7 @@
 import { Fragment, FC } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -10,12 +11,12 @@ function classNames(...classes: string[]) {
 
 export default function Navigator() {
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block w-32 text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-          Menu
+        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+          MENU
           <ChevronDownIcon
-            className="w-5 h-5 -mr-1 text-gray-400"
+            className="w-6 h-6 -mr-1 text-gray-400"
             aria-hidden="true"
           />
         </Menu.Button>
@@ -48,15 +49,15 @@ export default function Navigator() {
 const MenuItem: FC<{ name: string; href: string }> = ({ name, href }) => (
   <Menu.Item>
     {({ active }) => (
-      <a
+      <Link
         href={href}
         className={classNames(
-          active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+          active ? "bg-blue-400 text-gray-900" : "text-gray-700",
           "block px-4 py-2 text-sm"
         )}
       >
         {name}
-      </a>
+      </Link>
     )}
   </Menu.Item>
 );
