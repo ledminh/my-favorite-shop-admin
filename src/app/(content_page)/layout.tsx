@@ -21,7 +21,8 @@ export default function Layout({ children }: Props) {
           <Navigator />
         </div>
       </Header>
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
+      <footer className="text-white bg-red-950">Footer</footer>
     </Wrapper>
   );
 }
@@ -31,16 +32,14 @@ export default function Layout({ children }: Props) {
  */
 const Wrapper: FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <div className="min-h-screen sm:min-h-[calc(100vh-2rem)] mx-auto sm:mt-4 bg-gray-300 max-w-7xl sm:w-11/12 sm:rounded-lg">
-      {children}
+    <div className="min-h-screen mx-auto sm:w-11/12 max-w-7xl sm:py-4">
+      <div className="shadow-lg shadow-black sm:rounded-md sm:overflow-hidden min-h-screen sm:min-h-[calc(100vh-2rem)] bg-gray-300 flex flex-col justify-between">
+        {children}
+      </div>
     </div>
   );
 };
 
 const Header: FC<{ children: ReactNode }> = ({ children }) => {
-  return (
-    <header className="flex items-center justify-between px-4 py-2">
-      {children}
-    </header>
-  );
+  return <header className="bg-blue-950">{children}</header>;
 };
