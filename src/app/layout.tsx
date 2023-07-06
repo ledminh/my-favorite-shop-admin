@@ -15,7 +15,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className + " bg-slate-950"}>{children}</body>
+      <body
+        className={
+          inter.className +
+          " bg-gradient-to-b from-black via-blue-900  to-black min-h-screen"
+        }
+      >
+        {children}
+      </body>
     </html>
   );
 }
