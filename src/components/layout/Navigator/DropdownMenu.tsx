@@ -5,11 +5,11 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+type Props = {
+  navItems: { name: string; href: string }[];
+};
 
-export default function Navigator() {
+export default function DropdownMenu({ navItems }: Props) {
   return (
     <Menu as="div" className="relative inline-block w-32 text-left">
       <div>
@@ -33,7 +33,7 @@ export default function Navigator() {
       >
         <Menu.Items className="absolute right-0 z-10 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {NavItems.map((item) => (
+            {navItems.map((item) => (
               <MenuItem key={item.name} name={item.name} href={item.href} />
             ))}
           </div>
@@ -62,29 +62,9 @@ const MenuItem: FC<{ name: string; href: string }> = ({ name, href }) => (
   </Menu.Item>
 );
 
-/****************************
- * Data
+/***************************
+ * Utils
  */
-
-const NavItems = [
-  {
-    name: "Home",
-    href: "/",
-  },
-  {
-    name: "Categories",
-    href: "/categories",
-  },
-  {
-    name: "Products",
-    href: "/products",
-  },
-  {
-    name: "Orders",
-    href: "/orders",
-  },
-  {
-    name: "Customer Messages",
-    href: "/messages",
-  },
-];
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
