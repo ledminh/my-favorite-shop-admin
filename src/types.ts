@@ -7,7 +7,6 @@ export type ComponentWithChildren = FC<{ children: ReactNode }>;
  */
 
 export type Category = {
-  id: string;
   name: string;
   description: string;
   link: string;
