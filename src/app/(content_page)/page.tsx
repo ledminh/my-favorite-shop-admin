@@ -56,8 +56,22 @@ export default async function Home() {
     <>
       <NewMessages customerMessages={customerMessages} />
       <NewOrders orders={orders} />
-      <div>ADD NEW CATEGORY</div>
-      <div>ADD NEW PRODUCT</div>
+      <Button>ADD NEW CATEGORY</Button>
+      <Button>ADD NEW PRODUCT</Button>
     </>
   );
 }
+
+/*************************
+ * Styles
+ */
+
+type ButtonProps = {
+  children: React.ReactNode;
+};
+
+const Button = ({ children }: ButtonProps) => (
+  <button className="p-4 font-bold border-2 rounded-lg border-blue-950 text-blue-950 hover:bg-blue-950/20 hover:ring-2 hover:ring-blue-950">
+    {children}
+  </button>
+);
