@@ -91,12 +91,13 @@ export type PaymentInfo = {
 export type OrderStatus = "processing" | "shipped" | "delivered";
 
 export type Order = {
-  id: string;
   shippingAddress: ShippingAddress;
   orderedProducts: OrderedProduct[];
   shippingFee: number;
   taxes: number;
   paymentInfo: PaymentInfo;
+  status: OrderStatus;
+  createdAt: Date;
 };
 
 /***********************
@@ -109,4 +110,11 @@ export type CustomerMessage = {
   email: string;
   phone?: string;
   message: string;
+  status: "unread" | "read";
+  createdAt: Date;
 };
+
+/***********************
+ * WithID
+ */
+export type WithID<T> = T & { id: string };
