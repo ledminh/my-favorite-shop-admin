@@ -233,9 +233,9 @@ const categories: WithID<CategoryType>[] = [
  * @description Returns a promise that resolves to an array of
  * all categories in the database
  * @example
- * const categories = await getCategories();
+ * const data = await getCategories();
  * console.log(categories);
- * // [
+ * // {items: [
  * //   {
  * //     id: "1",
  * //     name: "Nail Polish",
@@ -247,15 +247,24 @@ const categories: WithID<CategoryType>[] = [
  *    },
  * },
  * ...
- * ]
+ * ],
+ * total: 22
+ *
+ * }
  */
 
-type GetCategories = () => Promise<WithID<CategoryType>[]>;
+type GetCategories = () => Promise<{
+  total: number;
+  items: WithID<CategoryType>[];
+}>;
 
 export const getCategories: GetCategories = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(categories);
+      resolve({
+        total: categories.length,
+        items: categories,
+      });
     }, 500);
   });
 };

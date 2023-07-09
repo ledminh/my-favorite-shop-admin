@@ -1,6 +1,6 @@
-import Logo from "@/components/layout/Logo";
-import LogoutButton from "@/components/layout/LogoutButton";
-import Navigator from "@/components/layout/Navigator";
+import Logo from "@/components/header/Logo";
+import LogoutButton from "@/components/header/LogoutButton";
+import Navigator from "@/components/header/Navigator";
 import { ReactNode, FC } from "react";
 
 type Props = {
