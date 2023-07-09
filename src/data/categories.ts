@@ -260,12 +260,16 @@ type GetCategories = () => Promise<{
 
 export const getCategories: GetCategories = async () => {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        total: categories.length,
-        items: categories,
-      });
-    }, 500);
+    resolve({
+      total: categories.length,
+      items: categories,
+    });
+    // setTimeout(() => {
+    //   resolve({
+    //     total: categories.length,
+    //     items: categories,
+    //   });
+    // }, 0);
   });
 };
 
