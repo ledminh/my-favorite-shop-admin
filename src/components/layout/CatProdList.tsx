@@ -2,20 +2,27 @@
 
 import { WithID } from "@/types";
 import ItemTab from "@/components/layout/ItemTab";
-import { FC } from "react";
+import { FC, useState } from "react";
+import { itemsPerPage } from "@/config";
 
 type CatProdListProps<T> = {
-  items: WithID<T>[];
+  initItems: WithID<T>[];
   total: number;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
-  onLoadMore: () => void;
+  onLoadMore: ({
+    offset,
+    limit,
+  }: {
+    offset: number;
+    limit: number;
+  }) => Promise<WithID<T>[]>;
   getImage: (item: WithID<T>) => { src: string; alt: string };
   ItemTabContent: FC<{ item: WithID<T> }>;
 };
 
 export default function CatProdList<T>({
-  items,
+  initItems,
   total,
   onEdit,
   onDelete,
@@ -23,6 +30,17 @@ export default function CatProdList<T>({
   ItemTabContent,
   onLoadMore,
 }: CatProdListProps<T>) {
+  const [items, setItems] = useState(initItems);
+
+  const _onLoadMore = () => {
+    onLoadMore({
+      offset: items.length,
+      limit: itemsPerPage,
+    }).then((newItems) => {
+      setItems((prevItems) => [...prevItems, ...newItems]);
+    });
+  };
+
   return (
     <div className="flex flex-col justify-center gap-8">
       <ul className="flex flex-col gap-y-4 md:flex-row md:flex-wrap md:justify-start md:gap-x-[4%] lg:gap-x-[3.5%] xl:gap-x-[2.66%]">
@@ -43,7 +61,10 @@ export default function CatProdList<T>({
           );
         })}
       </ul>
-      <LoadMoreButton onClick={onLoadMore} />
+      {
+        // Show load more button if there are more items to load
+        items.length < total && <LoadMoreButton onClick={_onLoadMore} />
+      }
     </div>
   );
 }

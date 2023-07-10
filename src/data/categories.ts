@@ -2,7 +2,7 @@ import type { WithID, Category as CategoryType } from "@/types";
 
 const categories: WithID<CategoryType>[] = [
   {
-    id: "1",
+    id: "cat-1",
     name: "Nail Polish",
     description: "A wide range of nail polish colors",
     link: "/shop/nail-polish",
@@ -12,7 +12,7 @@ const categories: WithID<CategoryType>[] = [
     },
   },
   {
-    id: "2",
+    id: "cat-2",
     name: "Nail Care",
     description: "A wide range of nail care products",
     link: "/shop/nail-care",
@@ -22,7 +22,7 @@ const categories: WithID<CategoryType>[] = [
     },
   },
   {
-    id: "3",
+    id: "cat-3",
     name: "Nail Tools",
     description: "A wide range of nail tools",
     link: "/shop/nail-tools",
@@ -32,7 +32,7 @@ const categories: WithID<CategoryType>[] = [
     },
   },
   {
-    id: "4",
+    id: "cat-4",
     name: "Nail Art",
     description: "A wide range of nail art products",
     link: "/shop/nail-art",
@@ -253,17 +253,29 @@ const categories: WithID<CategoryType>[] = [
  * }
  */
 
-type GetCategories = () => Promise<{
+type GetCategories = ({
+  offset,
+  limit,
+}: {
+  offset?: number;
+  limit?: number;
+}) => Promise<{
   total: number;
   items: WithID<CategoryType>[];
 }>;
 
-export const getCategories: GetCategories = async () => {
+export const getCategories: GetCategories = async ({ offset, limit }) => {
+  const _offset = offset || 0;
+  const _limit = limit || categories.length;
+
+  const _categories = categories.slice(_offset, _offset + _limit);
+
   return new Promise((resolve) => {
     resolve({
       total: categories.length,
-      items: categories,
+      items: _categories,
     });
+
     // setTimeout(() => {
     //   resolve({
     //     total: categories.length,

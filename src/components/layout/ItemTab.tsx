@@ -60,7 +60,7 @@ export default ItemTab;
  */
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
-  <div className="flex items-center justify-between gap-4 md:flex-col md:gap-2 md:h-[280px]">
+  <div className="flex items-center justify-between gap-4 md:flex-col md:gap-2 md:h-[280px] bg-neutral-300">
     {children}
   </div>
 );
