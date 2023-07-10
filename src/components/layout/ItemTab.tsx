@@ -1,15 +1,23 @@
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import Image from "next/image";
-import { Category as CategoryType, WithID } from "@/types";
+import { WithID } from "@/types";
 
-type CategoryTabProps = {
-  category: WithID<CategoryType>;
-  onEdit: () => void;
-  onDelete: () => void;
+type ItemTabProps<T> = {
+  item: WithID<T>;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  getImage: (item: WithID<T>) => { src: string; alt: string };
+  Content: FC<{ item: WithID<T> }>;
 };
 
-const CategoryTab = ({ category, onEdit, onDelete }: CategoryTabProps) => {
-  const { name, image } = category;
+function ItemTab<T>({
+  item,
+  onEdit,
+  onDelete,
+  getImage,
+  Content,
+}: ItemTabProps<T>) {
+  const image = getImage(item);
 
   return (
     <Wrapper>
@@ -18,22 +26,23 @@ const CategoryTab = ({ category, onEdit, onDelete }: CategoryTabProps) => {
           src={image.src}
           alt={image.alt}
           fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 33vw"
           className="object-cover object-center"
         />
       </ImageWrapper>
       <div className="flex flex-col self-stretch justify-between flex-grow py-2 sm:flex-row sm:items-center sm:py-0 md:flex-col">
         <ContentWrapper>
-          <Content item={category} />
+          <Content item={item} />
         </ContentWrapper>
         <ButtonsWrapper>
           <Button
-            onClick={onEdit}
+            onClick={() => onEdit(item.id)}
             className="text-white bg-blue-950 hover:bg-blue-950/80 sm:h-full sm:w-20"
           >
             EDIT
           </Button>
           <Button
-            onClick={onDelete}
+            onClick={() => onDelete(item.id)}
             className="text-white bg-red-950 hover:bg-red-950/80 sm:h-full sm:w-20"
           >
             DELETE
@@ -42,9 +51,9 @@ const CategoryTab = ({ category, onEdit, onDelete }: CategoryTabProps) => {
       </div>
     </Wrapper>
   );
-};
+}
 
-export default CategoryTab;
+export default ItemTab;
 
 /************************
  * Styles
@@ -91,10 +100,3 @@ const Button = ({ children, onClick, className }: ButtonProps) => {
     </button>
   );
 };
-
-type ContentProps = {
-  item: CategoryType;
-};
-const Content = ({ item }: ContentProps) => (
-  <h2 className="text-lg font-semibold">{item.name}</h2>
-);
