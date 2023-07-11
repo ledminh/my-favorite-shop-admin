@@ -1,6 +1,8 @@
 import type { Product, WithID } from "@/types";
 import { faker } from "@faker-js/faker";
 
+const PRODUCTS: WithID<Product>[] = _getProducts(50);
+
 /*****************************
  * APIs
  *****************************/
@@ -9,7 +11,10 @@ import { faker } from "@faker-js/faker";
  * getProducts
  * @param {catID: string, sortBy: "name" | "price", order: "asc" |
  *  "desc", limit: number, offset: number}
- * @returns Promise<WithID<Product>[]>
+ * @returns Promise<{
+ *  total: number;
+ *  items: WithID<Product>[];
+ * }>;
  */
 
 type GetProductsParams = (
@@ -28,22 +33,27 @@ type GetProductsParams = (
   offset?: number;
 };
 
-export async function getProducts({
+type GetProducts = (params: GetProductsParams) => Promise<{
+  total: number;
+  items: WithID<Product>[];
+}>;
+
+export const getProducts: GetProducts = async ({
   catID,
   searchTerm,
   sortBy = "name",
   order = "asc",
   limit = 10,
   offset = 0,
-}: GetProductsParams): Promise<WithID<Product>[]> {
-  let products = _getProducts(limit);
+}) => {
+  let products = PRODUCTS;
 
   // if (catID) {
   //   products = products.filter((product) => product.category.id === catID);
   // }
 
   if (searchTerm) {
-    products = products.filter((product) =>
+    products = PRODUCTS.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
@@ -70,18 +80,21 @@ export async function getProducts({
     });
   }
 
+  products = products.slice(offset, offset + limit);
+
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(products);
-    }, 1000);
+    resolve({
+      total: PRODUCTS.length,
+      items: products,
+    });
   });
-}
+};
 
 function generateRandomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function _getProducts(num: number): WithID<Product>[] {
+export function _getProducts(num: number): WithID<Product>[] {
   const products: WithID<Product>[] = [];
 
   for (let i = 0; i < num; i++) {
