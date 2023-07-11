@@ -7,7 +7,15 @@ import {
   WithID,
 } from "@/types";
 
-export function getOrders(): Promise<WithID<Order>[]> {
+type getOrdersProps = {
+  offset: number;
+  limit: number;
+};
+
+export function getOrders({
+  offset,
+  limit,
+}: getOrdersProps): Promise<{ items: WithID<Order>[]; total: number }> {
   const orders: WithID<Order>[] = [];
 
   for (let i = 0; i < 10; i++) {
@@ -25,7 +33,12 @@ export function getOrders(): Promise<WithID<Order>[]> {
     orders.push(order);
   }
 
-  return new Promise((resolve) => resolve(orders));
+  return new Promise((resolve) =>
+    resolve({
+      items: orders.slice(offset, offset + limit),
+      total: orders.length,
+    })
+  );
 }
 
 /**********************

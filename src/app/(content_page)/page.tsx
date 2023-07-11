@@ -51,7 +51,10 @@ const customerMessages: WithID<CustomerMessage>[] = [
 ];
 
 export default async function Home() {
-  const orders = await getOrders();
+  const { items: orders } = await getOrders({
+    offset: 0,
+    limit: 5,
+  });
   return (
     <>
       <NewMessages customerMessages={customerMessages} />
