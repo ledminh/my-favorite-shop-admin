@@ -1,18 +1,63 @@
-import Image from "next/image";
-import { Product } from "@/types";
+"use client";
+
+import { Product, Product as ProductType, WithID } from "@/types";
+import CatProdList from "@/components/layout/CatProdList";
+
 import { getProducts } from "@/data/products";
 
-export default async function ProductList() {
-  const products = await getProducts({ catID: "1111" });
+type Props = {
+  initProducts: WithID<Product>[];
+  total: number;
+  catID: string;
+};
+
+export default async function ProductList({
+  initProducts,
+  total,
+  catID,
+}: Props) {
+  const onEdit = (id: string) => {
+    console.log(`Edit product with id ${id}`);
+  };
+
+  const onDelete = (id: string) => {
+    console.log(`Delete product with id ${id}`);
+  };
+
+  const getImage = (item: ProductType) => {
+    const mainImage = item.images.find(
+      (image) => image.id === item.mainImageID
+    );
+
+    if (!mainImage) {
+      throw new Error("Main image not found");
+    }
+
+    return mainImage;
+  };
+
+  const onLoadMore = async ({
+    offset,
+    limit,
+  }: {
+    offset: number;
+    limit: number;
+  }) => {
+    const { items } = await getProducts({ catID, offset, limit });
+
+    return items;
+  };
 
   return (
-    <ul>
-      {products.map((product) => (
-        <li key={product.id}>
-          <ProductTab product={product} />
-        </li>
-      ))}
-    </ul>
+    <CatProdList
+      initItems={initProducts}
+      total={total}
+      ItemTabContent={Content}
+      onEdit={onEdit}
+      onDelete={onDelete}
+      getImage={getImage}
+      onLoadMore={onLoadMore}
+    />
   );
 }
 
@@ -20,29 +65,9 @@ export default async function ProductList() {
  * Components
  */
 
-type ProductTabProps = {
-  product: Product;
+type ContentProps = {
+  item: ProductType;
 };
-
-const ProductTab = ({ product }: ProductTabProps) => {
-  const { name, description } = product;
-
-  const mainImage = product.images[0];
-
-  return (
-    <div>
-      <div className="relative w-32 h-32">
-        <Image
-          src={mainImage.src}
-          alt={mainImage.alt}
-          fill
-          className="object-cover object-center w-full h-full"
-        />
-      </div>
-      <h3>{name}</h3>
-      <p>{description}</p>
-      <button>EDIT</button>
-      <button>DELETE</button>
-    </div>
-  );
-};
+const Content = ({ item }: ContentProps) => (
+  <h2 className="text-lg font-semibold">{item.name}</h2>
+);

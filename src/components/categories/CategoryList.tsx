@@ -1,6 +1,6 @@
 "use client";
 
-import { Category as CategoryType, WithID } from "@/types";
+import { Category as CategoryType } from "@/types";
 import { getCategories } from "@/data/categories";
 import CatProdList from "@/components/layout/CatProdList";
 
@@ -47,9 +47,14 @@ export default async function CategoryList() {
   );
 }
 
+/**********************
+ * Components
+ */
+
 type ContentProps = {
   item: CategoryType;
 };
+
 const Content = ({ item }: ContentProps) => (
   <h2 className="text-lg font-semibold">{item.name}</h2>
 );
