@@ -1,17 +1,15 @@
 "use client";
 
-import { Category as CategoryType } from "@/types";
+import { Category as CategoryType, WithID } from "@/types";
 import { getCategories } from "@/data/categories";
 import CatProdList from "@/components/layout/CatProdList";
 
-import { itemsPerPage } from "@/config";
+type Props = {
+  initCategories: WithID<CategoryType>[];
+  total: number;
+};
 
-export default async function CategoryList() {
-  const { items, total } = await getCategories({
-    offset: 0,
-    limit: itemsPerPage,
-  });
-
+export default async function CategoryList({ initCategories, total }: Props) {
   const onEdit = (id: string) => {
     console.log(`Edit category with id ${id}`);
   };
@@ -36,7 +34,7 @@ export default async function CategoryList() {
 
   return (
     <CatProdList
-      initItems={items}
+      initItems={initCategories}
       total={total}
       ItemTabContent={Content}
       onEdit={onEdit}
