@@ -3,6 +3,7 @@ import LogoutButton from "@/components/header/LogoutButton";
 import Navigator from "@/components/header/Navigator";
 import { ReactNode, FC } from "react";
 
+import Footer from "@/components/Footer";
 type Props = {
   children: ReactNode;
 };
@@ -22,7 +23,9 @@ export default function Layout({ children }: Props) {
         </div>
       </Header>
       <main className="flex-grow">{children}</main>
-      <footer className="text-white bg-red-950">Footer</footer>
+      <footer className="bg-blue-950">
+        <Footer />
+      </footer>
     </Wrapper>
   );
 }
