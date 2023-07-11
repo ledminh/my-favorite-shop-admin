@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+
 import {
   Order,
   OrderedProduct,
@@ -6,6 +8,9 @@ import {
   ShippingAddress,
   WithID,
 } from "@/types";
+import { _getProducts } from "./products";
+
+const ORDERS = _getOrders(200);
 
 type getOrdersProps = {
   offset: number;
@@ -16,11 +21,34 @@ export function getOrders({
   offset,
   limit,
 }: getOrdersProps): Promise<{ items: WithID<Order>[]; total: number }> {
+  let orders = ORDERS;
+
+  if (offset) {
+    orders = orders.slice(offset);
+  }
+
+  if (limit) {
+    orders = orders.slice(0, limit);
+  }
+
+  return new Promise((resolve) =>
+    resolve({
+      items: orders,
+      total: orders.length,
+    })
+  );
+}
+
+/**********************
+ * Helper functions
+ */
+
+function _getOrders(num: number): WithID<Order>[] {
   const orders: WithID<Order>[] = [];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < num; i++) {
     const order: WithID<Order> = {
-      id: `order-${i}`,
+      id: `order-${faker.number.int(100000)}`,
       shippingAddress: getShippingAddress(),
       orderedProducts: getOrderedProducts(),
       shippingFee: 10,
@@ -33,41 +61,58 @@ export function getOrders({
     orders.push(order);
   }
 
-  return new Promise((resolve) =>
-    resolve({
-      items: orders.slice(offset, offset + limit),
-      total: orders.length,
-    })
-  );
+  return orders;
 }
-
-/**********************
- * Helper functions
- */
 
 function getShippingAddress(): ShippingAddress {
   return {
-    firstName: "John",
-    lastName: "Doe",
-    streetAddress: "123 Main St",
-    state: "CA",
-    city: "San Francisco",
-    zip: "94103",
-    phone: "555-555-5555",
-    email: "JohnDoe@example.com",
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    streetAddress: faker.location.streetAddress(),
+    state: faker.location.state(),
+    city: faker.location.city(),
+    zip: faker.location.zipCode(),
+    phone: faker.phone.number(),
+    email: faker.internet.email(),
   };
 }
 
 function getOrderedProducts(): OrderedProduct[] {
-  return [];
+  const _products = _getProducts(Math.floor(Math.random() * 10) + 1);
+
+  const orderedProducts = _products.map((product) => {
+    const orderedProduct: OrderedProduct = {
+      ...product,
+      quantity: Math.floor(Math.random() * 10) + 1,
+    };
+
+    return orderedProduct;
+  });
+
+  return orderedProducts;
 }
 
 function getPaymentInfo(): PaymentInfo {
   return {
-    cardType: "Visa",
-    lastFourDigits: "1234",
-    expireDate: new Date(),
+    cardType: getRandomCardType(),
+    lastFourDigits: getRandomLastFourDigits(),
+    expireDate: faker.date.future(),
   };
+}
+
+function getRandomCardType(): "Visa" | "MasterCard" | "American Express" {
+  const types: ("Visa" | "MasterCard" | "American Express")[] = [
+    "Visa",
+    "MasterCard",
+    "American Express",
+  ];
+
+  const index = Math.floor(Math.random() * types.length);
+  return types[index];
+}
+
+function getRandomLastFourDigits(): string {
+  return Math.floor(Math.random() * 10000).toString();
 }
 
 function getRandomStatus(): OrderStatus {
