@@ -102,13 +102,15 @@ export type Order = {
  * Customer Message
  */
 
+export type CustomerMessageStatus = "unread" | "read";
+
 export type CustomerMessage = {
   firstName: string;
   lastName: string;
   email: string;
   phone?: string;
   message: string;
-  status: "unread" | "read";
+  status: CustomerMessageStatus;
   createdAt: Date;
 };
 
