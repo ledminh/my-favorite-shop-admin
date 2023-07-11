@@ -1,7 +1,7 @@
 "use client";
 
 import { WithID } from "@/types";
-import ItemTab from "@/components/layout/ItemTab";
+import ItemTab from "@/components/layout/CatProdList/ItemTab";
 import { FC, useState } from "react";
 import { itemsPerPage } from "@/config";
 

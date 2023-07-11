@@ -86,6 +86,12 @@ function getOrderedProducts(): OrderedProduct[] {
       quantity: Math.floor(Math.random() * 10) + 1,
     };
 
+    if (product.variants) {
+      const index = Math.floor(Math.random() * product.variants.length);
+
+      orderedProduct.selectedVariant = product.variants[index];
+    }
+
     return orderedProduct;
   });
 
