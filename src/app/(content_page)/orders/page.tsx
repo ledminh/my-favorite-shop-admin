@@ -7,6 +7,7 @@ export default async function OrdersPage() {
   const { items: initOrders, total } = await getOrders({
     offset: 0,
     limit: itemsPerPage,
+    sortedOrder: "newest",
   });
 
   return (

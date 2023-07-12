@@ -75,7 +75,7 @@ function _getOrders(num: number): WithID<Order>[] {
 
   for (let i = 0; i < num; i++) {
     const order: WithID<Order> = {
-      id: `order-${faker.number.int(100000)}`,
+      id: `${faker.number.int(100000000)}`,
       shippingAddress: getShippingAddress(),
       orderedProducts: getOrderedProducts(),
       shippingFee: 10,
