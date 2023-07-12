@@ -27,7 +27,7 @@ const MessageTab = ({ item }: MessageTabProps) => {
   const { firstName, lastName, createdAt, message } = item;
 
   return (
-    <button className="flex flex-col gap-2 p-2 rounded-lg hover:ring hover:ring-blue-900">
+    <button className="flex flex-col w-full gap-2 p-2 rounded-lg hover:ring hover:ring-blue-900">
       <div className="flex justify-between text-sm">
         <h3 className="font-bold">
           {firstName} {lastName}
