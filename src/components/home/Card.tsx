@@ -18,6 +18,16 @@ export default function Card<T>({ items, ItemTab, title, button }: Props<T>) {
         <h2 className="text-xl font-bold text-white/80">{title}</h2>
       </Header>
       <Body>
+        {items.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full">
+            <h3 className="text-xl font-bold text-blue-950">
+              No {title.toLowerCase()}
+            </h3>
+            <p className="text-sm text-center text-blue-950">
+              You have no {title.toLowerCase()} at the moment.
+            </p>
+          </div>
+        )}
         <ul className="flex flex-col gap-4">
           {items.map((item) => (
             <li key={item.id} className="pb-4 border-b border-blue-950">
