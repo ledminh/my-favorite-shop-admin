@@ -28,7 +28,7 @@ export default function Card<T>({ items, ItemTab, title, button }: Props<T>) {
       </Body>
       <Footer>
         <Link href={button.link}>
-          <button className="p-2 font-bold text-white rounded-lg bg-blue-950/40 hover:bg-blue-950">
+          <button className="p-2 font-bold text-white border-2 rounded-lg border-white/80 bg-blue-950/40 hover:bg-blue-950">
             {button.text}
           </button>
         </Link>

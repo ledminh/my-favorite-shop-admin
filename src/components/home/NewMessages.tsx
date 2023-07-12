@@ -24,7 +24,7 @@ type MessageTabProps = {
 };
 
 const MessageTab = ({ item }: MessageTabProps) => {
-  const { firstName, lastName, createdAt, message } = item;
+  const { firstName, lastName, createdAt, message, email } = item;
 
   return (
     <button className="flex flex-col w-full gap-2 p-2 rounded-lg hover:ring hover:ring-blue-900">
