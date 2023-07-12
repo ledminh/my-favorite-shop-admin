@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { CustomerMessage } from "@/types";
-import { Dialog } from "@headlessui/react";
 import ModalLg from "../layout/ModalLg";
 
 type MessageTabProps = {
