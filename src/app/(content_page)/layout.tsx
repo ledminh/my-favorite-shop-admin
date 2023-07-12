@@ -22,7 +22,7 @@ export default function Layout({ children }: Props) {
           <Navigator />
         </div>
       </Header>
-      <main className="flex-grow p-8">{children}</main>
+      <main className="flex-grow px-4 py-8">{children}</main>
       <footer className="bg-blue-950">
         <Footer />
       </footer>
