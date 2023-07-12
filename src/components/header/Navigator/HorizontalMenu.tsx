@@ -19,7 +19,7 @@ export default function HorizontalMenu({ navItems }: Props) {
             href={item.href}
             className={`px-3 py-2 font-medium text-gray-400 border border-gray-400 rounded-md hover:text-white hover:border-white hover:shadow-sm hover:shadow-white ${
               isCurrent(pathname, item.href)
-                ? "bg-gray-500 text-black border-black"
+                ? "bg-gray-700 text-white border-white"
                 : ""
             }`}
           >
