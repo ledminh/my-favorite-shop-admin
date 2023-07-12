@@ -15,13 +15,40 @@ const ORDERS = _getOrders(200);
 type getOrdersProps = {
   offset: number;
   limit: number;
+  status?: OrderStatus;
+  sortedOrder: "newest" | "oldest";
 };
 
 export function getOrders({
   offset,
   limit,
+  status,
+  sortedOrder,
 }: getOrdersProps): Promise<{ items: WithID<Order>[]; total: number }> {
+  if (limit === 0) {
+    return new Promise((resolve) =>
+      resolve({
+        items: [],
+        total: ORDERS.length,
+      })
+    );
+  }
+
   let orders = ORDERS;
+
+  if (status) {
+    orders = orders.filter((order) => order.status === status);
+  }
+
+  if (sortedOrder === "newest") {
+    orders = orders.sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    );
+  } else if (sortedOrder === "oldest") {
+    orders = orders.sort(
+      (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+    );
+  }
 
   if (offset) {
     orders = orders.slice(offset);

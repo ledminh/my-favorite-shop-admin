@@ -7,10 +7,18 @@ import { ReactNode, FC } from "react";
 export default async function Home() {
   const getOrdersPromise = getOrders({
     offset: 0,
-    limit: 5,
+    limit: 7,
+    status: "processing",
+    sortedOrder: "newest",
   });
 
-  const getMessagesPromise = getCustomerMessages();
+  const getMessagesPromise = getCustomerMessages({
+    offset: 0,
+    limit: 7,
+    status: "unread",
+    sortedBy: "createdAt",
+    sortedOrder: "asc",
+  });
 
   const [{ items: orders }, { items: customerMessages }] = await Promise.all([
     getOrdersPromise,
