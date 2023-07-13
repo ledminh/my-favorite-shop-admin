@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CustomerMessage } from "@/types";
-import ModalLg from "../layout/ModalLg";
+import ModalLg from "@/components/layout/ModalLg";
 
 type MessageTabProps = {
   item: CustomerMessage;
