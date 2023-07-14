@@ -100,7 +100,7 @@ function getShippingAddress(): ShippingAddress {
     city: faker.location.city(),
     zip: faker.location.zipCode(),
     phone: faker.phone.number(),
-    email: faker.internet.email(),
+    email: "emailmeplease@itsaverylongemailthatIcannotevenremember.com",
   };
 }
 

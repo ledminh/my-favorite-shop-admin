@@ -10,7 +10,7 @@ type OrderTabProps = {
 };
 
 const OrderTab = ({ item }: OrderTabProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <>
       <Button item={item} onClick={() => setIsOpen(true)} />
@@ -80,7 +80,14 @@ const OrderModal = ({ item, isOpen, setIsOpen }: OrderModalProps) => {
       onDelete={onDelete}
     >
       <div className="flex flex-col gap-4">
-        <InfoTab label="Order #" value={item.id} />
+        <div className="flex gap-4 pb-2 border-b border-blue-950">
+          <h3 className="text-xl">
+            <span className="font-semibold">Order #:</span>
+          </h3>
+          <h3 className="text-xl">
+            <span>{item.id}</span>
+          </h3>
+        </div>
         <InfoTab label="Date" value={item.createdAt.toLocaleDateString()} />
         <InfoTab label="Time" value={item.createdAt.toLocaleTimeString()} />
         <InfoTab
@@ -96,17 +103,47 @@ const OrderModal = ({ item, isOpen, setIsOpen }: OrderModalProps) => {
         <InfoTab
           label="Products"
           value={item.orderedProducts.map((product) => product.name).join(", ")}
+          small={true}
+        />
+        <InfoTab
+          label="Status"
+          value={item.status}
+          button={{ label: "CHANGE", onClick: () => {} }}
         />
       </div>
     </ModalLg>
   );
 };
 
-const InfoTab = ({ label, value }: { label: string; value: string }) => {
+const InfoTab = ({
+  label,
+  value,
+  small,
+  button,
+}: {
+  label: string;
+  value: string;
+  small?: boolean;
+  button?: { label: string; onClick: () => void };
+}) => {
   return (
-    <div className="flex justify-start gap-8">
-      <span className="font-semibold">{label}</span>
-      <span>{value}</span>
+    <div className="grid grid-cols-3 gap-2">
+      <span className="col-span-1 font-semibold">{label}</span>
+      <span
+        className={`${button ? "col-span-1" : "col-span-2"} break-words${
+          small ? " text-sm" : ""
+        }`}
+      >
+        {value}
+      </span>
+      {button && (
+        <button
+          className="self-center col-span-1 text-sm font-semibold text-blue-900 hover:underline justify-self-start"
+          onClick={button.onClick}
+        >
+          {button.label}
+        </button>
+      )}
     </div>
   );
 };
