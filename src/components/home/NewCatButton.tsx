@@ -5,7 +5,7 @@ import Button from "./Button";
 import NewCatModal from "@/components/NewCatModal";
 
 export default function NewCatButton() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <>

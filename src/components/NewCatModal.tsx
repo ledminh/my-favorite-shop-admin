@@ -6,15 +6,21 @@ type Props = {
 };
 
 export default function NewCatModal({ isOpen, setIsOpen }: Props) {
+  const additionalButtons = [
+    {
+      text: "Add",
+      className: "bg-white text-blue-950 hover:bg-blue-950 hover:text-white",
+      onClick: () => {},
+    },
+  ];
   return (
     <ModalLg
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title="ADD NEW CATEGORY"
-      onDelete={() => {}}
+      additionalButtons={additionalButtons}
     >
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-semibold">Add New Category</h1>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Name</label>
@@ -33,14 +39,6 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
               className="p-2 border-2 rounded-lg border-blue-950"
             />
           </div>
-        </div>
-        <div className="flex justify-end gap-4">
-          <button className="p-2 font-semibold border-2 rounded-lg border-blue-950 text-blue-950 hover:bg-blue-950/10 hover:shadow-stone-800 hover:shadow-md active:bg-blue-950/20">
-            Cancel
-          </button>
-          <button className="p-2 font-semibold border-2 rounded-lg border-blue-950 text-blue-950 hover:bg-blue-950/10 hover:shadow-stone-800 hover:shadow-md active:bg-blue-950/20">
-            Add
-          </button>
         </div>
       </div>
     </ModalLg>
