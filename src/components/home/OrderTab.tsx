@@ -10,7 +10,7 @@ type OrderTabProps = {
 };
 
 const OrderTab = ({ item }: OrderTabProps) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <Button item={item} onClick={() => setIsOpen(true)} />
