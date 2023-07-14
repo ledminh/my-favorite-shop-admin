@@ -6,7 +6,6 @@ type ModalLgProps = {
   setIsOpen: (isOpen: boolean) => void;
   title: string;
   children: ReactNode;
-  onDelete: () => void;
   additionalButtons?: {
     text: string;
     className: string;
@@ -19,7 +18,6 @@ const ModalLg = ({
   setIsOpen,
   title,
   children,
-  onDelete,
   additionalButtons,
 }: ModalLgProps) => {
   return (
@@ -56,14 +54,6 @@ const ModalLg = ({
                   }}
                 />
               ))}
-            <ModalButton
-              text="DELETE"
-              className="text-red-600 bg-white hover:bg-red-100"
-              onClick={() => {
-                onDelete();
-                setIsOpen(false);
-              }}
-            />
           </div>
         </Dialog.Panel>
       </div>

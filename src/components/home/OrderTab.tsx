@@ -68,16 +68,20 @@ type OrderModalProps = {
 };
 
 const OrderModal = ({ item, isOpen, setIsOpen }: OrderModalProps) => {
-  const onDelete = () => {
-    console.log("Delete");
-  };
+  const additionalButtons = [
+    {
+      text: "DELETE",
+      className: "text-red-600 bg-white hover:bg-red-100",
+      onClick: () => console.log("Delete"),
+    },
+  ];
 
   return (
     <ModalLg
       title="ORDER DETAILS"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      onDelete={onDelete}
+      additionalButtons={additionalButtons}
     >
       <div className="flex flex-col gap-4">
         <div className="flex gap-4 pb-2 border-b border-blue-950">

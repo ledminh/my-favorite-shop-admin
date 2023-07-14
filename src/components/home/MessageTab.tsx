@@ -62,11 +62,12 @@ type MessageModalProps = {
 const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
   const { firstName, lastName, email, phone, message, createdAt } = item;
 
-  const onDelete = () => {
-    console.log("Delete");
-  };
-
   const additionalButtons = [
+    {
+      text: "DELETE",
+      className: "text-red-600 bg-white hover:bg-red-100",
+      onClick: () => console.log("Delete"),
+    },
     {
       text: "MARK AS READ",
       className:
@@ -82,7 +83,6 @@ const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
       title="CUSTOMER MESSAGE"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      onDelete={onDelete}
       additionalButtons={additionalButtons}
     >
       <div className="flex justify-between border-b-2 border-blue-950">
