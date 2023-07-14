@@ -8,13 +8,22 @@ import { getProducts } from "@/data/products";
 type Props = {
   initProducts: WithID<Product>[];
   total: number;
-  catID: string;
+  sortBy: "name" | "price" | "createdAt" | "modifiedAt";
+  order: "asc" | "desc";
+  filters: {
+    variants?: boolean;
+    promotion?: boolean;
+    catID?: string;
+    searchTerm?: string;
+  };
 };
 
 export default async function ProductList({
   initProducts,
   total,
-  catID,
+  filters,
+  sortBy,
+  order,
 }: Props) {
   const onEdit = (id: string) => {
     console.log(`Edit product with id ${id}`);
@@ -43,7 +52,13 @@ export default async function ProductList({
     offset: number;
     limit: number;
   }) => {
-    const { items } = await getProducts({ catID, offset, limit });
+    const { items } = await getProducts({
+      offset,
+      limit,
+      filters,
+      sortBy,
+      order,
+    });
 
     return items;
   };

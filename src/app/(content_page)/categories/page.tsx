@@ -7,17 +7,15 @@ import FiltersAndSorts from "@/components/FiltersAndSorts";
 import SearchBar from "@/components/SearchBar";
 
 type Props = {
-  params: {
+  params?: {
     sortBy?: "name" | "createdAt";
     order?: "asc" | "desc";
   };
 };
 
 export default async function CategoriesPage({ params }: Props) {
-  const { sortBy, order } = params;
-
-  const _sortBy = sortBy || "name";
-  const _order = order || "asc";
+  const _sortBy = params?.sortBy || "name";
+  const _order = params?.order || "asc";
 
   const { items, total } = await getCategories({
     offset: 0,
@@ -31,7 +29,12 @@ export default async function CategoriesPage({ params }: Props) {
       <FiltersAndSorts />
       <SearchBar />
       <Suspense fallback={<div>Loading...</div>}>
-        <CategoryList initCategories={items} total={total} />
+        <CategoryList
+          initCategories={items}
+          total={total}
+          sortBy={_sortBy}
+          order={_order}
+        />
       </Suspense>
     </div>
   );

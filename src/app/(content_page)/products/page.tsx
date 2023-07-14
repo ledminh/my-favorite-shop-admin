@@ -42,7 +42,13 @@ export default async function ProductsPage({ params }: Props) {
     <div className="m-4">
       <FiltersAndSorts />
       <SearchBar />
-      <ProductList initProducts={items} total={total} catID="111" />
+      <ProductList
+        initProducts={items}
+        total={total}
+        filters={filters}
+        sortBy={_sortBy}
+        order={_order}
+      />
     </div>
   );
 }

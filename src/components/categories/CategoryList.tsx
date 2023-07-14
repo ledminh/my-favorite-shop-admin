@@ -7,9 +7,16 @@ import CatProdList from "@/components/layout/CatProdList";
 type Props = {
   initCategories: WithID<CategoryType>[];
   total: number;
+  sortBy: "name" | "createdAt" | "modifiedAt";
+  order: "asc" | "desc";
 };
 
-export default async function CategoryList({ initCategories, total }: Props) {
+export default async function CategoryList({
+  initCategories,
+  total,
+  sortBy,
+  order,
+}: Props) {
   const onEdit = (id: string) => {
     console.log(`Edit category with id ${id}`);
   };
@@ -27,7 +34,7 @@ export default async function CategoryList({ initCategories, total }: Props) {
     offset: number;
     limit: number;
   }) => {
-    const { items } = await getCategories({ offset, limit });
+    const { items } = await getCategories({ offset, limit, sortBy, order });
 
     return items;
   };
