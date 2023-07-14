@@ -12,6 +12,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "cat-2",
@@ -23,6 +24,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Care",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "cat-3",
@@ -34,6 +36,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Tools",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "cat-4",
@@ -45,6 +48,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Art",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "5",
@@ -56,6 +60,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Extensions",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "6",
@@ -67,6 +72,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Accessories",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "7",
@@ -78,6 +84,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Treatments",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "8",
@@ -89,6 +96,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "9",
@@ -100,6 +108,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Sets",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "10",
@@ -111,6 +120,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Accessories",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "11",
@@ -122,6 +132,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Accessories",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "12",
@@ -133,6 +144,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Sets",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "13",
@@ -144,6 +156,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Tools",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "14",
@@ -155,6 +168,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Treatments",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "15",
@@ -166,6 +180,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Accessories",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "16",
@@ -177,6 +192,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Sets",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "17",
@@ -188,6 +204,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Tools",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "18",
@@ -199,6 +216,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Treatments",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "19",
@@ -210,6 +228,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Accessories",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "20",
@@ -221,6 +240,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Sets",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "21",
@@ -232,6 +252,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Tools",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
   {
     id: "22",
@@ -243,6 +264,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
       alt: "Nail Polish Remover Treatments",
     },
     createdAt: faker.date.past(),
+    modifiedAt: faker.date.past(),
   },
 ];
 

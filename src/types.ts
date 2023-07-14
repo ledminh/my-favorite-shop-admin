@@ -15,6 +15,7 @@ export type Category = {
     alt: string;
   };
   createdAt: Date;
+  modifiedAt: Date;
 };
 
 /**********************
