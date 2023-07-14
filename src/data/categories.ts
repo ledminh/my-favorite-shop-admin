@@ -302,12 +302,12 @@ type GetCategories = ({
   offset,
   limit,
   sortBy,
-  sortDirection,
+  order,
 }: {
   offset?: number;
   limit?: number;
-  sortBy: "name" | "createdAt";
-  sortDirection: "asc" | "desc";
+  sortBy: "name" | "createdAt" | "modifiedAt";
+  order: "asc" | "desc";
 }) => Promise<{
   total: number;
   items: WithID<CategoryType>[];
@@ -317,13 +317,13 @@ export const getCategories: GetCategories = async ({
   offset,
   limit,
   sortBy,
-  sortDirection,
+  order,
 }) => {
   let categories = [...CATEGORIES];
 
   if (sortBy === "name") {
     categories.sort((a, b) => {
-      if (sortDirection === "asc") {
+      if (order === "asc") {
         return a.name.localeCompare(b.name);
       } else {
         return b.name.localeCompare(a.name);
@@ -331,10 +331,18 @@ export const getCategories: GetCategories = async ({
     });
   } else if (sortBy === "createdAt") {
     categories.sort((a, b) => {
-      if (sortDirection === "asc") {
+      if (order === "asc") {
         return a.createdAt.getTime() - b.createdAt.getTime();
       } else {
         return b.createdAt.getTime() - a.createdAt.getTime();
+      }
+    });
+  } else if (sortBy === "modifiedAt") {
+    categories.sort((a, b) => {
+      if (order === "asc") {
+        return a.modifiedAt.getTime() - b.modifiedAt.getTime();
+      } else {
+        return b.modifiedAt.getTime() - a.modifiedAt.getTime();
       }
     });
   }

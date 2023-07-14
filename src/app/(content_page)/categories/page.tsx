@@ -9,21 +9,21 @@ import SearchBar from "@/components/SearchBar";
 type Props = {
   params: {
     sortBy?: "name" | "createdAt";
-    sortDirection?: "asc" | "desc";
+    order?: "asc" | "desc";
   };
 };
 
 export default async function CategoriesPage({ params }: Props) {
-  const { sortBy, sortDirection } = params;
+  const { sortBy, order } = params;
 
   const _sortBy = sortBy || "name";
-  const _sortDirection = sortDirection || "asc";
+  const _order = order || "asc";
 
   const { items, total } = await getCategories({
     offset: 0,
     limit: itemsPerPage,
     sortBy: _sortBy,
-    sortDirection: _sortDirection,
+    order: _order,
   });
 
   return (

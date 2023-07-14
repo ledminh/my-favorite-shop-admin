@@ -46,7 +46,7 @@ export type Variant = {
 };
 
 export type Product = {
-  category: Category;
+  category: WithID<Category>;
   link: string;
   name: string;
   price: number;
@@ -60,6 +60,8 @@ export type Product = {
   }[];
   promotion?: Promotion;
   variants?: Variant[];
+  createdAt: Date;
+  modifiedAt: Date;
 };
 
 /**********************

@@ -17,18 +17,15 @@ const PRODUCTS: WithID<Product>[] = _getProducts(50);
  * }>;
  */
 
-type GetProductsParams = (
-  | {
-      catID: string;
-      searchTerm?: undefined;
-    }
-  | {
-      catID?: undefined;
-      searchTerm: string;
-    }
-) & {
-  sortBy?: "name" | "price";
-  order?: "asc" | "desc";
+type GetProductsParams = {
+  sortBy: "name" | "price" | "createdAt" | "modifiedAt";
+  order: "asc" | "desc";
+  filters?: {
+    variants?: boolean;
+    promotion?: boolean;
+    catID?: string;
+    searchTerm?: string;
+  };
   limit?: number;
   offset?: number;
 };
@@ -39,23 +36,34 @@ type GetProducts = (params: GetProductsParams) => Promise<{
 }>;
 
 export const getProducts: GetProducts = async ({
-  catID,
-  searchTerm,
-  sortBy = "name",
-  order = "asc",
+  sortBy,
+  order,
+  filters,
   limit = 10,
   offset = 0,
 }) => {
   let products = PRODUCTS;
 
-  // if (catID) {
-  //   products = products.filter((product) => product.category.id === catID);
-  // }
+  if (filters) {
+    const { variants, promotion, catID, searchTerm } = filters;
 
-  if (searchTerm) {
-    products = PRODUCTS.filter((product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    if (variants) {
+      products = products.filter((product) => product.variants);
+    }
+
+    if (promotion) {
+      products = products.filter((product) => product.promotion);
+    }
+
+    if (catID) {
+      products = products.filter((product) => product.category.id === catID);
+    }
+
+    if (searchTerm) {
+      products = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
   }
 
   if (sortBy === "name") {
@@ -73,6 +81,26 @@ export const getProducts: GetProducts = async ({
       if (a.price > b.price) {
         return order === "asc" ? 1 : -1;
       } else if (a.price < b.price) {
+        return order === "asc" ? -1 : 1;
+      } else {
+        return 0;
+      }
+    });
+  } else if (sortBy === "createdAt") {
+    products.sort((a, b) => {
+      if (a.createdAt > b.createdAt) {
+        return order === "asc" ? 1 : -1;
+      } else if (a.createdAt < b.createdAt) {
+        return order === "asc" ? -1 : 1;
+      } else {
+        return 0;
+      }
+    });
+  } else if (sortBy === "modifiedAt") {
+    products.sort((a, b) => {
+      if (a.modifiedAt > b.modifiedAt) {
+        return order === "asc" ? 1 : -1;
+      } else if (a.modifiedAt < b.modifiedAt) {
         return order === "asc" ? -1 : 1;
       } else {
         return 0;
@@ -116,6 +144,7 @@ export function _getProducts(num: number): WithID<Product>[] {
     products.push({
       id,
       category: {
+        id: `category-${generateRandomNumber(1000, 999999)}`,
         name: faker.commerce.department(),
         description: faker.commerce.productDescription(),
         link: `/shop/nail-polish`,
@@ -123,6 +152,8 @@ export function _getProducts(num: number): WithID<Product>[] {
           src: `https://picsum.photos/seed/${i + 1}/300/300`,
           alt: `Category ${i + 1}`,
         },
+        createdAt: new Date(),
+        modifiedAt: new Date(),
       },
       link: `/product/${id}`,
       name: faker.commerce.productName(),
@@ -131,6 +162,8 @@ export function _getProducts(num: number): WithID<Product>[] {
       description: faker.commerce.productDescription(),
       mainImageID: images[0].id,
       images,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
     });
 
     // Add promotion

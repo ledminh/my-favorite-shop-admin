@@ -6,11 +6,36 @@ import { getProducts } from "@/data/products";
 
 import { itemsPerPage } from "@/config";
 
-export default async function ProductsPage() {
+type Props = {
+  params: {
+    variants?: boolean;
+    promotion?: boolean;
+    catID?: string;
+    searchTerm?: string;
+    sortBy?: "name" | "price" | "createdAt" | "modifiedAt";
+    order?: "asc" | "desc";
+  };
+};
+
+export default async function ProductsPage({ params }: Props) {
+  const { variants, promotion, catID, searchTerm, sortBy, order } = params;
+
+  const _sortBy = sortBy || "name";
+  const _order = order || "asc";
+
+  const filters = {
+    variants: variants || false,
+    promotion: promotion || false,
+    catID: catID || "",
+    searchTerm: searchTerm || "",
+  };
+
   const { items, total } = await getProducts({
-    catID: "1",
     offset: 0,
     limit: itemsPerPage,
+    sortBy: _sortBy,
+    order: _order,
+    filters,
   });
 
   return (
