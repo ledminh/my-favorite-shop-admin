@@ -39,6 +39,15 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
               className="p-2 border-2 rounded-lg border-blue-950"
             />
           </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="image">Image</label>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              className="p-2 border-2 rounded-lg border-blue-950"
+            />
+          </div>
         </div>
       </div>
     </ModalLg>
