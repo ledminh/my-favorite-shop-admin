@@ -1,6 +1,7 @@
 import type { WithID, Category as CategoryType } from "@/types";
+import { faker } from "@faker-js/faker";
 
-const categories: WithID<CategoryType>[] = [
+const CATEGORIES: WithID<CategoryType>[] = [
   {
     id: "cat-1",
     name: "Nail Polish",
@@ -10,6 +11,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/1/300/300",
       alt: "Nail Polish",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "cat-2",
@@ -20,6 +22,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/2/300/300",
       alt: "Nail Care",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "cat-3",
@@ -30,6 +33,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/3/300/300",
       alt: "Nail Tools",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "cat-4",
@@ -40,6 +44,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/4/300/300",
       alt: "Nail Art",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "5",
@@ -50,6 +55,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/5/300/300",
       alt: "Nail Extensions",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "6",
@@ -60,6 +66,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/6/300/300",
       alt: "Nail Accessories",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "7",
@@ -70,6 +77,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/7/300/300",
       alt: "Nail Treatments",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "8",
@@ -80,6 +88,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/8/300/300",
       alt: "Nail Polish Remover",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "9",
@@ -90,6 +99,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/9/300/300",
       alt: "Nail Polish Sets",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "10",
@@ -100,6 +110,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/10/300/300",
       alt: "Nail Polish Accessories",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "11",
@@ -110,6 +121,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/11/300/300",
       alt: "Nail Polish Remover Accessories",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "12",
@@ -120,6 +132,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/12/300/300",
       alt: "Nail Polish Remover Sets",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "13",
@@ -130,6 +143,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/13/300/300",
       alt: "Nail Polish Remover Tools",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "14",
@@ -140,6 +154,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/14/300/300",
       alt: "Nail Polish Remover Treatments",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "15",
@@ -150,6 +165,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/15/300/300",
       alt: "Nail Polish Remover Accessories",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "16",
@@ -160,6 +176,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/16/300/300",
       alt: "Nail Polish Remover Sets",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "17",
@@ -170,6 +187,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/17/300/300",
       alt: "Nail Polish Remover Tools",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "18",
@@ -180,6 +198,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/18/300/300",
       alt: "Nail Polish Remover Treatments",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "19",
@@ -190,6 +209,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/19/300/300",
       alt: "Nail Polish Remover Accessories",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "20",
@@ -200,6 +220,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/20/300/300",
       alt: "Nail Polish Remover Sets",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "21",
@@ -210,6 +231,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/21/300/300",
       alt: "Nail Polish Remover Tools",
     },
+    createdAt: faker.date.past(),
   },
   {
     id: "22",
@@ -220,6 +242,7 @@ const categories: WithID<CategoryType>[] = [
       src: "https://picsum.photos/seed/22/300/300",
       alt: "Nail Polish Remover Treatments",
     },
+    createdAt: faker.date.past(),
   },
 ];
 
@@ -256,24 +279,53 @@ const categories: WithID<CategoryType>[] = [
 type GetCategories = ({
   offset,
   limit,
+  sortBy,
+  sortDirection,
 }: {
   offset?: number;
   limit?: number;
+  sortBy: "name" | "createdAt";
+  sortDirection: "asc" | "desc";
 }) => Promise<{
   total: number;
   items: WithID<CategoryType>[];
 }>;
 
-export const getCategories: GetCategories = async ({ offset, limit }) => {
+export const getCategories: GetCategories = async ({
+  offset,
+  limit,
+  sortBy,
+  sortDirection,
+}) => {
+  let categories = [...CATEGORIES];
+
+  if (sortBy === "name") {
+    categories.sort((a, b) => {
+      if (sortDirection === "asc") {
+        return a.name.localeCompare(b.name);
+      } else {
+        return b.name.localeCompare(a.name);
+      }
+    });
+  } else if (sortBy === "createdAt") {
+    categories.sort((a, b) => {
+      if (sortDirection === "asc") {
+        return a.createdAt.getTime() - b.createdAt.getTime();
+      } else {
+        return b.createdAt.getTime() - a.createdAt.getTime();
+      }
+    });
+  }
+
   const _offset = offset || 0;
   const _limit = limit || categories.length;
 
-  const _categories = categories.slice(_offset, _offset + _limit);
+  categories = categories.slice(_offset, _offset + _limit);
 
   return new Promise((resolve) => {
     resolve({
-      total: categories.length,
-      items: _categories,
+      total: CATEGORIES.length,
+      items: categories,
     });
 
     // setTimeout(() => {
@@ -327,7 +379,7 @@ type GetCategory = (props: GetCategoryProps) => Promise<WithID<CategoryType>>;
 export const getCategory: GetCategory = async ({ slug, id }) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const category = categories.find(
+      const category = CATEGORIES.find(
         (category) => category.id === id || category.link === "/shop/" + slug
       );
       if (category) {
