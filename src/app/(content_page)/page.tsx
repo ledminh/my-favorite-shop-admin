@@ -1,5 +1,7 @@
+import NewCatButton from "@/components/home/NewCatButton";
 import NewMessages from "@/components/home/NewMessages";
 import NewOrders from "@/components/home/NewOrders";
+import NewProdButton from "@/components/home/NewProdButton";
 import { getCustomerMessages } from "@/data/customerMessages";
 import { getOrders } from "@/data/orders";
 import { ReactNode, FC } from "react";
@@ -35,8 +37,8 @@ export default async function Home() {
       </Section>
       <Section>
         <div className="flex justify-start gap-[4%]">
-          <Button>ADD NEW CATEGORY</Button>
-          <Button>ADD NEW PRODUCT</Button>
+          <NewCatButton />
+          <NewProdButton />
         </div>
       </Section>
     </Wrapper>
@@ -52,17 +54,4 @@ const Wrapper: FC<{ children: ReactNode }> = ({ children }) => (
 
 const Section: FC<{ children: ReactNode }> = ({ children }) => (
   <div className="basis-full md:basis-[49%]">{children}</div>
-);
-
-/**************************
- * Components
- */
-type ButtonProps = {
-  children: React.ReactNode;
-};
-
-const Button = ({ children }: ButtonProps) => (
-  <button className="p-4 font-bold border-2 rounded-lg border-blue-950 text-blue-950 hover:bg-blue-950/10 hover:shadow-stone-800 hover:shadow-md active:bg-blue-950/20">
-    {children}
-  </button>
 );
