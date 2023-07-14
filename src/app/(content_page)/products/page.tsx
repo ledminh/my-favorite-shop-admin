@@ -1,3 +1,6 @@
+import FiltersAndSorts from "@/components/FiltersAndSorts";
+import SearchBar from "@/components/SearchBar";
+
 import ProductList from "@/components/products/ProductList";
 import { getProducts } from "@/data/products";
 
@@ -11,8 +14,10 @@ export default async function ProductsPage() {
   });
 
   return (
-    <>
+    <div className="m-4">
+      <FiltersAndSorts />
+      <SearchBar />
       <ProductList initProducts={items} total={total} catID="111" />
-    </>
+    </div>
   );
 }

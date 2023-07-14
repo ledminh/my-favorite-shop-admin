@@ -27,14 +27,12 @@ export default async function CategoriesPage({ params }: Props) {
   });
 
   return (
-    <>
-      <div className="m-4 ">
-        <FiltersAndSorts />
-        <SearchBar />
-        <Suspense fallback={<div>Loading...</div>}>
-          <CategoryList initCategories={items} total={total} />
-        </Suspense>
-      </div>
-    </>
+    <div className="m-4 ">
+      <FiltersAndSorts />
+      <SearchBar />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CategoryList initCategories={items} total={total} />
+      </Suspense>
+    </div>
   );
 }
