@@ -5,9 +5,17 @@ import SearchBar from "@/components/SearchBar";
 export default function ControlPanel() {
   return (
     <>
-      <Filters />
-      <Sorts />
-      <SearchBar />
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <div>
+          <Filters />
+        </div>
+        <div className="basis-full">
+          <SearchBar />
+        </div>
+      </div>
+      <div>
+        <Sorts />
+      </div>
     </>
   );
 }

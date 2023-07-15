@@ -11,7 +11,6 @@ type Props = {
   params: {
     variants?: boolean;
     promotion?: boolean;
-    catID?: string;
     searchTerm?: string;
     sortBy?: "name" | "price" | "createdAt" | "modifiedAt";
     order?: "asc" | "desc";
@@ -19,7 +18,7 @@ type Props = {
 };
 
 export default async function ProductsPage({ params }: Props) {
-  const { variants, promotion, catID, searchTerm, sortBy, order } = params;
+  const { variants, promotion, searchTerm, sortBy, order } = params;
 
   const _sortBy = sortBy || "name";
   const _order = order || "asc";
@@ -27,7 +26,6 @@ export default async function ProductsPage({ params }: Props) {
   const filters = {
     variants: variants || false,
     promotion: promotion || false,
-    catID: catID || "",
     searchTerm: searchTerm || "",
   };
 
@@ -46,8 +44,12 @@ export default async function ProductsPage({ params }: Props) {
 
   return (
     <div className="m-4">
-      <Category categories={categories} />
-      <ControlPanel />
+      <div className="mb-8">
+        <Category categories={categories} />
+      </div>
+      <div className="mb-8">
+        <ControlPanel />
+      </div>
       <ProductList
         initProducts={items}
         total={total}

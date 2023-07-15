@@ -19,9 +19,7 @@ export default function Category({ categories }: Props) {
     return (
       <Wrapper>
         <H2>ALL</H2>
-        <div>
-          <ChangeCategoryButton categories={categories} />
-        </div>
+        <ChangeCategoryButton categories={categories} />
       </Wrapper>
     );
   }
@@ -35,9 +33,7 @@ export default function Category({ categories }: Props) {
   return (
     <Wrapper>
       <H2>{category.name}</H2>
-      <div>
-        <ChangeCategoryButton categories={categories} />
-      </div>
+      <ChangeCategoryButton categories={categories} />
     </Wrapper>
   );
 }
