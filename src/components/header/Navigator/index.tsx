@@ -1,11 +1,11 @@
-import DropdownMenu from "./DropdownMenu";
+import VerticalMenu from "./VerticalMenu";
 import HorizontalMenu from "./HorizontalMenu";
 
 export default function Navigator() {
   return (
     <>
       <div className="sm:hidden">
-        <DropdownMenu navItems={NavItems} />
+        <VerticalMenu navItems={NavItems} />
       </div>
       <div className="hidden sm:block">
         <HorizontalMenu navItems={NavItems} />
