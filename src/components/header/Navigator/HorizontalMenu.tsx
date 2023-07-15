@@ -13,9 +13,8 @@ export default function HorizontalMenu({ navItems }: Props) {
   return (
     <ul className="flex items-center justify-between gap-1">
       {navItems.map((item) => (
-        <li>
+        <li key={item.name}>
           <Link
-            key={item.name}
             href={item.href}
             className={`px-3 py-2 font-medium text-gray-400 border border-gray-400 rounded-md hover:text-white hover:border-white hover:shadow-sm hover:shadow-white ${
               isCurrent(pathname, item.href)

@@ -357,13 +357,6 @@ export const getCategories: GetCategories = async ({
       total: CATEGORIES.length,
       items: categories,
     });
-
-    // setTimeout(() => {
-    //   resolve({
-    //     total: categories.length,
-    //     items: categories,
-    //   });
-    // }, 0);
   });
 };
 

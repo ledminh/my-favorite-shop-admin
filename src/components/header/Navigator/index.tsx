@@ -1,5 +1,4 @@
 import DropdownMenu from "./DropdownMenu";
-import Link from "next/link";
 import HorizontalMenu from "./HorizontalMenu";
 
 export default function Navigator() {
