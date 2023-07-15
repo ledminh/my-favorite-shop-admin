@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { FunnelIcon } from "@heroicons/react/20/solid";
 
-export default function Example() {
+export default function Filters() {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Header />
