@@ -1,4 +1,4 @@
-import ModalLg from "./layout/ModalLg";
+import ModalLg from "../layout/ModalLg";
 
 type Props = {
   isOpen: boolean;

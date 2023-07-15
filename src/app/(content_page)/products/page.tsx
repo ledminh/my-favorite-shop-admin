@@ -1,4 +1,5 @@
-import FiltersAndSorts from "@/components/FiltersAndSorts";
+import Filters from "@/components/Filters";
+import Sorts from "@/components/Sorts";
 import SearchBar from "@/components/SearchBar";
 
 import ProductList from "@/components/products/ProductList";
@@ -40,7 +41,8 @@ export default async function ProductsPage({ params }: Props) {
 
   return (
     <div className="m-4">
-      <FiltersAndSorts />
+      <Filters />
+      <Sorts />
       <SearchBar />
       <ProductList
         initProducts={items}

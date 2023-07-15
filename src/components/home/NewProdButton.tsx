@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Button from "./Button";
 
-import NewProdModal from "@/components/NewProdModal";
+import NewProdModal from "@/components/Modals/NewProduct";
 
 export default function NewProdButton() {
   const [isOpen, setIsOpen] = useState(false);
