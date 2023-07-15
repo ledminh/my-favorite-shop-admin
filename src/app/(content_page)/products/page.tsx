@@ -1,9 +1,8 @@
-import Filters from "@/components/Filters";
-import Sorts from "@/components/Sorts";
-import SearchBar from "@/components/SearchBar";
+import Category from "@/components/products/Category";
 
 import ProductList from "@/components/products/ProductList";
 import { getProducts } from "@/data/products";
+import { getCategories } from "@/data/categories";
 
 import { itemsPerPage } from "@/config";
 import ControlPanel from "@/components/products/ControlPanel";
@@ -32,6 +31,11 @@ export default async function ProductsPage({ params }: Props) {
     searchTerm: searchTerm || "",
   };
 
+  const { items: categories } = await getCategories({
+    sortBy: "name",
+    order: "asc",
+  });
+
   const { items, total } = await getProducts({
     offset: 0,
     limit: itemsPerPage,
@@ -42,6 +46,7 @@ export default async function ProductsPage({ params }: Props) {
 
   return (
     <div className="m-4">
+      <Category categories={categories} />
       <ControlPanel />
       <ProductList
         initProducts={items}
