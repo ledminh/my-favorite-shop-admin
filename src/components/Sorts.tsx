@@ -1,38 +1,24 @@
 "use client";
 
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-export default function Sort() {
-  return (
-    <div>
-      <label
-        htmlFor="location"
-        className="block text-sm font-medium leading-6 text-gray-900"
-      >
-        Location
-      </label>
-      <select
-        id="location"
-        name="location"
-        className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-        defaultValue="Canada"
-      >
-        <option>United States</option>
-        <option>Canada</option>
-        <option>Mexico</option>
-      </select>
-    </div>
-  );
+import Select from "@/components/layout/Select";
+
+export default function CategoryDropdown() {
+  const categories = [
+    { id: "1", text: "Category 1" },
+    { id: "2", text: "Category 2" },
+    { id: "3", text: "Category 3" },
+    { id: "4", text: "Category 4" },
+    { id: "5", text: "Category 5" },
+    { id: "6", text: "Category 6" },
+    { id: "7", text: "Category 7" },
+    { id: "8", text: "Category 8" },
+  ];
+
+  const options = [{ id: "all", text: "All" }, ...categories];
+
+  const onChange = (id: string) => {
+    console.log(id);
+  };
+
+  return <Select options={options} defaultValue="all" onChange={onChange} />;
 }

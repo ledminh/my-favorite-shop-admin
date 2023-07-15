@@ -6,6 +6,7 @@ import ProductList from "@/components/products/ProductList";
 import { getProducts } from "@/data/products";
 
 import { itemsPerPage } from "@/config";
+import ControlPanel from "@/components/products/ControlPanel";
 
 type Props = {
   params: {
@@ -41,9 +42,7 @@ export default async function ProductsPage({ params }: Props) {
 
   return (
     <div className="m-4">
-      <Filters />
-      <Sorts />
-      <SearchBar />
+      <ControlPanel />
       <ProductList
         initProducts={items}
         total={total}
