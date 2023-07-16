@@ -61,7 +61,7 @@ export function getOrders({
   return new Promise((resolve) =>
     resolve({
       items: orders,
-      total: orders.length,
+      total: ORDERS.length,
     })
   );
 }
@@ -86,6 +86,7 @@ function _getOrders(num: number): WithID<Order>[] {
     };
 
     if (i === 0) {
+      order.status = "processing";
       order.createdAt = new Date();
       order.orderedProducts = [
         {
@@ -120,11 +121,11 @@ function _getOrders(num: number): WithID<Order>[] {
           variants: undefined,
           createdAt: new Date(),
           modifiedAt: new Date(),
-          quantity: 1,
+          quantity: 2,
           selectedVariant: {
             id: "variant-1",
             name: "Variant selected",
-            price: 200,
+            price: 20.3,
             image: {
               src: "https://picsum.photos/seed/1/300/300",
               alt: "Variant 1",
