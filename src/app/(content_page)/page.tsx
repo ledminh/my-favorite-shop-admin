@@ -53,5 +53,5 @@ const Wrapper: FC<{ children: ReactNode }> = ({ children }) => (
 );
 
 const Section: FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="basis-full md:basis-[49%]">{children}</div>
+  <div className="basis-full lg:basis-[49%]">{children}</div>
 );
