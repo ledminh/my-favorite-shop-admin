@@ -69,7 +69,43 @@ export function getCustomerMessages({
   }
 
   return new Promise((resolve) => {
-    resolve({ items: customerMessages, total: customerMessages.length });
+    resolve({ items: customerMessages, total: CUSTOMER_MESSAGES.length });
+  });
+}
+
+export function updateMessage(id: string, status: CustomerMessageStatus) {
+  const customerMessage = CUSTOMER_MESSAGES.find(
+    (customerMessage) => customerMessage.id === id
+  );
+
+  if (!customerMessage) {
+    return new Promise((resolve, reject) => {
+      reject(new Error("Customer Message not found"));
+    });
+  }
+
+  customerMessage.status = status;
+
+  return new Promise((resolve) => {
+    resolve(customerMessage);
+  });
+}
+
+export function deleteMessage(id: string) {
+  const customerMessageIndex = CUSTOMER_MESSAGES.findIndex(
+    (customerMessage) => customerMessage.id === id
+  );
+
+  if (customerMessageIndex === -1) {
+    return new Promise((resolve, reject) => {
+      reject(new Error("Customer Message not found"));
+    });
+  }
+
+  CUSTOMER_MESSAGES.splice(customerMessageIndex, 1);
+
+  return new Promise((resolve) => {
+    resolve(true);
   });
 }
 

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { CustomerMessage } from "@/types";
+import { CustomerMessage, WithID } from "@/types";
 import ModalLg from "@/components/layout/ModalLg";
 
 type MessageTabProps = {
-  item: CustomerMessage;
+  item: WithID<CustomerMessage>;
 };
 
 const MessageTab = ({ item }: MessageTabProps) => {
@@ -26,7 +26,7 @@ export default MessageTab;
  */
 
 type ButtonProps = {
-  item: CustomerMessage;
+  item: WithID<CustomerMessage>;
   onClick: () => void;
 };
 
@@ -71,26 +71,39 @@ const Button = ({ item, onClick }: ButtonProps) => {
 /*******************************************/
 
 type MessageModalProps = {
-  item: CustomerMessage;
+  item: WithID<CustomerMessage>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 };
 
 const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
-  const { firstName, lastName, email, phone, message, createdAt } = item;
+  const { firstName, lastName, email, phone, message, createdAt, status } =
+    item;
 
   const additionalButtons = [
     {
       text: "DELETE",
       className: "text-red-600 bg-white hover:bg-red-100",
-      onClick: () => console.log("Delete"),
+      onClick: () => {
+        deleteMessage(item.id, (res) => {
+          console.log(res);
+        });
+      },
     },
     {
-      text: "MARK AS READ",
+      text: status === "read" ? "MARK AS UNREAD" : "MARK AS READ",
       className:
         "text-stone-800 bg-white hover:bg-neutral-300 active:bg-neutral-400",
       onClick: () => {
-        console.log("Reply");
+        updateMessage(
+          item.id,
+          {
+            status: status === "read" ? "unread" : "read",
+          },
+          (res) => {
+            console.log(res);
+          }
+        );
       },
     },
   ];
@@ -129,4 +142,28 @@ const InfoTab = ({ label, value }: { label: string; value: string }) => {
       <span>{value}</span>
     </div>
   );
+};
+
+/***************************
+ * Utils
+ */
+
+const deleteMessage = (id: string, cb: (res: any) => void) => {
+  return fetch(`/api/messages/${id}`, {
+    method: "DELETE",
+  }).then((res) => cb(res));
+};
+
+const updateMessage = (
+  id: string,
+  data: { status: string },
+  cb: (res: any) => void
+) => {
+  return fetch(`/api/messages/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then((res) => cb(res));
 };
