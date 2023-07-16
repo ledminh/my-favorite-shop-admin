@@ -93,11 +93,15 @@ type OrderModalProps = {
 };
 
 const OrderModal = ({ item, isOpen, setIsOpen }: OrderModalProps) => {
+  const changeStatusOnClick = () => {
+    console.log("change status");
+  };
+
   const additionalButtons = [
     {
       text: "DELETE",
       className: "text-red-600 bg-white hover:bg-red-100",
-      onClick: () => console.log("Delete"),
+      onClick: () => deleteOrder(item.id, (res) => console.log(res)),
     },
   ];
 
@@ -137,7 +141,7 @@ const OrderModal = ({ item, isOpen, setIsOpen }: OrderModalProps) => {
         <InfoTab
           label="Status"
           value={item.status}
-          button={{ label: "CHANGE", onClick: () => {} }}
+          button={{ label: "CHANGE", onClick: changeStatusOnClick }}
         />
       </div>
     </ModalLg>
@@ -176,3 +180,14 @@ const InfoTab = ({
     </div>
   );
 };
+
+/****************************
+ * Utils
+ */
+function deleteOrder(id: string, callback: (res: any) => void) {
+  fetch(`/api/orders/${id}`, {
+    method: "DELETE",
+  })
+    .then(callback)
+    .catch((err) => console.error(err));
+}
