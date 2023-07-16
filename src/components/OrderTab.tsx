@@ -4,6 +4,7 @@ import { Order, WithID } from "@/types";
 
 import { useState } from "react";
 import ModalLg from "@/components/layout/ModalLg";
+import getOrderProductName from "@/utils/getOrderProductName";
 
 type OrderTabProps = {
   item: WithID<Order>;
@@ -35,6 +36,11 @@ const Button = ({ item, onClick }: ButtonProps) => {
 
   const { firstName, lastName } = shippingAddress;
 
+  let productNames = orderedProducts.map(getOrderProductName).join(", ");
+
+  if (productNames.length > 100)
+    productNames = productNames.slice(0, 100).concat(" ...");
+
   return (
     <button
       className="flex flex-col w-full gap-2 p-2 rounded-lg hover:ring hover:ring-blue-900 active:bg-orange-200"
@@ -53,7 +59,8 @@ const Button = ({ item, onClick }: ButtonProps) => {
         </span>
       </div>
       <div className="text-xs text-left">
-        {orderedProducts.slice(0, 100).map((product) => product.name)} ...
+        <span className="font-semibold">Products: </span>
+        <span>{productNames}</span>
       </div>
     </button>
   );

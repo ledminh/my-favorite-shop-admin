@@ -46,6 +46,7 @@ const ModalLg = ({
             {additionalButtons &&
               additionalButtons.map((button) => (
                 <ModalButton
+                  key={button.text}
                   text={button.text}
                   className={button.className}
                   onClick={() => {

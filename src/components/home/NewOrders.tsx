@@ -1,7 +1,7 @@
 import { Order, WithID } from "@/types";
 import Card from "./Card";
 
-import OrderTab from "./OrderTab";
+import OrderTab from "@/components/OrderTab";
 
 type Props = {
   orders: WithID<Order>[];

@@ -85,6 +85,57 @@ function _getOrders(num: number): WithID<Order>[] {
       createdAt: getRandomDate(),
     };
 
+    if (i === 0) {
+      order.createdAt = new Date();
+      order.orderedProducts = [
+        {
+          id: "product-1",
+
+          category: {
+            id: "cat-1",
+            name: "Category 1",
+            description: "Category 1 description",
+            link: "/category/category-1",
+            image: {
+              src: "https://picsum.photos/seed/1/300/300",
+              alt: "Category 1",
+            },
+            createdAt: new Date(),
+            modifiedAt: new Date(),
+          },
+          link: "/products/1",
+          name: "Product 1",
+          price: 200,
+          intro: "Product 1 intro",
+          description: "Product 1 description",
+          mainImageID: "img-1",
+          images: [
+            {
+              id: "img-1",
+              src: "https://picsum.photos/seed/1/300/300",
+              alt: "Product 1",
+            },
+          ],
+          promotion: undefined,
+          variants: undefined,
+          createdAt: new Date(),
+          modifiedAt: new Date(),
+          quantity: 1,
+          selectedVariant: {
+            id: "variant-1",
+            name: "Variant selected",
+            price: 200,
+            image: {
+              src: "https://picsum.photos/seed/1/300/300",
+              alt: "Variant 1",
+            },
+            shown: true,
+            promotion: undefined,
+          },
+        },
+      ];
+    }
+
     orders.push(order);
   }
 
@@ -104,11 +155,11 @@ function getShippingAddress(): ShippingAddress {
   };
 }
 
-function getOrderedProducts(): OrderedProduct[] {
+function getOrderedProducts(): WithID<OrderedProduct>[] {
   const _products = _getProducts(Math.floor(Math.random() * 10) + 1);
 
   const orderedProducts = _products.map((product) => {
-    const orderedProduct: OrderedProduct = {
+    const orderedProduct: WithID<OrderedProduct> = {
       ...product,
       quantity: Math.floor(Math.random() * 10) + 1,
     };

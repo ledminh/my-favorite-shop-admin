@@ -94,7 +94,7 @@ export type OrderStatus = "processing" | "shipped" | "delivered";
 
 export type Order = {
   shippingAddress: ShippingAddress;
-  orderedProducts: OrderedProduct[];
+  orderedProducts: WithID<OrderedProduct>[];
   shippingFee: number;
   taxes: number;
   paymentInfo: PaymentInfo;
