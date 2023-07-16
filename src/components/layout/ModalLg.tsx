@@ -32,7 +32,7 @@ const ModalLg = ({
       {/* Full-screen container to center the panel */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         {/* The actual dialog panel  */}
-        <Dialog.Panel className="w-full max-w-4xl mx-auto overflow-hidden bg-white rounded">
+        <Dialog.Panel className="w-full max-w-4xl mx-auto overflow-hidden bg-white min-w-[354px] rounded">
           <Dialog.Title className="p-2 bg-blue-950">
             <h2 className="text-xl font-semibold text-white ">{title}</h2>
           </Dialog.Title>

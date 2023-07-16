@@ -40,13 +40,13 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="image">Image</label>
-            <input
-              type="file"
-              name="image"
-              id="image"
-              className="p-2 border-2 rounded-lg border-blue-950"
-            />
+            <label
+              htmlFor="image"
+              className="p-2 text-center bg-gray-300 border-2 border-black rounded-lg shadow-sm cursor-pointer hover:bg-gray-200 shadow-black w-[150px] mx-auto active:bg-gray-300 active:shadow-none"
+            >
+              Upload Image
+            </label>
+            <input hidden type="file" name="image" id="image" />
           </div>
         </div>
       </div>
