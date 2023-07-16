@@ -31,22 +31,30 @@ type ButtonProps = {
 };
 
 const Button = ({ item, onClick }: ButtonProps) => {
-  const { firstName, lastName, createdAt, message } = item;
+  const { firstName, lastName, email, phone, status } = item;
 
   return (
     <button
       className="flex flex-col w-full gap-2 p-2 rounded-lg hover:ring hover:ring-blue-900 active:bg-orange-200"
       onClick={onClick}
     >
-      <div className="flex justify-between text-sm">
-        <h3 className="font-bold">
-          {firstName} {lastName}
-        </h3>
-        <span className="italic font-semibold">
-          {createdAt.toLocaleDateString()}
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-col">
+          <span className="text-sm font-medium text-gray-900">
+            {firstName} {lastName}
+          </span>
+          <span className="text-sm text-gray-500">{email}</span>
+        </div>
+        <span className="text-sm text-gray-500">
+          {new Date(item.createdAt).toLocaleDateString()}
         </span>
       </div>
-      <div className="text-xs text-left">{message.slice(0, 100)} ...</div>
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-col">
+          <span className="text-sm text-gray-500">{phone}</span>
+        </div>
+        <span className="text-sm text-gray-500">{status}</span>
+      </div>
     </button>
   );
 };

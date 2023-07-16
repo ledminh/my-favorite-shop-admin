@@ -1,6 +1,6 @@
 import { CustomerMessage, WithID } from "@/types";
 import Card from "./Card";
-import MessageTab from "./MessageTab";
+import MessageTab from "@/components/MessageTab";
 
 type Props = {
   customerMessages: WithID<CustomerMessage>[];
