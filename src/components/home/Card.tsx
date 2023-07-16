@@ -51,7 +51,7 @@ export default function Card<T>({ items, ItemTab, title, button }: Props<T>) {
  * Styles
  */
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="overflow-hidden border-4 rounded-lg border-blue-950">
+  <div className="overflow-hidden border-4 rounded-lg border-blue-950 min-w-[354px]">
     {children}
   </div>
 );
