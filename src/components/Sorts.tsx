@@ -83,14 +83,15 @@ export default function Sorts() {
     }
   }, [sortByID]);
 
-  useEffect(() => {
-    console.log(sortByID, orderID);
-  }, [sortByID, orderID]);
+  useEffect(() => {}, [sortByID, orderID]);
 
   return (
     <div className="flex justify-between">
-      <div className="basis-[48%] flex flex-col gap-2 sm:flex-row">
-        <label htmlFor="sortBy" className="text-sm font-semibold sm:basis-1/3">
+      <div className="basis-[47%] flex flex-col gap-2 sm:flex-row">
+        <label
+          htmlFor="sortBy"
+          className="hidden text-sm font-semibold sm:basis-1/3"
+        >
           Sort by
         </label>
         <Select
@@ -100,8 +101,11 @@ export default function Sorts() {
           onChange={sortByOnChange}
         />
       </div>
-      <div className="basis-[48%] flex flex-col gap-2 sm:flex-row">
-        <label htmlFor="order" className="text-sm font-semibold sm:basis-1/3">
+      <div className="basis-[47%] flex flex-col gap-2 sm:flex-row">
+        <label
+          htmlFor="order"
+          className="hidden text-sm font-semibold sm:basis-1/3"
+        >
           Order
         </label>
         <Select

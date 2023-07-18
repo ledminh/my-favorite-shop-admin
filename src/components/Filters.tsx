@@ -5,13 +5,14 @@ import { Menu, Transition } from "@headlessui/react";
 import { FunnelIcon } from "@heroicons/react/20/solid";
 
 import { useState } from "react";
+import SearchBar from "./SearchBar";
 
 export default function Filters() {
   const [filter, setFilter] = useState<string | null>(null);
 
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <Header text={filter === null ? "Filter" : filter} />
+      <Header />
       <Transition
         as={Fragment}
         enter="transition ease-out duration-100"
@@ -67,16 +68,11 @@ export default function Filters() {
  * Components
  */
 
-type HeaderProps = {
-  text: string;
-};
-
-const Header = ({ text }: HeaderProps) => (
+const Header = () => (
   <div>
     <Menu.Button className="flex items-center justify-between gap-2 p-2 text-gray-600 bg-gray-100 rounded-md ring-1 ring-gray-600 hover:text-gray-900 focus:outline-none focus:ring-gray-900 focus:ring-offset-2 focus:ring-offset-gray-100">
       <span className="sr-only">Open Filters</span>
       <FunnelIcon className="w-6 h-6" aria-hidden="true" />
-      <span className="text-sm font-medium break">{text}</span>
     </Menu.Button>
   </div>
 );
