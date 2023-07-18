@@ -67,8 +67,8 @@ export default async function ProductList({
     <CatProdList
       initItems={initProducts}
       total={total}
-      ItemTabContent={Content}
-      onEdit={onEdit}
+      CardContent={CardContent}
+      ModalContent={ModalContent}
       onDelete={onDelete}
       getImage={getImage}
       onLoadMore={onLoadMore}
@@ -80,9 +80,20 @@ export default async function ProductList({
  * Components
  */
 
-type ContentProps = {
+type CardContentProps = {
   item: ProductType;
 };
-const Content = ({ item }: ContentProps) => (
+const CardContent = ({ item }: CardContentProps) => (
   <h2 className="text-lg font-semibold">{item.name}</h2>
+);
+
+type ModalContentProps = {
+  item: ProductType;
+};
+
+const ModalContent = ({ item }: ModalContentProps) => (
+  <div className="flex flex-col">
+    <h2 className="text-lg font-semibold">{item.name}</h2>
+    <p className="text-sm text-gray-500">{item.description}</p>
+  </div>
 );
