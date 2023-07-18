@@ -88,9 +88,11 @@ export default function Sorts() {
   }, [sortByID, orderID]);
 
   return (
-    <div>
-      <div>
-        <label htmlFor="sortBy">Sort by</label>
+    <div className="flex justify-between">
+      <div className="basis-[48%] flex flex-col gap-2 sm:flex-row">
+        <label htmlFor="sortBy" className="text-sm font-semibold sm:basis-1/3">
+          Sort by
+        </label>
         <Select
           id="sortBy"
           options={sortByOptions}
@@ -98,8 +100,10 @@ export default function Sorts() {
           onChange={sortByOnChange}
         />
       </div>
-      <div>
-        <label htmlFor="order">Order</label>
+      <div className="basis-[48%] flex flex-col gap-2 sm:flex-row">
+        <label htmlFor="order" className="text-sm font-semibold sm:basis-1/3">
+          Order
+        </label>
         <Select
           id="order"
           options={orderOptions}
