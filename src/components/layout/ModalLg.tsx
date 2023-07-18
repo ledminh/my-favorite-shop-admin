@@ -1,4 +1,5 @@
 import { Dialog } from "@headlessui/react";
+import { on } from "events";
 import { ReactNode } from "react";
 
 type ModalLgProps = {
@@ -11,6 +12,7 @@ type ModalLgProps = {
     className: string;
     onClick: () => void;
   }[];
+  onClose?: () => void;
 };
 
 const ModalLg = ({
@@ -19,11 +21,15 @@ const ModalLg = ({
   title,
   children,
   additionalButtons,
+  onClose,
 }: ModalLgProps) => {
   return (
     <Dialog
       open={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={() => {
+        onClose && onClose();
+        setIsOpen(false);
+      }}
       className="relative z-50"
     >
       {/* The backdrop, rendered as a fixed sibling to the panel container */}
@@ -41,7 +47,10 @@ const ModalLg = ({
             <ModalButton
               text="CLOSE"
               className="text-white bg-blue-950 hover:bg-blue-900 active:bg-blue-700"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                onClose && onClose();
+                setIsOpen(false);
+              }}
             />
             {additionalButtons &&
               additionalButtons.map((button) => (

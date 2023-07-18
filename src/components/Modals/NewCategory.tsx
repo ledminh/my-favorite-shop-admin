@@ -12,11 +12,19 @@ type Props = {
 export default function NewCatModal({ isOpen, setIsOpen }: Props) {
   const [image, setImage] = useState<File | null>(null);
 
+  const onClose = () => {
+    setImage(null);
+  };
+
+  const onAdd = () => {
+    console.log("add");
+  };
+
   const additionalButtons = [
     {
       text: "Add",
       className: "bg-white text-blue-950 hover:bg-blue-950 hover:text-white",
-      onClick: () => {},
+      onClick: onAdd,
     },
   ];
   return (
@@ -24,6 +32,7 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title="ADD NEW CATEGORY"
+      onClose={onClose}
       additionalButtons={additionalButtons}
     >
       <div className="flex flex-col gap-4">
@@ -57,6 +66,7 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
               type="file"
               name="image"
               id="image"
+              accept="image/*"
               onChange={(e) => {
                 if (e.target.files) {
                   setImage(e.target.files[0]);
@@ -69,9 +79,9 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
             {image ? (
               <Image
                 src={URL.createObjectURL(image)}
-                alt="placeholder"
-                width={150}
-                height={150}
+                alt="category image"
+                width={200}
+                height={200}
                 className="rounded-lg"
               />
             ) : null}
