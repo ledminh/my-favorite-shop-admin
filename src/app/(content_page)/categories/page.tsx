@@ -24,7 +24,7 @@ export default async function CategoriesPage({ params }: Props) {
   });
 
   return (
-    <div className="m-4 ">
+    <div className="m-4">
       <ControlPanel />
       <Suspense fallback={<div>Loading...</div>}>
         <CategoryList

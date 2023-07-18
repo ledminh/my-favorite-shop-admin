@@ -141,7 +141,14 @@ const OrderModal = ({ item, isOpen, setIsOpen }: OrderModalProps) => {
         <InfoTab
           label="Status"
           value={item.status}
-          button={{ label: "CHANGE", onClick: changeStatusOnClick }}
+          Button={
+            <button
+              className="self-center col-span-1 text-sm font-semibold text-blue-900 hover:underline justify-self-start"
+              onClick={() => {}}
+            >
+              CHANGE
+            </button>
+          }
         />
       </div>
     </ModalLg>
@@ -152,31 +159,24 @@ const InfoTab = ({
   label,
   value,
   small,
-  button,
+  Button,
 }: {
   label: string;
   value: string;
   small?: boolean;
-  button?: { label: string; onClick: () => void };
+  Button?: JSX.Element;
 }) => {
   return (
     <div className="grid grid-cols-3 gap-2">
       <span className="col-span-1 font-semibold">{label}</span>
       <span
-        className={`${button ? "col-span-1" : "col-span-2"} break-words${
+        className={`${Button ? "col-span-1" : "col-span-2"} break-words${
           small ? " text-sm" : ""
         }`}
       >
         {value}
       </span>
-      {button && (
-        <button
-          className="self-center col-span-1 text-sm font-semibold text-blue-900 hover:underline justify-self-start"
-          onClick={button.onClick}
-        >
-          {button.label}
-        </button>
-      )}
+      {Button}
     </div>
   );
 };
