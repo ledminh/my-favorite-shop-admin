@@ -6,6 +6,7 @@ import { useState } from "react";
 import ModalLg from "@/components/layout/ModalLg";
 import getOrderProductName from "@/utils/getOrderProductName";
 import getOrderPrice from "@/utils/getOrderPrice";
+import ChangeButton from "./ChangeButton";
 
 type OrderTabProps = {
   item: WithID<Order>;
@@ -138,18 +139,7 @@ const OrderModal = ({ item, isOpen, setIsOpen }: OrderModalProps) => {
           value={item.orderedProducts.map((product) => product.name).join(", ")}
           small={true}
         />
-        <InfoTab
-          label="Status"
-          value={item.status}
-          Button={
-            <button
-              className="self-center col-span-1 text-sm font-semibold text-blue-900 hover:underline justify-self-start"
-              onClick={() => {}}
-            >
-              CHANGE
-            </button>
-          }
-        />
+        <InfoTab label="Status" value={item.status} Button={<ChangeButton />} />
       </div>
     </ModalLg>
   );
