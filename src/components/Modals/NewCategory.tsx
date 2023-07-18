@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import ModalLg from "../layout/ModalLg";
+import { Category } from "@/types";
 
 type Props = {
   isOpen: boolean;
@@ -17,7 +18,20 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
   };
 
   const onAdd = () => {
-    console.log("add");
+    addNewCategory(
+      {
+        name: "test",
+        description: "test",
+        image: image!,
+      },
+      (res, err) => {
+        if (err) {
+          throw err;
+        }
+
+        console.log(res);
+      }
+    );
   };
 
   const additionalButtons = [
@@ -91,3 +105,30 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
     </ModalLg>
   );
 }
+
+/*******************************
+ * Utils
+ */
+
+type AddNewCategory = (
+  category: {
+    name: string;
+    description: string;
+    image: File;
+  },
+  cb: (res: any | null, err: Error | null) => void
+) => void;
+
+const addNewCategory: AddNewCategory = (category, cb) => {
+  const formData = new FormData();
+  formData.append("name", category.name);
+  formData.append("description", category.description);
+  formData.append("image", category.image);
+
+  fetch("/api/categories", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => cb(res, null))
+    .catch((err) => cb(null, err));
+};
