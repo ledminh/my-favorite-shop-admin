@@ -1,7 +1,7 @@
 "use client";
 
 import { WithID } from "@/types";
-import ItemTab from "@/components/layout/CatProdList/ItemTab";
+import ItemCard from "@/components/layout/CatProdList/ItemCard";
 import { FC, useState } from "react";
 import { itemsPerPage } from "@/config";
 
@@ -18,7 +18,7 @@ type CatProdListProps<T> = {
     limit: number;
   }) => Promise<WithID<T>[]>;
   getImage: (item: WithID<T>) => { src: string; alt: string };
-  ItemTabContent: FC<{ item: WithID<T> }>;
+  CardContent: FC<{ item: WithID<T> }>;
 };
 
 export default function CatProdList<T>({
@@ -27,7 +27,7 @@ export default function CatProdList<T>({
   onEdit,
   onDelete,
   getImage,
-  ItemTabContent,
+  CardContent,
   onLoadMore,
 }: CatProdListProps<T>) {
   const [items, setItems] = useState(initItems);
@@ -50,12 +50,12 @@ export default function CatProdList<T>({
               key={item.id}
               className="overflow-hidden border rounded-lg border-blue-950 md:basis-[48%] lg:basis-[31%] xl:basis-[23%]"
             >
-              <ItemTab
+              <ItemCard
                 item={item}
                 onEdit={onEdit}
                 onDelete={onDelete}
                 getImage={getImage}
-                Content={ItemTabContent}
+                CardContent={CardContent}
               />
             </li>
           );

@@ -40,15 +40,17 @@ export default async function CategoryList({
   };
 
   return (
-    <CatProdList
-      initItems={initCategories}
-      total={total}
-      ItemTabContent={Content}
-      onEdit={onEdit}
-      onDelete={onDelete}
-      getImage={getImage}
-      onLoadMore={onLoadMore}
-    />
+    <>
+      <CatProdList
+        initItems={initCategories}
+        total={total}
+        CardContent={CardContent}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        getImage={getImage}
+        onLoadMore={onLoadMore}
+      />
+    </>
   );
 }
 
@@ -56,10 +58,10 @@ export default async function CategoryList({
  * Components
  */
 
-type ContentProps = {
+type CardContentProps = {
   item: CategoryType;
 };
 
-const Content = ({ item }: ContentProps) => (
+const CardContent = ({ item }: CardContentProps) => (
   <h2 className="text-lg font-semibold">{item.name}</h2>
 );

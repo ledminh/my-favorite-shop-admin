@@ -1,5 +1,4 @@
 import { Dialog } from "@headlessui/react";
-import { on } from "events";
 import { ReactNode } from "react";
 
 type ModalLgProps = {
