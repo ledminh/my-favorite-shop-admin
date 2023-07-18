@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import ModalLg from "../layout/ModalLg";
-import { Category } from "@/types";
 
 type Props = {
   isOpen: boolean;

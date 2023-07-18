@@ -17,71 +17,10 @@ function ItemCard<T>({
   getImage,
   CardContent,
 }: ItemCardProps<T>) {
-  return (
-    <>
-      <_ItemCard
-        item={item}
-        onEdit={onEdit}
-        onDelete={onDelete}
-        getImage={getImage}
-        CardContent={CardContent}
-      />
-      {/* <ItemModal item={item} /> */}
-    </>
-  );
-}
-
-export default ItemCard;
-
-/************************
- * Styles
- */
-
-const _ItemWrapper = ({ children }: { children: ReactNode }) => (
-  <div className="flex items-center justify-between gap-4 md:flex-col md:gap-2 md:h-[280px] bg-neutral-300">
-    {children}
-  </div>
-);
-
-const ImageWrapper = ({ children }: { children: ReactNode }) => (
-  <div className="relative h-20 basis-20 md:w-full md:basis-1/2">
-    {children}
-  </div>
-);
-
-const ContentWrapper = ({ children }: { children: ReactNode }) => (
-  <div className="md:p-2 md:w-full">{children}</div>
-);
-
-const ButtonsWrapper = ({ children }: { children: ReactNode }) => (
-  <div className="flex items-center justify-start gap-2 sm:gap-0 sm:h-full md:h-auto md:w-full">
-    {children}
-  </div>
-);
-
-/**************************
- * Components
- */
-
-type _ItemCardProps<T> = {
-  item: WithID<T>;
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
-  getImage: (item: WithID<T>) => { src: string; alt: string };
-  CardContent: FC<{ item: WithID<T> }>;
-};
-
-function _ItemCard<T>({
-  item,
-  onEdit,
-  onDelete,
-  getImage,
-  CardContent,
-}: ItemCardProps<T>) {
   const image = getImage(item);
 
   return (
-    <_ItemWrapper>
+    <ItemWrapper>
       <ImageWrapper>
         <Image
           src={image.src}
@@ -110,9 +49,41 @@ function _ItemCard<T>({
           </Button>
         </ButtonsWrapper>
       </div>
-    </_ItemWrapper>
+    </ItemWrapper>
   );
 }
+
+export default ItemCard;
+
+/************************
+ * Styles
+ */
+
+const ItemWrapper = ({ children }: { children: ReactNode }) => (
+  <div className="flex items-center justify-between gap-4 md:flex-col md:gap-2 md:h-[280px] bg-neutral-300">
+    {children}
+  </div>
+);
+
+const ImageWrapper = ({ children }: { children: ReactNode }) => (
+  <div className="relative h-20 basis-20 md:w-full md:basis-1/2">
+    {children}
+  </div>
+);
+
+const ContentWrapper = ({ children }: { children: ReactNode }) => (
+  <div className="md:p-2 md:w-full">{children}</div>
+);
+
+const ButtonsWrapper = ({ children }: { children: ReactNode }) => (
+  <div className="flex items-center justify-start gap-2 sm:gap-0 sm:h-full md:h-auto md:w-full">
+    {children}
+  </div>
+);
+
+/**************************
+ * Components
+ */
 
 type ButtonProps = {
   children: ReactNode;

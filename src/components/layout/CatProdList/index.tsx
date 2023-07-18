@@ -2,13 +2,14 @@
 
 import { WithID } from "@/types";
 import ItemCard from "@/components/layout/CatProdList/ItemCard";
+import ItemModal from "@/components/layout/CatProdList/ItemModal";
+
 import { FC, useState } from "react";
 import { itemsPerPage } from "@/config";
 
 type CatProdListProps<T> = {
   initItems: WithID<T>[];
   total: number;
-  onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   onLoadMore: ({
     offset,
@@ -19,18 +20,30 @@ type CatProdListProps<T> = {
   }) => Promise<WithID<T>[]>;
   getImage: (item: WithID<T>) => { src: string; alt: string };
   CardContent: FC<{ item: WithID<T> }>;
+  ModalContent: FC<{ item: WithID<T> }>;
 };
 
 export default function CatProdList<T>({
   initItems,
   total,
-  onEdit,
   onDelete,
   getImage,
   CardContent,
+  ModalContent,
   onLoadMore,
 }: CatProdListProps<T>) {
   const [items, setItems] = useState(initItems);
+  const [isItemModalOpen, setIsItemModalOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState<WithID<T> | null>(null);
+
+  const onEdit = (id: string) => {
+    const item = items.find((item) => item.id === id);
+
+    if (item) {
+      setCurrentItem(item);
+      setIsItemModalOpen(true);
+    }
+  };
 
   const _onLoadMore = () => {
     onLoadMore({
@@ -42,30 +55,44 @@ export default function CatProdList<T>({
   };
 
   return (
-    <div className="flex flex-col justify-center gap-8">
-      <ul className="flex flex-col gap-y-4 md:flex-row md:flex-wrap md:justify-start md:gap-x-[4%] lg:gap-x-[3.5%] xl:gap-x-[2.66%]">
-        {items.map((item) => {
-          return (
-            <li
-              key={item.id}
-              className="overflow-hidden border rounded-lg border-blue-950 md:basis-[48%] lg:basis-[31%] xl:basis-[23%]"
-            >
-              <ItemCard
-                item={item}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                getImage={getImage}
-                CardContent={CardContent}
-              />
-            </li>
-          );
-        })}
-      </ul>
+    <>
       {
-        // Show load more button if there are more items to load
-        items.length < total && <LoadMoreButton onClick={_onLoadMore} />
+        // Show item modal if currentItem is not null
+        currentItem && (
+          <ItemModal
+            item={currentItem}
+            isOpen={isItemModalOpen}
+            setIsOpen={setIsItemModalOpen}
+            ModalContent={ModalContent}
+          />
+        )
       }
-    </div>
+
+      <div className="flex flex-col justify-center gap-8">
+        <ul className="flex flex-col gap-y-4 md:flex-row md:flex-wrap md:justify-start md:gap-x-[4%] lg:gap-x-[3.5%] xl:gap-x-[2.66%]">
+          {items.map((item) => {
+            return (
+              <li
+                key={item.id}
+                className="overflow-hidden border rounded-lg border-blue-950 md:basis-[48%] lg:basis-[31%] xl:basis-[23%]"
+              >
+                <ItemCard
+                  item={item}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  getImage={getImage}
+                  CardContent={CardContent}
+                />
+              </li>
+            );
+          })}
+        </ul>
+        {
+          // Show load more button if there are more items to load
+          items.length < total && <LoadMoreButton onClick={_onLoadMore} />
+        }
+      </div>
+    </>
   );
 }
 

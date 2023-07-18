@@ -17,10 +17,6 @@ export default async function CategoryList({
   sortBy,
   order,
 }: Props) {
-  const onEdit = (id: string) => {
-    console.log(`Edit category with id ${id}`);
-  };
-
   const onDelete = (id: string) => {
     console.log(`Delete category with id ${id}`);
   };
@@ -45,7 +41,7 @@ export default async function CategoryList({
         initItems={initCategories}
         total={total}
         CardContent={CardContent}
-        onEdit={onEdit}
+        ModalContent={ModalContent}
         onDelete={onDelete}
         getImage={getImage}
         onLoadMore={onLoadMore}
@@ -64,4 +60,15 @@ type CardContentProps = {
 
 const CardContent = ({ item }: CardContentProps) => (
   <h2 className="text-lg font-semibold">{item.name}</h2>
+);
+
+type ModalContentProps = {
+  item: CategoryType;
+};
+
+const ModalContent = ({ item }: ModalContentProps) => (
+  <div>
+    <h2 className="text-lg font-semibold">{item.name}</h2>
+    <p className="mt-2 text-sm text-gray-500">{item.description}</p>
+  </div>
 );
