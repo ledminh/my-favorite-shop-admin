@@ -3,10 +3,7 @@ import { Suspense } from "react";
 
 import { itemsPerPage } from "@/config";
 import { getCategories } from "@/data/categories";
-import SearchBar from "@/components/SearchBar";
-
-import Filters from "@/components/Filters";
-import Sorts from "@/components/Sorts";
+import ControlPanel from "@/components/categories/ControlPanel";
 
 type Props = {
   params?: {
@@ -28,9 +25,7 @@ export default async function CategoriesPage({ params }: Props) {
 
   return (
     <div className="m-4 ">
-      <Filters />
-      <Sorts />
-      <SearchBar />
+      <ControlPanel />
       <Suspense fallback={<div>Loading...</div>}>
         <CategoryList
           initCategories={items}
