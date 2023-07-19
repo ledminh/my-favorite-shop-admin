@@ -1,5 +1,5 @@
 import { Dialog } from "@headlessui/react";
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
 type ModalLgProps = {
   isOpen: boolean;
@@ -79,14 +79,17 @@ const ModalButton = ({
   text,
   className,
   onClick,
+  type = "button",
 }: {
   text: string;
   className: string;
   onClick: () => void;
+  type?: "button" | "submit" | "reset";
 }) => (
   <button
     className={`px-4 py-2 text-sm font-semibold rounded-md ${className}`}
     onClick={onClick}
+    type={type}
   >
     {text}
   </button>
