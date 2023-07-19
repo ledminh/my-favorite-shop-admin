@@ -1,12 +1,12 @@
 "use client";
 import { WithID } from "@/types";
-import { get } from "http";
+
 import { FC, useState } from "react";
 
 type Props<T> = {
   initItems: WithID<T>[];
   total: number;
-  ItemTab: FC<{ item: T }>;
+  ItemTab: FC<{ item: WithID<T> }>;
   getTotalPrice?: (item: T[]) => number;
 };
 
