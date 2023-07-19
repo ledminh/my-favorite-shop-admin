@@ -130,18 +130,6 @@ const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
         <span className="font-semibold">Message</span>
         <span className="p-4 text-sm border-2 rounded-md border-neutral-700 max-h-[50vh] overflow-y-scroll">
           {message}
-          {message}
-          {message}
-          {message}
-          {message}
-          {message}
-          {message}
-          {message}
-          {message}
-          {message}
-          {message}
-          {message}
-          {message}
         </span>
       </div>
     </ModalLg>

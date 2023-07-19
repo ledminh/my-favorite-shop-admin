@@ -18,6 +18,10 @@ export default function OrderMessList<T>({
 }: Props<T>) {
   const [items, setItems] = useState(initItems);
 
+  const loadMore = () => {
+    console.log("load more");
+  };
+
   return (
     <div>
       <ul className="p-4 bg-orange-100 border-double border-y-4 border-blue-950 max-h-[70vh] overflow-y-scroll">
@@ -26,7 +30,11 @@ export default function OrderMessList<T>({
             <ItemTab item={item} />
           </li>
         ))}
-        {total > items.length && <button>Load more</button>}
+        {total > items.length && (
+          <div className="flex justify-center pt-4">
+            <Button label="Load More" onClick={loadMore} />
+          </div>
+        )}
       </ul>
       {getTotalPrice && (
         <div className="flex justify-end p-4 text-xl font-bold text-blue-950">
@@ -36,3 +44,22 @@ export default function OrderMessList<T>({
     </div>
   );
 }
+
+/**************************
+ * Components
+ */
+type ButtonProps = {
+  label: string;
+  onClick: () => void;
+};
+
+const Button = ({ label, onClick }: ButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className="p-2 font-semibold bg-orange-300 border-2 border-double border-blue-950 hover:bg-orange-400 active:bg-orange-300"
+    >
+      {label}
+    </button>
+  );
+};
