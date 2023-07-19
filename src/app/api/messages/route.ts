@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(request: NextRequest) {
-  console.log("DELETE", request.body);
+  const id = request.nextUrl.searchParams.get("id");
 
-  NextResponse.json({ status: "ok", text: `Deleted` });
+  console.log("DELETE", id);
+
+  return NextResponse.json({ status: "ok", text: `Deleted` });
 }
 
 export async function PATCH(request: NextRequest) {
-  console.log("PATCH", request.body);
+  const id = request.nextUrl.searchParams.get("id");
+  const body = await request.json();
 
-  NextResponse.json({ status: "ok", text: `Updated` });
+  console.log("PATCH", id, body);
+
+  return NextResponse.json({ status: "ok", text: "patch done" });
 }
