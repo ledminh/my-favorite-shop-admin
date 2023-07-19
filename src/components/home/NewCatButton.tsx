@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Button from "./Button";
-import NewCatModal from "@/components/Modals/NewCategory";
+import NewCatModal from "@/components/modals/NewCategory";
 
 export default function NewCatButton() {
   const [isOpen, setIsOpen] = useState(false);

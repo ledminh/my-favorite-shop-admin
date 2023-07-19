@@ -2,8 +2,14 @@
 
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import { OrderStatus } from "@/types";
 
-export default function Filters() {
+type Props = {
+  currentStatus: OrderStatus;
+  setStatus: (status: OrderStatus) => void;
+};
+
+export default function ChangeButton({ currentStatus, setStatus }: Props) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Header />
@@ -18,11 +24,13 @@ export default function Filters() {
       >
         <Menu.Items className="absolute z-10 w-56 mt-2 bg-white rounded-md shadow-lg bottom-8 ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {FilterOptions.map((option) => (
+            {OrderStatuses.filter(
+              (option) => option.value !== currentStatus
+            ).map((option) => (
               <Menu.Item key={option.text}>
                 {({ active }) => (
                   <button
-                    onClick={() => {}}
+                    onClick={() => setStatus(option.value)}
                     className={classNames(
                       active ? "bg-gray-400 text-gray-950" : "text-gray-700",
                       "block px-4 py-2 text-sm w-full text-left"
@@ -63,13 +71,11 @@ function classNames(...classes: string[]) {
 /*************************
  * Data
  */
-const FilterOptions = [
-  {
-    id: "with-variants",
-    text: "With Variants",
-  },
-  {
-    id: "with-promotion",
-    text: "With Promotion",
-  },
+const OrderStatuses: {
+  text: string;
+  value: OrderStatus;
+}[] = [
+  { text: "Processing", value: "processing" },
+  { text: "Shipped", value: "shipped" },
+  { text: "Delivered", value: "delivered" },
 ];

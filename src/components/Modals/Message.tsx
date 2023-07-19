@@ -87,7 +87,9 @@ const InfoTab = ({ label, value }: { label: string; value: string }) => {
 const deleteMessage = (id: string, cb: (res: any) => void) => {
   fetch(`/api/messages?id=${id}`, {
     method: "DELETE",
-  }).then((res) => cb(res));
+  })
+    .then((res) => cb(res))
+    .catch((err) => console.log(err));
 };
 
 const updateMessage = (
@@ -101,5 +103,7 @@ const updateMessage = (
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  }).then((res) => cb(res));
+  })
+    .then((res) => cb(res))
+    .catch((err) => console.log(err));
 };

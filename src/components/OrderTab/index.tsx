@@ -5,7 +5,7 @@ import { Order, WithID } from "@/types";
 import { useState } from "react";
 import getOrderProductName from "@/utils/getOrderProductName";
 import getOrderPrice from "@/utils/getOrderPrice";
-import OrderModal from "@/components/Modals/Order";
+import OrderModal from "@/components/modals/Order";
 
 type OrderTabProps = {
   item: WithID<Order>;

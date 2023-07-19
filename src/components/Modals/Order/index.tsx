@@ -1,6 +1,6 @@
 import ModalLg from "@/components/layout/ModalLg";
 
-import { Order, WithID } from "@/types";
+import { Order, OrderStatus, WithID } from "@/types";
 
 import ChangeButton from "./ChangeButton";
 
@@ -11,10 +11,6 @@ type Props = {
 };
 
 const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
-  const changeStatusOnClick = () => {
-    console.log("change status");
-  };
-
   const additionalButtons = [
     {
       text: "DELETE",
@@ -22,6 +18,10 @@ const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
       onClick: () => deleteOrder(item.id, (res) => console.log(res)),
     },
   ];
+
+  const setStatus = (status: OrderStatus) => {
+    updateOrder(item.id, { status }, (res) => console.log(res));
+  };
 
   return (
     <ModalLg
@@ -56,7 +56,13 @@ const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
           value={item.orderedProducts.map((product) => product.name).join(", ")}
           small={true}
         />
-        <InfoTab label="Status" value={item.status} Button={<ChangeButton />} />
+        <InfoTab
+          label="Status"
+          value={item.status}
+          Button={
+            <ChangeButton currentStatus={item.status} setStatus={setStatus} />
+          }
+        />
       </div>
     </ModalLg>
   );
@@ -97,10 +103,26 @@ const InfoTab = ({
 /****************************
  * Utils
  */
-function deleteOrder(id: string, callback: (res: any) => void) {
-  fetch(`/api/orders/${id}`, {
+function deleteOrder(id: string, cb: (res: any) => void) {
+  fetch(`/api/orders?id=${id}`, {
     method: "DELETE",
   })
-    .then(callback)
-    .catch((err) => console.error(err));
+    .then((res) => cb(res))
+    .catch((err) => console.log(err));
 }
+
+const updateOrder = (
+  id: string,
+  data: { status: string },
+  cb: (res: any) => void
+) => {
+  fetch(`/api/orders?id=${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => cb(res))
+    .catch((err) => console.log(err));
+};

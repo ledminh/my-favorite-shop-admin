@@ -1,4 +1,4 @@
-import { OrderStatus } from "@/types";
+import { CustomerMessageStatus, OrderStatus } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(request: NextRequest) {
@@ -11,7 +11,7 @@ export async function DELETE(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
-  const body: { status: OrderStatus } = await request.json();
+  const body: { status: CustomerMessageStatus } = await request.json();
 
   const { status } = body;
 

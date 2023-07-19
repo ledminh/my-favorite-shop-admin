@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CustomerMessage, WithID } from "@/types";
-import MessageModal from "@/components/Modals/Message";
+import MessageModal from "@/components/modals/Message";
 
 type MessageTabProps = {
   item: WithID<CustomerMessage>;
