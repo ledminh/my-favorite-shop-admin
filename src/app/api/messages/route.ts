@@ -1,3 +1,4 @@
+import { OrderStatus } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(request: NextRequest) {
@@ -10,9 +11,11 @@ export async function DELETE(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
-  const body = await request.json();
+  const body: { status: OrderStatus } = await request.json();
 
-  console.log("PATCH", id, body);
+  const { status } = body;
+
+  console.log("PATCH", id, status);
 
   return NextResponse.json({ status: "ok", text: "patch done" });
 }
