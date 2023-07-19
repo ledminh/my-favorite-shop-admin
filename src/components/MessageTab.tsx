@@ -1,36 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import { CustomerMessage, WithID } from "@/types";
-import MessageModal from "@/components/modals/Message";
 
 type MessageTabProps = {
   item: WithID<CustomerMessage>;
+  setIsModalOpen: (isOpen: boolean) => void;
+  setCurrentItem: (item: WithID<CustomerMessage>) => void;
 };
 
-const MessageTab = ({ item }: MessageTabProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-      <Button item={item} onClick={() => setIsOpen(true)} />
-      <MessageModal isOpen={isOpen} setIsOpen={setIsOpen} item={item} />
-    </>
-  );
-};
-
-export default MessageTab;
-
-/*************************
- * Components
- */
-
-type ButtonProps = {
-  item: WithID<CustomerMessage>;
-  onClick: () => void;
-};
-
-const Button = ({ item, onClick }: ButtonProps) => {
+const MessageTab = ({
+  item,
+  setIsModalOpen,
+  setCurrentItem,
+}: MessageTabProps) => {
   const { firstName, lastName, email, phone, status, message } = item;
 
   const _message = message.length > 50 ? message.slice(0, 50) + "..." : message;
@@ -39,6 +21,12 @@ const Button = ({ item, onClick }: ButtonProps) => {
     status === "read" ? null : (
       <span className="px-2 text-sm text-white bg-red-800">{status}</span>
     );
+
+  const onClick = () => {
+    setCurrentItem(item);
+    setIsModalOpen(true);
+  };
+
   return (
     <button
       className="flex flex-col w-full gap-2 p-2 rounded-lg hover:ring hover:ring-blue-900 active:bg-orange-200"
@@ -68,3 +56,5 @@ const Button = ({ item, onClick }: ButtonProps) => {
     </button>
   );
 };
+
+export default MessageTab;

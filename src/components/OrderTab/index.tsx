@@ -2,37 +2,16 @@
 
 import { Order, WithID } from "@/types";
 
-import { useState } from "react";
 import getOrderProductName from "@/utils/getOrderProductName";
 import getOrderPrice from "@/utils/getOrderPrice";
-import OrderModal from "@/components/modals/Order";
 
 type OrderTabProps = {
   item: WithID<Order>;
+  setIsModalOpen: (isOpen: boolean) => void;
+  setCurrentItem: (item: WithID<Order>) => void;
 };
 
-const OrderTab = ({ item }: OrderTabProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <>
-      <Button item={item} onClick={() => setIsOpen(true)} />
-      <OrderModal isOpen={isOpen} setIsOpen={setIsOpen} item={item} />
-    </>
-  );
-};
-
-export default OrderTab;
-
-/************************
- * Components
- */
-
-type ButtonProps = {
-  item: WithID<Order>;
-  onClick: () => void;
-};
-
-const Button = ({ item, onClick }: ButtonProps) => {
+const OrderTab = ({ item, setIsModalOpen, setCurrentItem }: OrderTabProps) => {
   const { shippingAddress, orderedProducts, createdAt, id, status } = item;
 
   const { firstName, lastName } = shippingAddress;
@@ -52,6 +31,11 @@ const Button = ({ item, onClick }: ButtonProps) => {
     ) : (
       <span className="px-1 italic text-white bg-red-950">{status}</span> // status === "delivered"
     );
+
+  const onClick = () => {
+    setCurrentItem(item);
+    setIsModalOpen(true);
+  };
 
   return (
     <button
@@ -83,3 +67,5 @@ const Button = ({ item, onClick }: ButtonProps) => {
     </button>
   );
 };
+
+export default OrderTab;
