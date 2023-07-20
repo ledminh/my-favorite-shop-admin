@@ -4,6 +4,7 @@ import NewOrders from "@/components/home/NewOrders";
 import NewProdButton from "@/components/home/NewProdButton";
 import { getCustomerMessages } from "@/data/customerMessages";
 import { getOrders } from "@/data/orders";
+import { getCategories } from "@/data/categories";
 import { ReactNode, FC } from "react";
 
 export default async function Home() {
@@ -22,9 +23,16 @@ export default async function Home() {
     sortedOrder: "asc",
   });
 
-  const [{ items: orders }, { items: customerMessages }] = await Promise.all([
+  const getCategoriesPromise = getCategories({ sortBy: "name", order: "asc" });
+
+  const [
+    { items: orders },
+    { items: customerMessages },
+    { items: categories },
+  ] = await Promise.all([
     getOrdersPromise,
     getMessagesPromise,
+    getCategoriesPromise,
   ]);
 
   return (
@@ -38,7 +46,7 @@ export default async function Home() {
       <Section>
         <div className="flex justify-start gap-[4%]">
           <NewCatButton />
-          <NewProdButton />
+          <NewProdButton categories={categories} />
         </div>
       </Section>
     </Wrapper>
