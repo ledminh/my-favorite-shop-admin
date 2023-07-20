@@ -13,42 +13,20 @@ type Props = {
       text: string;
     }[];
   }[];
-  initSortBy: "name" | "createdAt" | "modifiedAt";
-  initOrder: "asc" | "desc";
+  orderOptions: {
+    id: "asc" | "desc";
+    text: string;
+  }[];
+  setSortByID: (id: "name" | "createdAt" | "modifiedAt") => void;
+  setOrderID: (id: "asc" | "desc") => void;
 };
 
-export default function Sorts({ sortByOptions, initSortBy, initOrder }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  // States
-  const [sortByID, setSortByID] = useState(initSortBy);
-
-  const [orderOptions, setOrderOptions] = useState(
-    sortByOptions.find((option) => option.id === initSortBy)?.orderOptions ||
-      sortByOptions[0].orderOptions
-  );
-
-  const [orderID, setOrderID] = useState(initOrder);
-
-  // Effects
-  useEffect(() => {
-    const orderOptions = sortByOptions.find((option) => option.id === sortByID);
-
-    if (orderOptions) {
-      setOrderOptions(orderOptions.orderOptions);
-    }
-  }, [sortByID]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("sortBy", sortByID);
-    params.set("order", orderID);
-
-    router.push(`${pathname}?${params.toString()}`);
-  }, [sortByID, orderID]);
-
+export default function Sorts({
+  sortByOptions,
+  setSortByID,
+  setOrderID,
+  orderOptions,
+}: Props) {
   // Event handlers
   const sortByOnChange = (id: string) =>
     setSortByID(id as "name" | "createdAt" | "modifiedAt");

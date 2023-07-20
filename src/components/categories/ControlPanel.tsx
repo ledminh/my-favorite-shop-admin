@@ -3,6 +3,9 @@
 import Sorts from "@/components/Sorts";
 import SearchBar from "@/components/SearchBar";
 
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import { ReactNode } from "react";
 
 type Props = {
@@ -23,6 +26,45 @@ export default function ControlPanel({
   initOrder,
   sortByOptions,
 }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // States
+  const [sortByID, setSortByID] = useState(initSortBy);
+
+  const [orderOptions, setOrderOptions] = useState(
+    sortByOptions.find((option) => option.id === initSortBy)?.orderOptions ||
+      sortByOptions[0].orderOptions
+  );
+
+  const [orderID, setOrderID] = useState(initOrder);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
+
+  // Effects
+  useEffect(() => {
+    const orderOptions = sortByOptions.find((option) => option.id === sortByID);
+
+    if (orderOptions) {
+      setOrderOptions(orderOptions.orderOptions);
+    }
+  }, [sortByID]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("sortBy", sortByID);
+    params.set("order", orderID);
+
+    if (searchTerm !== "") {
+      params.set("search", searchTerm);
+    }
+
+    router.push(`${pathname}?${params.toString()}`);
+  }, [sortByID, orderID, searchTerm]);
+
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
@@ -34,13 +76,14 @@ export default function ControlPanel({
             </div>
           ))} */}
         <div className="basis-full md:basis-[48%] xl:basis-[48.67%]">
-          <SearchBar />
+          <SearchBar onSearch={onSearch} />
         </div>
         <div className="basis-full md:basis-[48%] xl:basis-[48.67%]">
           <Sorts
-            initSortBy={initSortBy}
-            initOrder={initOrder}
+            setSortByID={setSortByID}
+            setOrderID={setOrderID}
             sortByOptions={sortByOptions}
+            orderOptions={orderOptions}
           />
         </div>
       </div>
