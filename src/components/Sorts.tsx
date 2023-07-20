@@ -1,80 +1,38 @@
 "use client";
 
 import Select from "@/components/layout/Select";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const sortByOptions = [
-  {
-    id: "name",
-    text: "Name",
-    orderOptions: [
-      {
-        id: "asc",
-        text: "A to Z",
-      },
-      {
-        id: "desc",
-        text: "Z to A",
-      },
-    ],
-  },
-  {
-    id: "price",
-    text: "Price",
-    orderOptions: [
-      {
-        id: "asc",
-        text: "Low to High",
-      },
-      {
-        id: "desc",
-        text: "High to Low",
-      },
-    ],
-  },
-  {
-    id: "create-at",
-    text: "Create At",
-    orderOptions: [
-      {
-        id: "asc",
-        text: "Oldest to Newest",
-      },
-      {
-        id: "desc",
-        text: "Newest to Oldest",
-      },
-    ],
-  },
-  {
-    id: "modified-at",
-    text: "Modified At",
-    orderOptions: [
-      {
-        id: "asc",
-        text: "Oldest to Newest",
-      },
-      {
-        id: "desc",
-        text: "Newest to Oldest",
-      },
-    ],
-  },
-];
+type Props = {
+  sortByOptions: {
+    id: "name" | "createdAt" | "modifiedAt";
+    text: string;
+    orderOptions: {
+      id: "asc" | "desc";
+      text: string;
+    }[];
+  }[];
+  initSortBy: "name" | "createdAt" | "modifiedAt";
+  initOrder: "asc" | "desc";
+};
 
-export default function Sorts() {
-  const [sortByID, setSortByID] = useState(sortByOptions[0].id);
+export default function Sorts({ sortByOptions, initSortBy, initOrder }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // States
+  const [sortByID, setSortByID] = useState(initSortBy);
 
   const [orderOptions, setOrderOptions] = useState(
-    sortByOptions[0].orderOptions
+    sortByOptions.find((option) => option.id === initSortBy)?.orderOptions ||
+      sortByOptions[0].orderOptions
   );
 
-  const [orderID, setOrderID] = useState(orderOptions[0].id);
+  const [orderID, setOrderID] = useState(initOrder);
 
-  const sortByOnChange = (id: string) => setSortByID(id);
-
-  const orderOnChange = (id: string) => setOrderID(id);
-
+  // Effects
   useEffect(() => {
     const orderOptions = sortByOptions.find((option) => option.id === sortByID);
 
@@ -83,7 +41,19 @@ export default function Sorts() {
     }
   }, [sortByID]);
 
-  useEffect(() => {}, [sortByID, orderID]);
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("sortBy", sortByID);
+    params.set("order", orderID);
+
+    router.push(`${pathname}?${params.toString()}`);
+  }, [sortByID, orderID]);
+
+  // Event handlers
+  const sortByOnChange = (id: string) =>
+    setSortByID(id as "name" | "createdAt" | "modifiedAt");
+
+  const orderOnChange = (id: string) => setOrderID(id as "asc" | "desc");
 
   return (
     <div className="flex justify-between">

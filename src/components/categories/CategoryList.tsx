@@ -4,19 +4,37 @@ import { Category as CategoryType, WithID } from "@/types";
 import { getCategories } from "@/data/categories";
 import CatProdList from "@/components/layout/CatProdList";
 
+import { itemsPerPage } from "@/config";
+import { useEffect, useState } from "react";
+
 type Props = {
-  initCategories: WithID<CategoryType>[];
-  total: number;
   sortBy: "name" | "createdAt" | "modifiedAt";
   order: "asc" | "desc";
+  initCategories: WithID<CategoryType>[];
+  total: number;
 };
 
-export default async function CategoryList({
-  initCategories,
-  total,
+export default function CategoryList({
   sortBy,
   order,
+  initCategories,
+  total,
 }: Props) {
+  const [_initCategories, setInitCategories] = useState(initCategories);
+
+  useEffect(() => {
+    (async () => {
+      const { items } = await getCategories({
+        offset: 0,
+        limit: itemsPerPage,
+        sortBy,
+        order,
+      });
+
+      setInitCategories(items);
+    })();
+  }, [sortBy, order]);
+
   const onDelete = (id: string) => {
     console.log(`Delete category with id ${id}`);
   };
@@ -38,7 +56,7 @@ export default async function CategoryList({
   return (
     <>
       <CatProdList
-        initItems={initCategories}
+        initItems={_initCategories}
         total={total}
         CardContent={CardContent}
         ModalContent={ModalContent}

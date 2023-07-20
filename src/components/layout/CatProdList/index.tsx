@@ -4,7 +4,7 @@ import { WithID } from "@/types";
 import ItemCard from "@/components/layout/CatProdList/ItemCard";
 import ItemModal from "@/components/layout/CatProdList/ItemModal";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { itemsPerPage } from "@/config";
 
 type CatProdListProps<T> = {
@@ -53,6 +53,10 @@ export default function CatProdList<T>({
       setItems((prevItems) => [...prevItems, ...newItems]);
     });
   };
+
+  useEffect(() => {
+    setItems(initItems);
+  }, [initItems]);
 
   return (
     <>
