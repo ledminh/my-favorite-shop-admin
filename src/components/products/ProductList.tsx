@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+import CardContent from "@/components/products/CardContent";
+
 import { itemsPerPage } from "@/config";
 import { Product, Product as ProductType, WithID } from "@/types";
 import CatProdList from "@/components/layout/CatProdList";
@@ -88,14 +90,3 @@ export default function ProductList({
     />
   );
 }
-
-/*************************
- * Components
- */
-
-type CardContentProps = {
-  item: ProductType;
-};
-const CardContent = ({ item }: CardContentProps) => (
-  <h2 className="text-lg font-semibold">{item.name}</h2>
-);
