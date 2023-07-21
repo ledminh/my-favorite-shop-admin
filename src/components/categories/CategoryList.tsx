@@ -37,10 +37,6 @@ export default function CategoryList({
     })();
   }, [sortBy, order]);
 
-  const onDelete = (id: string) => {
-    console.log(`Delete category with id ${id}`);
-  };
-
   const getImage = (item: CategoryType) => item.image;
 
   const onLoadMore = async ({

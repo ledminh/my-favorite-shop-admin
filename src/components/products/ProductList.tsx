@@ -1,7 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
+import { itemsPerPage } from "@/config";
 import { Product, Product as ProductType, WithID } from "@/types";
 import CatProdList from "@/components/layout/CatProdList";
+
+import EditProductModal from "@/components/modals/EditProduct";
+import DeleteProductModal from "@/components/modals/DeleteProduct";
 
 import { getProducts } from "@/data/products";
 
@@ -18,20 +24,27 @@ type Props = {
   };
 };
 
-export default async function ProductList({
+export default function ProductList({
   initProducts,
   total,
   filters,
   sortBy,
   order,
 }: Props) {
-  const onEdit = (id: string) => {
-    console.log(`Edit product with id ${id}`);
-  };
+  const [_initProducts, setInitProducts] = useState(initProducts);
 
-  const onDelete = (id: string) => {
-    console.log(`Delete product with id ${id}`);
-  };
+  useEffect(() => {
+    (async () => {
+      const { items } = await getProducts({
+        offset: 0,
+        limit: itemsPerPage,
+        sortBy,
+        order,
+      });
+
+      setInitProducts(items);
+    })();
+  }, [sortBy, order]);
 
   const getImage = (item: ProductType) => {
     const mainImage = item.images.find(
@@ -65,11 +78,11 @@ export default async function ProductList({
 
   return (
     <CatProdList
-      initItems={initProducts}
+      initItems={_initProducts}
       total={total}
       CardContent={CardContent}
-      ModalContent={ModalContent}
-      onDelete={onDelete}
+      EditModal={EditProductModal}
+      DeleteModal={DeleteProductModal}
       getImage={getImage}
       onLoadMore={onLoadMore}
     />
@@ -85,15 +98,4 @@ type CardContentProps = {
 };
 const CardContent = ({ item }: CardContentProps) => (
   <h2 className="text-lg font-semibold">{item.name}</h2>
-);
-
-type ModalContentProps = {
-  item: ProductType;
-};
-
-const ModalContent = ({ item }: ModalContentProps) => (
-  <div className="flex flex-col">
-    <h2 className="text-lg font-semibold">{item.name}</h2>
-    <p className="text-sm text-gray-500">{item.description}</p>
-  </div>
 );
