@@ -6,7 +6,8 @@ import CatProdList from "@/components/layout/CatProdList";
 
 import { itemsPerPage } from "@/config";
 import { useEffect, useState } from "react";
-import EditCategoryModal from "../modals/EditCategory";
+import EditCategoryModal from "@/components/modals/EditCategory";
+import DeleteCategoryModal from "@/components/modals/DeleteCategory";
 
 type Props = {
   sortBy: "name" | "createdAt" | "modifiedAt";
@@ -61,7 +62,7 @@ export default function CategoryList({
         total={total}
         CardContent={CardContent}
         EditModal={EditCategoryModal}
-        onDelete={onDelete}
+        DeleteModal={DeleteCategoryModal}
         getImage={getImage}
         onLoadMore={onLoadMore}
       />

@@ -9,7 +9,6 @@ import { itemsPerPage } from "@/config";
 type CatProdListProps<T> = {
   initItems: WithID<T>[];
   total: number;
-  onDelete: (id: string) => void;
   onLoadMore: ({
     offset,
     limit,
@@ -24,19 +23,27 @@ type CatProdListProps<T> = {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
   }>;
+
+  DeleteModal: FC<{
+    item: WithID<T>;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+  }>;
 };
 
 export default function CatProdList<T>({
   initItems,
   total,
-  onDelete,
   onLoadMore,
   getImage,
   CardContent,
   EditModal,
+  DeleteModal,
 }: CatProdListProps<T>) {
   const [items, setItems] = useState(initItems);
-  const [isItemModalOpen, setIsItemModalOpen] = useState(false);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<WithID<T> | null>(null);
 
   const onEdit = (id: string) => {
@@ -44,7 +51,16 @@ export default function CatProdList<T>({
 
     if (item) {
       setCurrentItem(item);
-      setIsItemModalOpen(true);
+      setIsEditModalOpen(true);
+    }
+  };
+
+  const onDelete = (id: string) => {
+    const item = items.find((item) => item.id === id);
+
+    if (item) {
+      setCurrentItem(item);
+      setIsDeleteModalOpen(true);
     }
   };
 
@@ -68,8 +84,19 @@ export default function CatProdList<T>({
         currentItem && (
           <EditModal
             item={currentItem}
-            isOpen={isItemModalOpen}
-            setIsOpen={setIsItemModalOpen}
+            isOpen={isEditModalOpen}
+            setIsOpen={setIsEditModalOpen}
+          />
+        )
+      }
+
+      {
+        // Show delete modal if currentItem is not null
+        currentItem && (
+          <DeleteModal
+            item={currentItem}
+            isOpen={isDeleteModalOpen}
+            setIsOpen={setIsDeleteModalOpen}
           />
         )
       }
