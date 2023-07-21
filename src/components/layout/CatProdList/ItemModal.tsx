@@ -8,6 +8,7 @@ type Props<T> = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   item: T;
   ModalContent: FC<{ item: T }>;
+  title: string;
 };
 
 export default function ItemModal<T>({
@@ -15,9 +16,10 @@ export default function ItemModal<T>({
   setIsOpen,
   item,
   ModalContent,
+  title,
 }: Props<T>) {
   return (
-    <ModalLg isOpen={isOpen} setIsOpen={setIsOpen} title="ADD TITLE HERE ...">
+    <ModalLg isOpen={isOpen} setIsOpen={setIsOpen} title={title}>
       <ModalContent item={item} />
     </ModalLg>
   );

@@ -21,6 +21,7 @@ type CatProdListProps<T> = {
   getImage: (item: WithID<T>) => { src: string; alt: string };
   CardContent: FC<{ item: WithID<T> }>;
   ModalContent: FC<{ item: WithID<T> }>;
+  modalTitle: string;
 };
 
 export default function CatProdList<T>({
@@ -30,6 +31,7 @@ export default function CatProdList<T>({
   getImage,
   CardContent,
   ModalContent,
+  modalTitle,
   onLoadMore,
 }: CatProdListProps<T>) {
   const [items, setItems] = useState(initItems);
@@ -68,6 +70,7 @@ export default function CatProdList<T>({
             isOpen={isItemModalOpen}
             setIsOpen={setIsItemModalOpen}
             ModalContent={ModalContent}
+            title={modalTitle}
           />
         )
       }

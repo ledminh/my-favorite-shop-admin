@@ -6,6 +6,7 @@ import CatProdList from "@/components/layout/CatProdList";
 
 import { itemsPerPage } from "@/config";
 import { useEffect, useState } from "react";
+import EditCategoryModal from "../modals/EditCategory";
 
 type Props = {
   sortBy: "name" | "createdAt" | "modifiedAt";
@@ -59,7 +60,8 @@ export default function CategoryList({
         initItems={_initCategories}
         total={total}
         CardContent={CardContent}
-        ModalContent={ModalContent}
+        ModalContent={EditCategoryModal}
+        modalTitle="EDIT CATEGORY"
         onDelete={onDelete}
         getImage={getImage}
         onLoadMore={onLoadMore}
@@ -78,15 +80,4 @@ type CardContentProps = {
 
 const CardContent = ({ item }: CardContentProps) => (
   <h2 className="text-lg font-semibold">{item.name}</h2>
-);
-
-type ModalContentProps = {
-  item: CategoryType;
-};
-
-const ModalContent = ({ item }: ModalContentProps) => (
-  <div>
-    <h2 className="text-lg font-semibold">{item.name}</h2>
-    <p className="mt-2 text-sm text-gray-500">{item.description}</p>
-  </div>
 );

@@ -1,5 +1,10 @@
 import { FC, ReactNode } from "react";
 
+export type Image = {
+  src: string;
+  alt: string;
+};
+
 export type ComponentWithChildren = FC<{ children: ReactNode }>;
 
 /**********************
@@ -10,10 +15,7 @@ export type Category = {
   name: string;
   description: string;
   link: string;
-  image: {
-    src: string;
-    alt: string;
-  };
+  image: Image;
   createdAt: Date;
   modifiedAt: Date;
 };
@@ -36,10 +38,7 @@ export type Promotion =
 export type Variant = {
   id: string;
   name: string;
-  image: {
-    src: string;
-    alt: string;
-  };
+  image: Image;
   price: number;
   shown: boolean;
   promotion?: Promotion;
@@ -53,11 +52,7 @@ export type Product = {
   intro: string;
   description: string;
   mainImageID: string;
-  images: {
-    id: string;
-    src: string;
-    alt: string;
-  }[];
+  images: WithID<Image>[];
   promotion?: Promotion;
   variants?: Variant[];
   createdAt: Date;
