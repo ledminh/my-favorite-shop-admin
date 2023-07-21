@@ -60,8 +60,7 @@ export default function CategoryList({
         initItems={_initCategories}
         total={total}
         CardContent={CardContent}
-        ModalContent={EditCategoryModal}
-        modalTitle="EDIT CATEGORY"
+        EditModal={EditCategoryModal}
         onDelete={onDelete}
         getImage={getImage}
         onLoadMore={onLoadMore}

@@ -2,7 +2,6 @@
 
 import { WithID } from "@/types";
 import ItemCard from "@/components/layout/CatProdList/ItemCard";
-import ItemModal from "@/components/layout/CatProdList/ItemModal";
 
 import { FC, useEffect, useState } from "react";
 import { itemsPerPage } from "@/config";
@@ -20,19 +19,21 @@ type CatProdListProps<T> = {
   }) => Promise<WithID<T>[]>;
   getImage: (item: WithID<T>) => { src: string; alt: string };
   CardContent: FC<{ item: WithID<T> }>;
-  ModalContent: FC<{ item: WithID<T> }>;
-  modalTitle: string;
+  EditModal: FC<{
+    item: WithID<T>;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+  }>;
 };
 
 export default function CatProdList<T>({
   initItems,
   total,
   onDelete,
+  onLoadMore,
   getImage,
   CardContent,
-  ModalContent,
-  modalTitle,
-  onLoadMore,
+  EditModal,
 }: CatProdListProps<T>) {
   const [items, setItems] = useState(initItems);
   const [isItemModalOpen, setIsItemModalOpen] = useState(false);
@@ -65,12 +66,10 @@ export default function CatProdList<T>({
       {
         // Show item modal if currentItem is not null
         currentItem && (
-          <ItemModal
+          <EditModal
             item={currentItem}
             isOpen={isItemModalOpen}
             setIsOpen={setIsItemModalOpen}
-            ModalContent={ModalContent}
-            title={modalTitle}
           />
         )
       }
