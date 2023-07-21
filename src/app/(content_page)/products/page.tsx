@@ -8,7 +8,7 @@ import { itemsPerPage } from "@/config";
 import ControlPanel from "@/components/products/ControlPanel";
 
 type Props = {
-  params: {
+  searchParams?: {
     variants?: boolean;
     promotion?: boolean;
     searchTerm?: string;
@@ -17,8 +17,8 @@ type Props = {
   };
 };
 
-export default async function ProductsPage({ params }: Props) {
-  const { variants, promotion, searchTerm, sortBy, order } = params;
+export default async function ProductsPage({ searchParams }: Props) {
+  const { variants, promotion, searchTerm, sortBy, order } = searchParams || {};
 
   const _sortBy = sortBy || "name";
   const _order = order || "asc";
@@ -34,7 +34,7 @@ export default async function ProductsPage({ params }: Props) {
     order: "asc",
   });
 
-  const { items, total } = await getProducts({
+  const { items: initProducts, total } = await getProducts({
     offset: 0,
     limit: itemsPerPage,
     sortBy: _sortBy,
@@ -48,10 +48,14 @@ export default async function ProductsPage({ params }: Props) {
         <Category categories={categories} />
       </div>
       <div className="mb-8">
-        <ControlPanel />
+        <ControlPanel
+          initSortBy={_sortBy}
+          initOrder={_order}
+          sortByOptions={sortByOptions}
+        />
       </div>
       <ProductList
-        initProducts={items}
+        initProducts={initProducts}
         total={total}
         filters={filters}
         sortBy={_sortBy}
@@ -60,3 +64,59 @@ export default async function ProductsPage({ params }: Props) {
     </div>
   );
 }
+
+/***********************
+ * Data
+ */
+
+const sortByOptions: {
+  id: "name" | "createdAt" | "modifiedAt";
+  text: string;
+  orderOptions: {
+    id: "asc" | "desc";
+    text: string;
+  }[];
+}[] = [
+  {
+    id: "name",
+    text: "Name",
+    orderOptions: [
+      {
+        id: "asc",
+        text: "A to Z",
+      },
+      {
+        id: "desc",
+        text: "Z to A",
+      },
+    ],
+  },
+  {
+    id: "createdAt",
+    text: "Create At",
+    orderOptions: [
+      {
+        id: "asc",
+        text: "Oldest to Newest",
+      },
+      {
+        id: "desc",
+        text: "Newest to Oldest",
+      },
+    ],
+  },
+  {
+    id: "modifiedAt",
+    text: "Modified At",
+    orderOptions: [
+      {
+        id: "asc",
+        text: "Oldest to Newest",
+      },
+      {
+        id: "desc",
+        text: "Newest to Oldest",
+      },
+    ],
+  },
+];
