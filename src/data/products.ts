@@ -186,6 +186,7 @@ export function _getProducts(num: number): WithID<Product>[] {
     // Add variants
     if (i === 0) {
       products[i].id = "product-1";
+      products[i].name = "AAAAAAAAA";
 
       products[i].variants = [
         {

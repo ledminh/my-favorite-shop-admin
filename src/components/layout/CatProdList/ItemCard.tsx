@@ -66,7 +66,7 @@ const ItemWrapper = ({ children }: { children: ReactNode }) => (
 );
 
 const ImageWrapper = ({ children }: { children: ReactNode }) => (
-  <div className="relative h-20 basis-20 md:w-full md:basis-1/2">
+  <div className="relative h-24 basis-20 md:w-full md:basis-1/2">
     {children}
   </div>
 );
