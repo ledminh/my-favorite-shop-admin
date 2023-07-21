@@ -7,12 +7,13 @@ import SearchBar from "@/components/SearchBar";
 import { ReactNode, useState, useEffect } from "react";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import useControlPanel from "./hooks";
 
 type Props = {
   initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
   initOrder: "asc" | "desc";
   sortByOptions: {
-    id: "name" | "createdAt" | "modifiedAt";
+    id: "name" | "price" | "createdAt" | "modifiedAt";
     text: string;
     orderOptions: {
       id: "asc" | "desc";
@@ -26,33 +27,11 @@ export default function ControlPanel({
   initSortBy,
   initOrder,
 }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const [sortByID, setSortByID] = useState(initSortBy);
-  const [orderID, setOrderID] = useState(initOrder);
-
-  const [orderOptions, setOrderOptions] = useState(
-    sortByOptions.find((option) => option.id === initSortBy)?.orderOptions ||
-      sortByOptions[0].orderOptions
-  );
-
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
-
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("sortBy", sortByID);
-    params.set("order", orderID);
-
-    if (searchTerm !== "") {
-      params.set("search", searchTerm);
-    }
-
-    router.push(`${pathname}?${params.toString()}`);
-  }, [sortByID, orderID, searchTerm]);
+  const { onSearch, setSortByID, setOrderID, orderOptions } = useControlPanel({
+    initSortBy,
+    initOrder,
+    sortByOptions,
+  });
 
   return (
     <>

@@ -11,6 +11,7 @@ type Props = {
   searchParams?: {
     variants?: boolean;
     promotion?: boolean;
+    catID?: string;
     searchTerm?: string;
     sortBy?: "name" | "price" | "createdAt" | "modifiedAt";
     order?: "asc" | "desc";
@@ -18,7 +19,8 @@ type Props = {
 };
 
 export default async function ProductsPage({ searchParams }: Props) {
-  const { variants, promotion, searchTerm, sortBy, order } = searchParams || {};
+  const { variants, promotion, catID, searchTerm, sortBy, order } =
+    searchParams || {};
 
   const _sortBy = sortBy || "name";
   const _order = order || "asc";
@@ -26,21 +28,25 @@ export default async function ProductsPage({ searchParams }: Props) {
   const filters = {
     variants: variants || false,
     promotion: promotion || false,
+    catID: catID || "",
     searchTerm: searchTerm || "",
   };
 
-  const { items: categories } = await getCategories({
+  const categoriesPromise = await getCategories({
     sortBy: "name",
     order: "asc",
   });
 
-  const { items: initProducts, total } = await getProducts({
+  const productsPromise = getProducts({
     offset: 0,
     limit: itemsPerPage,
     sortBy: _sortBy,
     order: _order,
     filters,
   });
+
+  const [{ items: categories }, { items: initProducts, total }] =
+    await Promise.all([categoriesPromise, productsPromise]);
 
   return (
     <div className="m-4">
@@ -70,7 +76,7 @@ export default async function ProductsPage({ searchParams }: Props) {
  */
 
 const sortByOptions: {
-  id: "name" | "createdAt" | "modifiedAt";
+  id: "name" | "price" | "createdAt" | "modifiedAt";
   text: string;
   orderOptions: {
     id: "asc" | "desc";
@@ -88,6 +94,20 @@ const sortByOptions: {
       {
         id: "desc",
         text: "Z to A",
+      },
+    ],
+  },
+  {
+    id: "price",
+    text: "Price",
+    orderOptions: [
+      {
+        id: "asc",
+        text: "Low to High",
+      },
+      {
+        id: "desc",
+        text: "High to Low",
       },
     ],
   },

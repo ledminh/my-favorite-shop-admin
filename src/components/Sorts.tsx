@@ -1,37 +1,34 @@
 "use client";
 
 import Select from "@/components/layout/Select";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
-type Props = {
+type Props<SID, OID> = {
   sortByOptions: {
-    id: "name" | "createdAt" | "modifiedAt";
+    id: SID;
     text: string;
     orderOptions: {
-      id: "asc" | "desc";
+      id: OID;
       text: string;
     }[];
   }[];
   orderOptions: {
-    id: "asc" | "desc";
+    id: OID;
     text: string;
   }[];
-  setSortByID: (id: "name" | "createdAt" | "modifiedAt") => void;
-  setOrderID: (id: "asc" | "desc") => void;
+  setSortByID: (id: SID) => void;
+  setOrderID: (id: OID) => void;
 };
 
-export default function Sorts({
+export default function Sorts<SID, OID>({
   sortByOptions,
   setSortByID,
   setOrderID,
   orderOptions,
-}: Props) {
+}: Props<SID, OID>) {
   // Event handlers
-  const sortByOnChange = (id: string) =>
-    setSortByID(id as "name" | "createdAt" | "modifiedAt");
+  const sortByOnChange = (id: SID) => setSortByID(id as SID);
 
-  const orderOnChange = (id: string) => setOrderID(id as "asc" | "desc");
+  const orderOnChange = (id: OID) => setOrderID(id as OID);
 
   return (
     <div className="flex justify-between">
