@@ -4,9 +4,8 @@ import Filters from "@/components/Filters";
 import Sorts from "@/components/Sorts";
 import SearchBar from "@/components/SearchBar";
 
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode } from "react";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import useControlPanel from "./hooks";
 
 type Props = {
