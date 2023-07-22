@@ -9,10 +9,10 @@ import { ReactNode } from "react";
 import useControlPanel from "./hooks";
 
 type Props = {
-  initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
+  initSortBy: "firstName" | "lastName" | "createdAt" | "email";
   initOrder: "asc" | "desc";
   sortByOptions: {
-    id: "name" | "price" | "createdAt" | "modifiedAt";
+    id: "firstName" | "lastName" | "createdAt" | "email";
     text: string;
     orderOptions: {
       id: "asc" | "desc";

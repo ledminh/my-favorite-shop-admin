@@ -6,20 +6,20 @@ import ControlPanel from "@/components/messages/ControlPanel";
 
 type Props = {
   searchParams?: {
-    sortBy?: "name" | "createdAt" | "modifiedAt";
+    sortBy?: "firstName" | "lastName" | "createdAt" | "email";
     order?: "asc" | "desc";
   };
 };
 
 export default async function MessagesPage({ searchParams }: Props) {
-  const _sortBy = searchParams?.sortBy || "name";
+  const _sortBy = searchParams?.sortBy || "createdAt";
   const _order = searchParams?.order || "asc";
 
   const { items, total } = await getCustomerMessages({
     offset: 0,
     limit: itemsPerPage,
-    sortedBy: "createdAt",
-    sortedOrder: "asc",
+    sortedBy: _sortBy,
+    sortedOrder: _order,
   });
 
   return (
@@ -39,7 +39,7 @@ export default async function MessagesPage({ searchParams }: Props) {
  */
 
 const sortByOptions: {
-  id: "name" | "createdAt" | "modifiedAt";
+  id: "firstName" | "lastName" | "createdAt" | "email";
   text: string;
   orderOptions: {
     id: "asc" | "desc";
@@ -47,8 +47,36 @@ const sortByOptions: {
   }[];
 }[] = [
   {
-    id: "name",
-    text: "Name",
+    id: "firstName",
+    text: "First name",
+    orderOptions: [
+      {
+        id: "asc",
+        text: "A to Z",
+      },
+      {
+        id: "desc",
+        text: "Z to A",
+      },
+    ],
+  },
+  {
+    id: "lastName",
+    text: "Last name",
+    orderOptions: [
+      {
+        id: "asc",
+        text: "A to Z",
+      },
+      {
+        id: "desc",
+        text: "Z to A",
+      },
+    ],
+  },
+  {
+    id: "email",
+    text: "Email",
     orderOptions: [
       {
         id: "asc",
@@ -63,20 +91,6 @@ const sortByOptions: {
   {
     id: "createdAt",
     text: "Create At",
-    orderOptions: [
-      {
-        id: "asc",
-        text: "Oldest to Newest",
-      },
-      {
-        id: "desc",
-        text: "Newest to Oldest",
-      },
-    ],
-  },
-  {
-    id: "modifiedAt",
-    text: "Modified At",
     orderOptions: [
       {
         id: "asc",
