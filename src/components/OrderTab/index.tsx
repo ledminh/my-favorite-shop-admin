@@ -25,11 +25,33 @@ const OrderTab = ({ item, setIsModalOpen, setCurrentItem }: OrderTabProps) => {
 
   const Status =
     status === "processing" ? (
-      <span className="px-1 italic text-white bg-blue-950">{status}</span>
+      <>
+        <span className="hidden px-1 italic text-white sm:block bg-blue-950">
+          {status}
+        </span>
+        <span className="flex items-center justify-center w-6 h-6 italic text-white rounded-full sm:hidden bg-blue-950">
+          P
+        </span>
+      </>
     ) : status === "shipped" ? (
-      <span className="px-1 italic text-white bg-neutral-700">{status}</span>
+      <>
+        <span className="hidden px-1 italic text-white sm:block bg-neutral-700">
+          {status}
+        </span>
+        <span className="flex items-center justify-center w-6 h-6 italic text-white rounded-full bg-neutral-700 sm:hidden">
+          S
+        </span>
+      </>
     ) : (
-      <span className="px-1 italic text-white bg-red-950">{status}</span> // status === "delivered"
+      <>
+        <span className="hidden px-1 italic text-white sm:block bg-red-950">
+          {status}
+        </span>
+        <span className="flex items-center justify-center w-6 h-6 italic text-white rounded-full bg-red-950 sm:hidden">
+          D
+        </span>
+      </>
+      // status === "delivered"
     );
 
   const onClick = () => {
@@ -46,7 +68,7 @@ const OrderTab = ({ item, setIsModalOpen, setCurrentItem }: OrderTabProps) => {
         <div className="flex justify-start gap-2 text-sm font-semibold">
           <span>Order #: </span>
           <span>{id}</span>
-          {Status}
+          <span className="font-mono">{Status}</span>
         </div>
         <div className="flex justify-end gap-2 text-sm font-semibold">
           <span className="text-red-800">${price.toFixed(2)}</span>
