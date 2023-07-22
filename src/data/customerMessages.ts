@@ -73,21 +73,22 @@ export function getCustomerMessages({
   });
 }
 
-export function updateMessage(id: string, status: CustomerMessageStatus) {
-  const customerMessage = CUSTOMER_MESSAGES.find(
-    (customerMessage) => customerMessage.id === id
-  );
+export function updateMessage(
+  id: string,
+  status: CustomerMessageStatus
+): Promise<WithID<CustomerMessage>> {
+  return new Promise((resolve, reject) => {
+    const customerMessage = CUSTOMER_MESSAGES.find(
+      (customerMessage) => customerMessage.id === id
+    );
 
-  if (!customerMessage) {
-    return new Promise((resolve, reject) => {
-      reject(new Error("Customer Message not found"));
-    });
-  }
+    if (!customerMessage) {
+      return reject(new Error("Customer Message not found"));
+    }
 
-  customerMessage.status = status;
+    customerMessage.status = status;
 
-  return new Promise((resolve) => {
-    resolve(customerMessage);
+    return resolve(customerMessage);
   });
 }
 

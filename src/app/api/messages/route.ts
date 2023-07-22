@@ -1,5 +1,9 @@
-import { deleteMessage } from "@/data/customerMessages";
-import { CustomerMessageStatus, DeleteMessageResponse } from "@/types";
+import { deleteMessage, updateMessage } from "@/data/customerMessages";
+import {
+  CustomerMessageStatus,
+  DeleteMessageResponse,
+  PatchMessageResponse,
+} from "@/types";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,13 +25,23 @@ export async function DELETE(
   }
 }
 
-export async function PATCH(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("id");
-  const body: { status: CustomerMessageStatus } = await request.json();
+export async function PATCH(
+  request: NextRequest
+): Promise<NextResponse<PatchMessageResponse>> {
+  try {
+    const id = request.nextUrl.searchParams.get("id");
 
-  const { status } = body;
+    if (!id) {
+      throw new Error("id not found");
+    }
+    const body: { status: CustomerMessageStatus } = await request.json();
 
-  console.log("PATCH", id, status);
+    const { status } = body;
 
-  return NextResponse.json({ status: "ok", text: "patch done" });
+    const customerMessage = await updateMessage(id, status);
+
+    return NextResponse.json({ data: customerMessage });
+  } catch (error: any) {
+    return NextResponse.json({ errorMessage: error.message });
+  }
 }
