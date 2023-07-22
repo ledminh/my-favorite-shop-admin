@@ -117,3 +117,18 @@ export type CustomerMessage = {
  * WithID
  */
 export type WithID<T> = T & { id: string };
+
+/**********************
+ * Server types
+ */
+type ServerResponse<T> =
+  | {
+      errorMessage?: undefined;
+      data: T;
+    }
+  | {
+      errorMessage: string;
+      data?: undefined;
+    };
+
+export type DeleteMessageResponse = ServerResponse<WithID<CustomerMessage>>;

@@ -91,21 +91,23 @@ export function updateMessage(id: string, status: CustomerMessageStatus) {
   });
 }
 
-export function deleteMessage(id: string) {
-  const customerMessageIndex = CUSTOMER_MESSAGES.findIndex(
-    (customerMessage) => customerMessage.id === id
-  );
+export function deleteMessage(id: string): Promise<WithID<CustomerMessage>> {
+  return new Promise((resolve, reject) => {
+    const customerMessage = CUSTOMER_MESSAGES.find(
+      (customerMessage) => customerMessage.id === id
+    );
 
-  if (customerMessageIndex === -1) {
-    return new Promise((resolve, reject) => {
-      reject(new Error("Customer Message not found"));
-    });
-  }
+    if (!customerMessage) {
+      return reject(new Error("Customer Message not found"));
+    }
 
-  CUSTOMER_MESSAGES.splice(customerMessageIndex, 1);
+    const customerMessageIndex = CUSTOMER_MESSAGES.findIndex(
+      (customerMessage) => customerMessage.id === id
+    );
 
-  return new Promise((resolve) => {
-    resolve(true);
+    CUSTOMER_MESSAGES.splice(customerMessageIndex, 1);
+
+    return resolve(customerMessage);
   });
 }
 
