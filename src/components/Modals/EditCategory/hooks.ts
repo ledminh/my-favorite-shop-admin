@@ -1,8 +1,8 @@
-import { Category as CategoryType, Image as ImageType } from "@/types";
+import { Category as CategoryType, Image as ImageType, WithID } from "@/types";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function useEditCategoryModal(item: CategoryType) {
+export default function useEditCategoryModal(item: WithID<CategoryType>) {
   const {
     name: initName,
     description: initDescription,
@@ -12,6 +12,12 @@ export default function useEditCategoryModal(item: CategoryType) {
   const [name, setName] = useState(initName);
   const [description, setDescription] = useState(initDescription);
   const [image, setImage] = useState<File | ImageType>(initImage);
+
+  useEffect(() => {
+    setName(initName);
+    setDescription(initDescription);
+    setImage(initImage);
+  }, [initName, initDescription, initImage]);
 
   const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -28,6 +34,15 @@ export default function useEditCategoryModal(item: CategoryType) {
     }
   };
 
+  const onSave = () => {
+    console.log("Save", {
+      id: item.id,
+      name,
+      description,
+      image,
+    });
+  };
+
   return {
     name,
     description,
@@ -40,6 +55,7 @@ export default function useEditCategoryModal(item: CategoryType) {
     onNameChange,
     onDescriptionChange,
     onImageChange,
+    onSave,
   };
 }
 

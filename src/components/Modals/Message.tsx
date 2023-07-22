@@ -1,3 +1,5 @@
+"use client";
+
 import ModalLg from "@/components/layout/ModalLg";
 import { CustomerMessage, WithID } from "@/types";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import ModalLg from "@/components/layout/ModalLg";
 
 import { Order, OrderStatus, WithID } from "@/types";
