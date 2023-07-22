@@ -5,8 +5,19 @@ export default function getOrderPrice(order: Order) {
 }
 
 function getPrice(orderedProduct: OrderedProduct): number {
-  if (orderedProduct.selectedVariant) {
-    return orderedProduct.selectedVariant.price * orderedProduct.quantity;
+  const { selectedVariant, quantity } = orderedProduct;
+
+  let price = orderedProduct.price;
+
+  if (selectedVariant) {
+    price = selectedVariant.price;
+
+    if (selectedVariant.promotion) {
+      price =
+        selectedVariant.promotion.type === "discount"
+          ? price * (1 - selectedVariant.promotion.discountPercent / 100)
+          : selectedVariant.promotion.salePrice;
+    }
   }
-  return orderedProduct.price * orderedProduct.quantity;
+  return price * quantity;
 }
