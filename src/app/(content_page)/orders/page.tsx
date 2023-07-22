@@ -27,7 +27,7 @@ export default async function OrdersPage({ searchParams }: Props) {
         initSortBy={_sortBy}
         initOrder={_order}
         sortByOptions={sortByOptions}
-      />{" "}
+      />
       <OrderList initOrders={initOrders} total={total} />
     </div>
   );
