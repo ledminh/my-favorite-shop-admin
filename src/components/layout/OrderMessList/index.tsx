@@ -9,12 +9,12 @@ type Props<T> = {
   ItemTab: FC<{
     item: WithID<T>;
     setIsModalOpen: (isOpen: boolean) => void;
-    setCurrentItem: (item: T) => void;
+    setCurrentItem: (item: WithID<T>) => void;
   }>;
   ItemModal: FC<{
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
-    item: T;
+    item: WithID<T>;
   }>;
   getTotalPrice?: (item: T[]) => number;
 };
@@ -28,7 +28,7 @@ export default function OrderMessList<T>({
 }: Props<T>) {
   const [items, setItems] = useState(initItems); // [WithID<T>[], (items: WithID<T>[]) => void
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState<T | null>(null);
+  const [currentItem, setCurrentItem] = useState<WithID<T> | null>(null);
 
   const loadMore = () => {
     console.log("load more");

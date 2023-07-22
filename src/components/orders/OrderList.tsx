@@ -5,7 +5,7 @@ import OrderMessList from "@/components/layout/OrderMessList";
 
 import OrderTab from "@/components/OrderTab";
 import getTotalPrice from "@/utils/getTotalPrice";
-import OrderModal from "../modals/Order";
+import OrderModal from "@/components/modals/Order";
 
 type OrderListProps = {
   initOrders: WithID<Order>[];
