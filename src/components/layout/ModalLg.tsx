@@ -10,6 +10,8 @@ type ModalLgProps = {
     text: string;
     className: string;
     onClick: () => void;
+    disabled?: boolean;
+    disabledClassName?: string;
   }[];
   onClose?: () => void;
 };
@@ -57,6 +59,8 @@ const ModalLg = ({
                   key={button.text}
                   text={button.text}
                   className={button.className}
+                  disabled={button.disabled}
+                  disabledClassName={button.disabledClassName}
                   onClick={() => {
                     button.onClick();
                     setIsOpen(false);
@@ -80,16 +84,23 @@ const ModalButton = ({
   className,
   onClick,
   type = "button",
+  disabled,
+  disabledClassName,
 }: {
   text: string;
   className: string;
   onClick: () => void;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  disabledClassName?: string;
 }) => (
   <button
-    className={`px-4 py-2 text-sm font-semibold rounded-md ${className}`}
+    className={`px-4 py-2 text-sm font-semibold rounded-md ${
+      disabled ? disabledClassName : className
+    }`}
     onClick={onClick}
     type={type}
+    disabled={disabled}
   >
     {text}
   </button>
