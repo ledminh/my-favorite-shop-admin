@@ -2,7 +2,7 @@ import { deleteMessage, updateMessage } from "@/data/customerMessages";
 import {
   CustomerMessageStatus,
   DeleteMessageResponse,
-  PatchMessageResponse,
+  UpdateMessageResponse,
 } from "@/types";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -27,7 +27,7 @@ export async function DELETE(
 
 export async function PATCH(
   request: NextRequest
-): Promise<NextResponse<PatchMessageResponse>> {
+): Promise<NextResponse<UpdateMessageResponse>> {
   try {
     const id = request.nextUrl.searchParams.get("id");
 

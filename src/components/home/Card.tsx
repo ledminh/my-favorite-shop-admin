@@ -88,7 +88,7 @@ export default function Card<T>({
  * Styles
  */
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="overflow-hidden border-4 rounded-lg border-blue-950 min-w-[354px]">
+  <div className="overflow-hidden border-4 rounded-lg border-blue-950 min-w-[370px]">
     {children}
   </div>
 );

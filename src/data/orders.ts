@@ -66,6 +66,39 @@ export function getOrders({
   );
 }
 
+export function deleteOrder(id: string): Promise<WithID<Order>> {
+  return new Promise((resolve, reject) => {
+    const order = ORDERS.find((order) => order.id === id);
+
+    if (!order) {
+      return reject(new Error("Order not found"));
+    }
+
+    const orderIndex = ORDERS.findIndex((order) => order.id === id);
+
+    ORDERS.splice(orderIndex, 1);
+
+    return resolve(order);
+  });
+}
+
+export function updateOrder(
+  id: string,
+  status: OrderStatus
+): Promise<WithID<Order>> {
+  return new Promise((resolve, reject) => {
+    const order = ORDERS.find((order) => order.id === id);
+
+    if (!order) {
+      return reject(new Error("Order not found"));
+    }
+
+    order.status = status;
+
+    return resolve(order);
+  });
+}
+
 /**********************
  * Helper functions
  */

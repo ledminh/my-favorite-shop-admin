@@ -132,4 +132,7 @@ type ServerResponse<T> =
     };
 
 export type DeleteMessageResponse = ServerResponse<WithID<CustomerMessage>>;
-export type PatchMessageResponse = ServerResponse<WithID<CustomerMessage>>;
+export type UpdateMessageResponse = ServerResponse<WithID<CustomerMessage>>;
+
+export type DeleteOrderResponse = ServerResponse<WithID<Order>>;
+export type UpdateOrderResponse = ServerResponse<WithID<Order>>;

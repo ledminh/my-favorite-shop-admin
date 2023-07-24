@@ -1,21 +1,44 @@
-import { OrderStatus } from "@/types";
+import { DeleteOrderResponse, UpdateOrderResponse, OrderStatus } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("id");
+import { deleteOrder, updateOrder } from "@/data/orders";
 
-  console.log("DELETE", id);
+export async function DELETE(
+  request: NextRequest
+): Promise<NextResponse<DeleteOrderResponse>> {
+  try {
+    const id = request.nextUrl.searchParams.get("id");
 
-  return NextResponse.json({ status: "ok", text: `Deleted` });
+    if (!id) {
+      throw new Error("id not found");
+    }
+
+    const order = await deleteOrder(id);
+
+    return NextResponse.json({ data: order });
+  } catch (error: any) {
+    return NextResponse.json({ errorMessage: error.message });
+  }
 }
 
-export async function PATCH(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("id");
-  const body: { status: OrderStatus } = await request.json();
+export async function PATCH(
+  request: NextRequest
+): Promise<NextResponse<UpdateOrderResponse>> {
+  try {
+    const id = request.nextUrl.searchParams.get("id");
 
-  const { status } = body;
+    if (!id) {
+      throw new Error("id not found");
+    }
 
-  console.log("PATCH", id, status);
+    const body: { status: OrderStatus } = await request.json();
 
-  return NextResponse.json({ status: "ok", text: "patch done" });
+    const { status } = body;
+
+    const order = await updateOrder(id, status);
+
+    return NextResponse.json({ data: order });
+  } catch (error: any) {
+    return NextResponse.json({ errorMessage: error.message });
+  }
 }
