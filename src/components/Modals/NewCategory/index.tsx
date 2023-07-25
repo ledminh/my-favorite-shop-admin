@@ -11,7 +11,16 @@ type Props = {
 };
 
 export default function NewCatModal({ isOpen, setIsOpen }: Props) {
-  const { onClose, additionalButtons, image, setImage } = useNewCatModal();
+  const {
+    onClose,
+    additionalButtons,
+    image,
+    name,
+    description,
+    onNameChange,
+    onDescriptionChange,
+    setImage,
+  } = useNewCatModal();
   return (
     <ModalLg
       isOpen={isOpen}
@@ -27,6 +36,8 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
             <input
               id="name"
               name="name"
+              value={name}
+              onChange={onNameChange}
               className="p-2 border-2 rounded-lg border-blue-950"
             />
           </div>
@@ -35,6 +46,8 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
             <textarea
               id="description"
               name="description"
+              value={description}
+              onChange={onDescriptionChange}
               className="p-2 border-2 rounded-lg border-blue-950"
             />
           </div>
@@ -64,9 +77,9 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
               <Image
                 src={URL.createObjectURL(image)}
                 alt="category image"
-                width={200}
-                height={200}
-                className="rounded-lg"
+                width={208}
+                height={208}
+                className="rounded-lg w-52 h-52"
               />
             ) : null}
           </div>

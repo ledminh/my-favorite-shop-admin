@@ -22,7 +22,7 @@ export default function ChangeButton({ currentStatus, setStatus }: Props) {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute z-10 w-56 mt-2 bg-white rounded-md shadow-lg bottom-8 ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute z-10 mt-2 bg-white rounded-md shadow-lg w-28 bottom-8 ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
             {OrderStatuses.filter(
               (option) => option.value !== currentStatus

@@ -2,7 +2,13 @@
 
 import ModalLg from "@/components/layout/ModalLg";
 
-import { Order, OrderStatus, WithID } from "@/types";
+import {
+  Order,
+  OrderStatus,
+  WithID,
+  DeleteOrderResponse,
+  UpdateOrderResponse,
+} from "@/types";
 
 import ChangeButton from "./ChangeButton";
 
@@ -17,12 +23,25 @@ const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
     {
       text: "DELETE",
       className: "text-red-600 bg-white hover:bg-red-100",
-      onClick: () => deleteOrder(item.id, (res) => console.log(res)),
+      onClick: () =>
+        deleteOrder(item.id, (res) => {
+          if (res.errorMessage) {
+            throw new Error(res.errorMessage);
+          }
+
+          console.log(res);
+        }),
     },
   ];
 
   const setStatus = (status: OrderStatus) => {
-    updateOrder(item.id, { status }, (res) => console.log(res));
+    updateOrder(item.id, { status }, (res) => {
+      if (res.errorMessage) {
+        throw new Error(res.errorMessage);
+      }
+
+      console.log(res);
+    });
   };
 
   return (
@@ -105,18 +124,18 @@ const InfoTab = ({
 /****************************
  * Utils
  */
-function deleteOrder(id: string, cb: (res: any) => void) {
+function deleteOrder(id: string, cb: (res: DeleteOrderResponse) => void) {
   fetch(`/api/orders?id=${id}`, {
     method: "DELETE",
   })
-    .then((res) => cb(res))
-    .catch((err) => console.log(err));
+    .then((res) => res.json())
+    .then((res: DeleteOrderResponse) => cb(res));
 }
 
 const updateOrder = (
   id: string,
   data: { status: string },
-  cb: (res: any) => void
+  cb: (res: UpdateOrderResponse) => void
 ) => {
   fetch(`/api/orders?id=${id}`, {
     method: "PATCH",
@@ -125,6 +144,6 @@ const updateOrder = (
     },
     body: JSON.stringify(data),
   })
-    .then((res) => cb(res))
-    .catch((err) => console.log(err));
+    .then((res) => res.json())
+    .then((res) => cb(res));
 };

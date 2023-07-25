@@ -12,6 +12,7 @@
     "@faker-js/faker": "^8.0.2",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
+    "@supabase/supabase-js": "^2.29.0",
     "@types/node": "20.4.0",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",

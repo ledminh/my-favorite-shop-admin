@@ -1,7 +1,12 @@
 "use client";
 
 import ModalLg from "@/components/layout/ModalLg";
-import { CustomerMessage, WithID } from "@/types";
+import {
+  CustomerMessage,
+  DeleteMessageResponse,
+  UpdateMessageResponse,
+  WithID,
+} from "@/types";
 
 type MessageModalProps = {
   item: WithID<CustomerMessage>;
@@ -19,6 +24,10 @@ const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
       className: "text-red-600 bg-white hover:bg-red-100",
       onClick: () => {
         deleteMessage(item.id, (res) => {
+          if (res.errorMessage) {
+            throw new Error(res.errorMessage);
+          }
+
           console.log(res);
         });
       },
@@ -34,6 +43,10 @@ const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
             status: status === "read" ? "unread" : "read",
           },
           (res) => {
+            if (res.errorMessage) {
+              throw new Error(res.errorMessage);
+            }
+
             console.log(res);
           }
         );
@@ -86,18 +99,21 @@ const InfoTab = ({ label, value }: { label: string; value: string }) => {
  * Utils
  */
 
-const deleteMessage = (id: string, cb: (res: any) => void) => {
+const deleteMessage = (
+  id: string,
+  cb: (res: DeleteMessageResponse) => void
+) => {
   fetch(`/api/messages?id=${id}`, {
     method: "DELETE",
   })
-    .then((res) => cb(res))
-    .catch((err) => console.log(err));
+    .then((res) => res.json())
+    .then((res: DeleteMessageResponse) => cb(res));
 };
 
 const updateMessage = (
   id: string,
   data: { status: string },
-  cb: (res: any) => void
+  cb: (res: UpdateMessageResponse) => void
 ) => {
   fetch(`/api/messages?id=${id}`, {
     method: "PATCH",
@@ -106,6 +122,6 @@ const updateMessage = (
     },
     body: JSON.stringify(data),
   })
-    .then((res) => cb(res))
-    .catch((err) => console.log(err));
+    .then((res) => res.json())
+    .then((res: UpdateMessageResponse) => cb(res));
 };

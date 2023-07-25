@@ -360,6 +360,22 @@ export const getCategories: GetCategories = async ({
   });
 };
 
+export const addCategory = async (
+  category: Omit<CategoryType, "id" | "createdAt" | "modifiedAt">
+): Promise<WithID<CategoryType>> => {
+  return new Promise((resolve) => {
+    const newCat = {
+      id: faker.string.nanoid(10),
+      ...category,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+    };
+
+    CATEGORIES.push(newCat);
+    return resolve(newCat);
+  });
+};
+
 /*******************************************************************
  * getCategory
  * @param {slug, id}
