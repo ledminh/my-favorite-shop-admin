@@ -2,6 +2,8 @@ import Select from "@/components/layout/Select";
 import ModalLg from "../../layout/ModalLg";
 import useNewProductModal from "./hooks";
 
+import Promotion from "./Promotion";
+
 import { Category, WithID } from "@/types";
 
 type Props = {
@@ -102,21 +104,7 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
             className="p-2 border-2 rounded-lg border-blue-950"
           />
         </div>
-        <div>
-          <h3>Promotion</h3>
-          <div>
-            Discount{" "}
-            <input
-              type="number"
-              name="discount"
-              id="discount"
-              className="p-2 border-2 rounded-lg border-blue-950"
-            />
-          </div>
-          <div>
-            Sale <input type="number" name="sale" id="sale" />
-          </div>
-        </div>
+        <Promotion />
         <div>
           Variant
           <button>ADD NEW VARIANT</button>
@@ -135,7 +123,3 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
     </ModalLg>
   );
 }
-
-/****************************
- * Components
- */
