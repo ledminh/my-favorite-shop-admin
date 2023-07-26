@@ -3,7 +3,6 @@ import ModalLg from "../../layout/ModalLg";
 import useNewProductModal from "./hooks";
 
 import { Category, WithID } from "@/types";
-import { on } from "events";
 
 type Props = {
   isOpen: boolean;
@@ -12,22 +11,21 @@ type Props = {
 };
 export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
   const {
+    categoryID,
+    serial,
+    name,
+    priceStr,
+    intro,
+    description,
     onCategoryChange,
     onSerialChange,
     onNameChange,
     onPriceChange,
     onIntroChange,
     onDescriptionChange,
-    onAdd,
-  } = useNewProductModal();
 
-  const additionalButtons = [
-    {
-      text: "ADD",
-      className: "text-blue-950 bg-white hover:bg-gray-200",
-      onClick: onAdd,
-    },
-  ];
+    additionalButtons,
+  } = useNewProductModal({ categories });
 
   return (
     <ModalLg
@@ -46,6 +44,7 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
               text: category.name,
             }))}
             defaultValue={categories[0].id}
+            value={categoryID}
             onChange={(id) => onCategoryChange(id)}
           />
         </div>
@@ -53,8 +52,9 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
           <label htmlFor="name">Serial #</label>
           <input
             type="text"
-            name="name"
-            id="name"
+            name="serial"
+            id="serial"
+            value={serial}
             onChange={(e) => onSerialChange(e.target.value)}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
@@ -65,6 +65,7 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
             type="text"
             name="name"
             id="name"
+            value={name}
             onChange={(e) => onNameChange(e.target.value)}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
@@ -73,9 +74,10 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
           <label htmlFor="name">Price</label>
           <input
             type="number"
-            name="name"
-            id="name"
-            onChange={(e) => onPriceChange(Number(e.target.value))}
+            name="price"
+            id="price"
+            value={priceStr}
+            onChange={(e) => onPriceChange(e.target.value)}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
         </div>
@@ -83,8 +85,9 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
           <label htmlFor="name">Intro</label>
           <input
             type="text"
-            name="name"
-            id="name"
+            name="intro"
+            id="intro"
+            value={intro}
             onChange={(e) => onIntroChange(e.target.value)}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
@@ -94,6 +97,7 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
           <textarea
             name="description"
             id="description"
+            value={description}
             onChange={(e) => onDescriptionChange(e.target.value)}
             className="p-2 border-2 rounded-lg border-blue-950"
           />

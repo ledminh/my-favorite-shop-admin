@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 
 const CATEGORIES: WithID<CategoryType>[] = [
   {
-    id: "cat-1",
+    id: "cat-1-nail-polish",
     name: "Nail Polish",
     description: "A wide range of nail polish colors",
     link: "/shop/nail-polish",
@@ -15,7 +15,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
     modifiedAt: faker.date.past(),
   },
   {
-    id: "cat-2",
+    id: "cat-2-nail-care",
     name: "Nail Care",
     description: "A wide range of nail care products",
     link: "/shop/nail-care",
@@ -27,7 +27,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
     modifiedAt: faker.date.past(),
   },
   {
-    id: "cat-3",
+    id: "cat-3-nail-tools",
     name: "Nail Tools",
     description: "A wide range of nail tools",
     link: "/shop/nail-tools",
@@ -39,7 +39,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
     modifiedAt: faker.date.past(),
   },
   {
-    id: "cat-4",
+    id: "cat-4-nail-art",
     name: "Nail Art",
     description: "A wide range of nail art products",
     link: "/shop/nail-art",
@@ -51,7 +51,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
     modifiedAt: faker.date.past(),
   },
   {
-    id: "5",
+    id: "cat-5-nail-extensions",
     name: "Nail Extensions",
     description: "A wide range of nail extensions",
     link: "/shop/nail-extensions",
@@ -63,7 +63,7 @@ const CATEGORIES: WithID<CategoryType>[] = [
     modifiedAt: faker.date.past(),
   },
   {
-    id: "6",
+    id: "cat-6-nail-accessories",
     name: "Nail Accessories",
     description: "A wide range of nail accessories",
     link: "/shop/nail-accessories",
