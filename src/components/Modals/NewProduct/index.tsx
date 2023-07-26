@@ -34,7 +34,7 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
       additionalButtons={additionalButtons}
       title="ADD NEW PRODUCT"
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 max-h-[70vh] overflow-y-scroll px-6">
         <div className="flex flex-col gap-2">
           <label htmlFor="category">Category</label>
           <Select

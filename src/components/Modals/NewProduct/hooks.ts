@@ -7,6 +7,9 @@ type Props = {
 };
 
 export default function useNewProductModal({ categories }: Props) {
+  /******************
+   * PRIVATE
+   */
   const [categoryID, setCategoryID] = useState<string>(categories[0].id);
   const [serial, setSerial] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -14,6 +17,18 @@ export default function useNewProductModal({ categories }: Props) {
   const [intro, setIntro] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
+  const reset = () => {
+    setCategoryID(categories[0].id);
+    setSerial("");
+    setName("");
+    setPriceStr("");
+    setIntro("");
+    setDescription("");
+  };
+
+  /******************
+   * PUBLIC
+   */
   const onCategoryChange = (id: string) => {
     setCategoryID(id);
   };
@@ -52,6 +67,8 @@ export default function useNewProductModal({ categories }: Props) {
       intro,
       description,
     });
+
+    reset();
   };
 
   const onAddDisabled = () => {
