@@ -387,6 +387,29 @@ export const addCategory = async (
   });
 };
 
+export const updateCategory = async (
+  id: string,
+  category: Partial<Omit<CategoryType, "id" | "createdAt" | "modifiedAt">>
+): Promise<WithID<CategoryType>> => {
+  return new Promise((resolve, reject) => {
+    const index = CATEGORIES.findIndex((cat) => cat.id === id);
+
+    if (index === -1) {
+      return reject(new Error("Category not found"));
+    }
+
+    const updatedCat = {
+      ...CATEGORIES[index],
+      ...category,
+      modifiedAt: new Date(),
+    };
+
+    CATEGORIES[index] = updatedCat;
+
+    return resolve(updatedCat);
+  });
+};
+
 /*******************************************************************
  * getCategory
  * @param {slug, id}
