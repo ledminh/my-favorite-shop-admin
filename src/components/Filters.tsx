@@ -5,7 +5,8 @@ import { Menu, Transition } from "@headlessui/react";
 import { FunnelIcon } from "@heroicons/react/20/solid";
 
 import { useState } from "react";
-import SearchBar from "./SearchBar";
+
+import classNames from "@/utils/classNames";
 
 export default function Filters() {
   const [filter, setFilter] = useState<string | null>(null);
@@ -76,14 +77,6 @@ const Header = () => (
     </Menu.Button>
   </div>
 );
-
-/**************************
- * Utility
- */
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 /*************************
  * Data

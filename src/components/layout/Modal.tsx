@@ -1,7 +1,11 @@
 import { Dialog } from "@headlessui/react";
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 
-type ModalLgProps = {
+import classNames from "@/utils/classNames";
+
+type ModalProps = {
+  type?: "normal" | "attention";
+  size?: "sm" | "md" | "lg";
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   title: string;
@@ -16,14 +20,16 @@ type ModalLgProps = {
   onClose?: () => void;
 };
 
-const ModalLg = ({
+const Modal = ({
+  type = "normal",
+  size = "md",
   isOpen,
   setIsOpen,
   title,
   children,
   additionalButtons,
   onClose,
-}: ModalLgProps) => {
+}: ModalProps) => {
   return (
     <Dialog
       open={isOpen}
@@ -39,12 +45,32 @@ const ModalLg = ({
       {/* Full-screen container to center the panel */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         {/* The actual dialog panel  */}
-        <Dialog.Panel className="w-full max-w-4xl mx-auto overflow-hidden bg-white min-w-[354px] rounded">
-          <Dialog.Title className="p-2 bg-blue-950">
+        <Dialog.Panel
+          className={classNames(
+            "w-full mx-auto overflow-hidden bg-white min-w-[354px] rounded",
+            size === "sm"
+              ? "max-w-2xl"
+              : size === "md"
+              ? "max-w-4xl"
+              : "max-w-6xl"
+          )}
+        >
+          <Dialog.Title
+            className={classNames(
+              "p-2",
+              type === "attention" ? "bg-red-950" : "bg-blue-950"
+            )}
+          >
             <h2 className="text-xl font-semibold text-white ">{title}</h2>
           </Dialog.Title>
           <div className="p-4">{children}</div>
-          <div className="flex gap-2 p-2 bg-blue-950/80 flex-start">
+          <div
+            className={classNames(
+              "flex gap-2 p-2 flex-start",
+              type === "attention" ? "bg-red-300/80" : "bg-blue-950/80",
+              "flex-start"
+            )}
+          >
             <ModalButton
               text="CLOSE"
               className="text-white bg-blue-950 hover:bg-blue-900 active:bg-blue-700"
@@ -74,7 +100,7 @@ const ModalLg = ({
   );
 };
 
-export default ModalLg;
+export default Modal;
 
 /**********************
  * Components
