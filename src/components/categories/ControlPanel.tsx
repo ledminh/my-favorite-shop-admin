@@ -6,6 +6,8 @@ import SearchBar from "@/components/SearchBar";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { XMarkIcon } from "@heroicons/react/20/solid";
+
 import { ReactNode } from "react";
 
 type Props = {
@@ -43,6 +45,7 @@ export default function ControlPanel({
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
+  const onClearSearch = () => setSearchTerm("");
 
   // Effects
   useEffect(() => {
@@ -68,13 +71,13 @@ export default function ControlPanel({
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-        {/* {variants ||
-          (promotion && (
-            <div className="p-2 bg-gray-200 rounded-lg basis-full">
-              {variants && <FilterTag>with Variants</FilterTag>}
-              {promotion && <FilterTag>with Promotion</FilterTag>}
-            </div>
-          ))} */}
+        {searchTerm !== "" && (
+          <div className="p-2 bg-gray-200 rounded-lg basis-full">
+            <SearchTermTag onClearSearch={onClearSearch}>
+              {searchTerm}
+            </SearchTermTag>
+          </div>
+        )}
         <div className="basis-full md:basis-[48%] xl:basis-[48.67%]">
           <SearchBar onSearch={onSearch} />
         </div>
@@ -94,8 +97,24 @@ export default function ControlPanel({
 /***********************
  * Styles
  */
-const FilterTag = ({ children }: { children: ReactNode }) => (
-  <span className="px-2 py-1 text-sm font-medium text-white bg-gray-700 rounded-md">
-    {children}
+const SearchTermTag = ({
+  children,
+  onClearSearch,
+}: {
+  children: ReactNode;
+  onClearSearch: () => void;
+}) => (
+  <span className="inline-flex items-center overflow-hidden text-sm font-medium text-white bg-gray-700 rounded-md">
+    <span className="inline-block px-2 py-2 bg-red-950">Search Term</span>
+    <span className="inline-block px-2 py-2">{children}</span>
+    <span className="inline-block pr-1">
+      <button
+        className="inline-flex items-center justify-center w-6 h-6 text-white rounded-full focus:ring-1 focus:ring-gray-800 hover:bg-gray-950 focus:outline-none"
+        onClick={onClearSearch}
+      >
+        <span className="sr-only">Remove search term</span>
+        <XMarkIcon className="w-4 h-4" />
+      </button>
+    </span>
   </span>
 );
