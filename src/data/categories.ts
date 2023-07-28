@@ -303,9 +303,11 @@ type GetCategories = ({
   limit,
   sortBy,
   order,
+  searchTerm,
 }: {
   offset?: number;
   limit?: number;
+  searchTerm?: string;
   sortBy: "name" | "createdAt" | "modifiedAt";
   order: "asc" | "desc";
 }) => Promise<{
@@ -316,10 +318,19 @@ type GetCategories = ({
 export const getCategories: GetCategories = async ({
   offset,
   limit,
+  searchTerm,
   sortBy,
   order,
 }) => {
   let categories = [...CATEGORIES];
+
+  if (searchTerm) {
+    categories = categories.filter((category) =>
+      category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
+  const total = categories.length;
 
   if (sortBy === "name") {
     categories.sort((a, b) => {
@@ -354,7 +365,7 @@ export const getCategories: GetCategories = async ({
 
   return new Promise((resolve) => {
     resolve({
-      total: CATEGORIES.length,
+      total,
       items: categories,
     });
   });

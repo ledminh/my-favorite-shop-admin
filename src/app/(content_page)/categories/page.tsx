@@ -9,18 +9,21 @@ type Props = {
   searchParams?: {
     sortBy?: "name" | "createdAt" | "modifiedAt";
     order?: "asc" | "desc";
+    searchTerm?: string;
   };
 };
 
 export default async function CategoriesPage({ searchParams }: Props) {
   const _sortBy = searchParams?.sortBy || "name";
   const _order = searchParams?.order || "asc";
+  const _searchTerm = searchParams?.searchTerm || "";
 
   const { items: initCategories, total } = await getCategories({
     offset: 0,
     limit: itemsPerPage,
     sortBy: _sortBy,
     order: _order,
+    searchTerm: _searchTerm,
   });
 
   return (
@@ -28,12 +31,14 @@ export default async function CategoriesPage({ searchParams }: Props) {
       <ControlPanel
         initSortBy={_sortBy}
         initOrder={_order}
+        initSearchTerm={_searchTerm}
         sortByOptions={sortByOptions}
       />
       <Suspense fallback={<div>Loading...</div>}>
         <CategoryList
           sortBy={_sortBy}
           order={_order}
+          searchTerm={_searchTerm}
           initCategories={initCategories}
           total={total}
         />

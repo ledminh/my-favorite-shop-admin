@@ -12,6 +12,7 @@ import DeleteCategoryModal from "@/components/modals/DeleteCategory";
 type Props = {
   sortBy: "name" | "createdAt" | "modifiedAt";
   order: "asc" | "desc";
+  searchTerm: string;
   initCategories: WithID<CategoryType>[];
   total: number;
 };
@@ -19,6 +20,7 @@ type Props = {
 export default function CategoryList({
   sortBy,
   order,
+  searchTerm,
   initCategories,
   total,
 }: Props) {
@@ -29,13 +31,14 @@ export default function CategoryList({
       const { items } = await getCategories({
         offset: 0,
         limit: itemsPerPage,
+        searchTerm,
         sortBy,
         order,
       });
 
       setInitCategories(items);
     })();
-  }, [sortBy, order]);
+  }, [sortBy, order, searchTerm]);
 
   const getImage = (item: CategoryType) => item.image;
 
@@ -46,7 +49,13 @@ export default function CategoryList({
     offset: number;
     limit: number;
   }) => {
-    const { items } = await getCategories({ offset, limit, sortBy, order });
+    const { items } = await getCategories({
+      offset,
+      limit,
+      sortBy,
+      order,
+      searchTerm,
+    });
 
     return items;
   };

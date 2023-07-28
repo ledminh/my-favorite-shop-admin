@@ -13,6 +13,7 @@ import { ReactNode } from "react";
 type Props = {
   initSortBy: "name" | "createdAt" | "modifiedAt";
   initOrder: "asc" | "desc";
+  initSearchTerm: string;
   sortByOptions: {
     id: "name" | "createdAt" | "modifiedAt";
     text: string;
@@ -26,6 +27,7 @@ type Props = {
 export default function ControlPanel({
   initSortBy,
   initOrder,
+  initSearchTerm,
   sortByOptions,
 }: Props) {
   const router = useRouter();
@@ -42,7 +44,7 @@ export default function ControlPanel({
 
   const [orderID, setOrderID] = useState(initOrder);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(initSearchTerm);
 
   const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
   const onClearSearch = () => setSearchTerm("");
@@ -61,9 +63,7 @@ export default function ControlPanel({
     params.set("sortBy", sortByID);
     params.set("order", orderID);
 
-    if (searchTerm !== "") {
-      params.set("search", searchTerm);
-    }
+    params.set("searchTerm", searchTerm);
 
     router.push(`${pathname}?${params.toString()}`);
   }, [sortByID, orderID, searchTerm]);

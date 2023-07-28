@@ -102,6 +102,14 @@ export default function CatProdList<T>({
       }
 
       <div className="flex flex-col justify-center gap-8">
+        {
+          // Show no items message if there are no items
+          items.length === 0 && (
+            <p className="text-2xl text-center text-gray-500">
+              No items found.
+            </p>
+          )
+        }
         <ul className="flex flex-col gap-y-4 md:flex-row md:flex-wrap md:justify-start md:gap-x-[4%] lg:gap-x-[3.5%] xl:gap-x-[2.66%]">
           {items.map((item) => {
             return (
