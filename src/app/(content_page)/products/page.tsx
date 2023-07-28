@@ -19,17 +19,18 @@ type Props = {
 };
 
 export default async function ProductsPage({ searchParams }: Props) {
-  const { variants, promotion, catID, searchTerm, sortBy, order } =
-    searchParams || {};
+  const { variants, promotion } = searchParams || {};
 
-  const _sortBy = sortBy || "name";
-  const _order = order || "asc";
+  const _sortBy = searchParams?.sortBy || "name";
+  const _order = searchParams?.order || "asc";
+  const _searchTerm = searchParams?.searchTerm || "";
+  const _catID = searchParams?.catID || "";
 
   const filters = {
     variants: variants || false,
     promotion: promotion || false,
-    catID: catID || "",
-    searchTerm: searchTerm || "",
+    catID: _catID,
+    searchTerm: _searchTerm,
   };
 
   const categoriesPromise = await getCategories({
@@ -51,7 +52,7 @@ export default async function ProductsPage({ searchParams }: Props) {
   return (
     <div className="m-4">
       <div className="mb-8">
-        <Category categories={categories} />
+        <Category categories={categories} initCatID={_catID} />
       </div>
       <div className="mb-8">
         <ControlPanel
