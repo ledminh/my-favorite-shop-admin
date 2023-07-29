@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Category as CategoryType, WithID } from "@/types";
 import useEditCategoryModal from "./hooks";
 
-import ModalLg from "@/components/layout/ModalLg";
+import Modal from "@/components/layout/Modal";
 
 type Props = {
   item: WithID<CategoryType>;
@@ -19,6 +19,7 @@ const EditCategoryModal = ({ item, isOpen, setIsOpen }: Props) => {
     onDescriptionChange,
     onImageChange,
     onSave,
+    reset,
   } = useEditCategoryModal(item);
 
   const additionalButtons = [
@@ -30,9 +31,10 @@ const EditCategoryModal = ({ item, isOpen, setIsOpen }: Props) => {
   ];
 
   return (
-    <ModalLg
+    <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
+      onClose={() => reset()}
       title="EDIT CATEGORY"
       additionalButtons={additionalButtons}
     >
@@ -88,7 +90,7 @@ const EditCategoryModal = ({ item, isOpen, setIsOpen }: Props) => {
           </div>
         </div>
       </div>
-    </ModalLg>
+    </Modal>
   );
 };
 

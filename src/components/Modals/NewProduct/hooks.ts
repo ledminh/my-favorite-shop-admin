@@ -17,6 +17,8 @@ export default function useNewProductModal({ categories }: Props) {
   const [intro, setIntro] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
+  const [image, setImage] = useState<File | null>(null);
+
   const reset = () => {
     setCategoryID(categories[0].id);
     setSerial("");
@@ -98,12 +100,14 @@ export default function useNewProductModal({ categories }: Props) {
     priceStr,
     intro,
     description,
+    image,
     onCategoryChange,
     onSerialChange,
     onNameChange,
     onPriceChange,
     onIntroChange,
     onDescriptionChange,
+    setImage,
     additionalButtons,
   };
 }

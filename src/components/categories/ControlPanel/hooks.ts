@@ -32,13 +32,12 @@ export default function useControlPanel({
 
   // States
   const [sortByID, setSortByID] = useState(initSortBy);
+  const [orderID, setOrderID] = useState(initOrder);
 
   const [orderOptions, setOrderOptions] = useState(
     sortByOptions.find((option) => option.id === initSortBy)?.orderOptions ||
       sortByOptions[0].orderOptions
   );
-
-  const [orderID, setOrderID] = useState(initOrder);
 
   const [searchTerm, setSearchTerm] = useState(initSearchTerm);
 

@@ -1,10 +1,12 @@
 import Select from "@/components/layout/Select";
-import ModalLg from "../../layout/ModalLg";
+import Modal from "../../layout/Modal";
 import useNewProductModal from "./hooks";
 
 import Promotion from "./Promotion";
 
 import { Category, WithID } from "@/types";
+
+import Image from "next/image";
 
 type Props = {
   isOpen: boolean;
@@ -19,18 +21,19 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
     priceStr,
     intro,
     description,
+    image,
     onCategoryChange,
     onSerialChange,
     onNameChange,
     onPriceChange,
     onIntroChange,
     onDescriptionChange,
-
+    setImage,
     additionalButtons,
   } = useNewProductModal({ categories });
 
   return (
-    <ModalLg
+    <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       additionalButtons={additionalButtons}
@@ -105,21 +108,59 @@ export default function NewProdModal({ isOpen, setIsOpen, categories }: Props) {
           />
         </div>
         <Promotion />
-        <div>
-          Variant
-          <button>ADD NEW VARIANT</button>
-          <div>Variants</div>
-        </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="image">Image</label>
+          <span>Variant</span>
+          <ul>
+            <li>
+              <button>Add new variant</button>
+            </li>
+            <li>
+              <button>Variant 1</button>
+            </li>
+            <li>
+              <button>Variant 2</button>
+            </li>
+            <li>
+              <button>Variant 3</button>
+            </li>
+            <li>
+              <button>Variant 4</button>
+            </li>
+          </ul>
+        </div>
+        <div className="flex justify-center">
+          <label
+            htmlFor="image"
+            className="p-2 text-center bg-gray-300 border-2 border-black rounded-lg shadow-sm cursor-pointer hover:bg-gray-200 shadow-black w-[150px] mx-auto active:bg-gray-300 active:shadow-none"
+          >
+            {image ? "Change Image" : "Add Image"}
+          </label>
           <input
-            type="file"
-            name="image"
+            hidden
             id="image"
-            className="p-2 border-2 rounded-lg border-blue-950"
+            name="image"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files) {
+                setImage(e.target.files[0]);
+              }
+            }}
           />
         </div>
+
+        <div className="flex justify-center">
+          {image ? (
+            <Image
+              src={URL.createObjectURL(image)}
+              alt="category image"
+              width={208}
+              height={208}
+              className="rounded-lg w-52 h-52"
+            />
+          ) : null}
+        </div>
       </div>
-    </ModalLg>
+    </Modal>
   );
 }

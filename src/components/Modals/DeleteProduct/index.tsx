@@ -1,7 +1,7 @@
 import { Product as ProductType, WithID } from "@/types";
 import useDeleteProductModal from "./hooks";
 
-import ModalLg from "@/components/layout/ModalLg";
+import Modal from "@/components/layout/Modal";
 
 type Props = {
   item: WithID<ProductType>;
@@ -21,7 +21,7 @@ const DeleteProductModal = ({ item, isOpen, setIsOpen }: Props) => {
   // ];
 
   // return (
-  //   <ModalLg
+  //   <Modal
   //     isOpen={isOpen}
   //     setIsOpen={setIsOpen}
   //     title="DELETE CATEGORY"
@@ -29,7 +29,7 @@ const DeleteProductModal = ({ item, isOpen, setIsOpen }: Props) => {
   //   >
   //     <div>DO YOU WANT TO DELETE category {name}?</div>
   //     <div>{description}</div>
-  //   </ModalLg>
+  //   </Modal>
   // );
 
   return <div>DELETE PRODUCT MODAL</div>;

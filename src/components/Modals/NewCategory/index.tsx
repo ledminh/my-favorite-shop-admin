@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import ModalLg from "@/components/layout/ModalLg";
+import Modal from "@/components/layout/Modal";
 
 import useNewCatModal from "./hooks";
 
@@ -22,7 +22,7 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
     setImage,
   } = useNewCatModal();
   return (
-    <ModalLg
+    <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title="ADD NEW CATEGORY"
@@ -85,6 +85,6 @@ export default function NewCatModal({ isOpen, setIsOpen }: Props) {
           </div>
         </div>
       </div>
-    </ModalLg>
+    </Modal>
   );
 }

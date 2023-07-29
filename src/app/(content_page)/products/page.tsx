@@ -58,6 +58,7 @@ export default async function ProductsPage({ searchParams }: Props) {
         <ControlPanel
           initSortBy={_sortBy}
           initOrder={_order}
+          initSearchTerm={_searchTerm}
           sortByOptions={sortByOptions}
         />
       </div>

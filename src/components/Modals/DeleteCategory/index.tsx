@@ -1,7 +1,9 @@
 import { Category as CategoryType, WithID } from "@/types";
 import useDeleteCategoryModal from "./hooks";
 
-import ModalLg from "@/components/layout/ModalLg";
+import Modal from "@/components/layout/Modal";
+
+import Image from "next/image";
 
 type Props = {
   item: WithID<CategoryType>;
@@ -10,7 +12,7 @@ type Props = {
 };
 
 const DeleteCategoryModal = ({ item, isOpen, setIsOpen }: Props) => {
-  const { onDelete, name, description } = useDeleteCategoryModal(item);
+  const { onDelete, name, description, image } = useDeleteCategoryModal(item);
 
   const additionalButtons = [
     {
@@ -21,16 +23,61 @@ const DeleteCategoryModal = ({ item, isOpen, setIsOpen }: Props) => {
   ];
 
   return (
-    <ModalLg
+    <Modal
+      type="attention"
+      size="sm"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title="DELETE CATEGORY"
       additionalButtons={additionalButtons}
     >
-      <div>DO YOU WANT TO DELETE category {name}?</div>
-      <div>{description}</div>
-    </ModalLg>
+      <h3>Do you want to delete this category?</h3>
+      <CategoryDetails name={name} description={description} image={image} />
+    </Modal>
   );
 };
 
 export default DeleteCategoryModal;
+
+/**************************
+ * Components
+ */
+const CategoryDetails = ({
+  name,
+  description,
+  image,
+}: {
+  name: string;
+  description: string;
+  image: { src: string; alt: string };
+}) => (
+  <div className="flex flex-col gap-4">
+    <div>Items: 20</div>
+    <div className="flex flex-col gap-2">
+      <label htmlFor="name">Name</label>
+      <input
+        id="name"
+        name="name"
+        value={name}
+        className="p-2 border-2 rounded-lg border-blue-950"
+        disabled
+      />
+    </div>
+    <div className="flex flex-col gap-2">
+      <label htmlFor="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        value={description}
+        className="p-2 border-2 rounded-lg border-blue-950"
+        disabled
+      />
+    </div>
+    <div className="flex flex-col gap-2">
+      <label htmlFor="image">Image</label>
+      <div className="relative">
+        <Image src={image.src} alt={image.alt} width={200} height={200} />
+      </div>
+    </div>
+  </div>
+);

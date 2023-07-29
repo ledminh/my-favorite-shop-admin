@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Product as ProductType, WithID } from "@/types";
 import useEditProductModal from "./hooks";
 
-import ModalLg from "@/components/layout/ModalLg";
+import Modal from "@/components/layout/Modal";
 
 type Props = {
   item: WithID<ProductType>;
@@ -30,7 +30,7 @@ const EditProductModal = ({ item, isOpen, setIsOpen }: Props) => {
   // ];
 
   // return (
-  //   <ModalLg
+  //   <Modal
   //     isOpen={isOpen}
   //     setIsOpen={setIsOpen}
   //     title="EDIT CATEGORY"
@@ -88,7 +88,7 @@ const EditProductModal = ({ item, isOpen, setIsOpen }: Props) => {
   //         </div>
   //       </div>
   //     </div>
-  //   </ModalLg>
+  //   </Modal>
   // );
 
   return <>Edit Product</>;

@@ -1,6 +1,6 @@
 "use client";
 
-import ModalLg from "@/components/layout/ModalLg";
+import Modal from "@/components/layout/Modal";
 import {
   CustomerMessage,
   DeleteMessageResponse,
@@ -55,7 +55,7 @@ const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
   ];
 
   return (
-    <ModalLg
+    <Modal
       title="CUSTOMER MESSAGE"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
@@ -77,7 +77,7 @@ const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
           {message}
         </span>
       </div>
-    </ModalLg>
+    </Modal>
   );
 };
 

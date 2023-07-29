@@ -1,6 +1,6 @@
 "use client";
 
-import ModalLg from "@/components/layout/ModalLg";
+import Modal from "@/components/layout/Modal";
 
 import {
   Order,
@@ -45,7 +45,7 @@ const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
   };
 
   return (
-    <ModalLg
+    <Modal
       title="ORDER DETAILS"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
@@ -85,7 +85,7 @@ const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
           }
         />
       </div>
-    </ModalLg>
+    </Modal>
   );
 };
 

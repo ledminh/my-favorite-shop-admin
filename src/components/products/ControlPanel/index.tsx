@@ -6,11 +6,14 @@ import SearchBar from "@/components/SearchBar";
 
 import { ReactNode } from "react";
 
+import SearchTermTag from "@/components/SearchTermTag";
+
 import useControlPanel from "./hooks";
 
 type Props = {
   initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
   initOrder: "asc" | "desc";
+  initSearchTerm: string;
   sortByOptions: {
     id: "name" | "price" | "createdAt" | "modifiedAt";
     text: string;
@@ -24,21 +27,39 @@ type Props = {
 export default function ControlPanel({
   sortByOptions,
   initSortBy,
+  initSearchTerm,
   initOrder,
 }: Props) {
-  const { onSearch, onClearSearch, setSortByID, setOrderID, orderOptions } =
-    useControlPanel({
-      initSortBy,
-      initOrder,
-      sortByOptions,
-    });
+  const {
+    searchTerm,
+    onSearch,
+    onClearSearch,
+    setSortByID,
+    setOrderID,
+    orderOptions,
+  } = useControlPanel({
+    initSortBy,
+    initOrder,
+    initSearchTerm,
+    sortByOptions,
+  });
 
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+        {searchTerm !== "" && (
+          <div className="p-2 bg-gray-200 rounded-lg basis-full">
+            {searchTerm !== "" && (
+              <SearchTermTag onClearSearch={onClearSearch}>
+                {searchTerm}
+              </SearchTermTag>
+            )}
+          </div>
+        )}
+
         {/* {variants ||
           (promotion && (
-            <div className="p-2 bg-gray-200 rounded-lg basis-full">
+            
               {variants && <FilterTag>with Variants</FilterTag>}
               {promotion && <FilterTag>with Promotion</FilterTag>}
             </div>

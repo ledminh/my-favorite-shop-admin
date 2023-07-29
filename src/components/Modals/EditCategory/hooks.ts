@@ -1,8 +1,15 @@
 import { Category as CategoryType, Image as ImageType, WithID } from "@/types";
 
+import isImageType from "@/utils/isImageType";
+
 import { useEffect, useState } from "react";
 
+import { UpdateCategoryResponse } from "@/types";
+
 export default function useEditCategoryModal(item: WithID<CategoryType>) {
+  /**********************
+   * Private
+   */
   const {
     name: initName,
     description: initDescription,
@@ -19,6 +26,9 @@ export default function useEditCategoryModal(item: WithID<CategoryType>) {
     setImage(initImage);
   }, [initName, initDescription, initImage]);
 
+  /**********************
+   * Public
+   */
   const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
@@ -34,19 +44,34 @@ export default function useEditCategoryModal(item: WithID<CategoryType>) {
     }
   };
 
+  const reset = () => {
+    setName(initName);
+    setDescription(initDescription);
+    setImage(initImage);
+  };
+
   const onSave = () => {
-    console.log("Save", {
-      id: item.id,
-      name,
-      description,
-      image,
-    });
+    updateCategory(
+      {
+        id: item.id,
+        name,
+        description,
+        image,
+      },
+      (res) => {
+        if (res.errorMessage) {
+          throw new Error(res.errorMessage);
+        }
+
+        console.log(res);
+      }
+    );
   };
 
   return {
     name,
     description,
-    image: isImage(image)
+    image: isImageType(image)
       ? image
       : {
           src: URL.createObjectURL(image),
@@ -56,6 +81,7 @@ export default function useEditCategoryModal(item: WithID<CategoryType>) {
     onDescriptionChange,
     onImageChange,
     onSave,
+    reset,
   };
 }
 
@@ -63,6 +89,33 @@ export default function useEditCategoryModal(item: WithID<CategoryType>) {
  * Utils
  */
 
-function isImage(item: ImageType | File): item is ImageType {
-  return (item as ImageType).src !== undefined;
-}
+type UpdateCategory = (
+  category: {
+    id: string;
+    name: string;
+    description: string;
+    image: File | ImageType;
+  },
+  cb: (res: UpdateCategoryResponse) => void
+) => void;
+
+const updateCategory: UpdateCategory = (category, cb) => {
+  const formData = new FormData();
+
+  formData.append("id", category.id);
+  formData.append("name", category.name);
+  formData.append("description", category.description);
+  formData.append(
+    "image",
+    isImageType(category.image)
+      ? JSON.stringify(category.image)
+      : category.image
+  );
+
+  fetch("/api/categories?action=edit", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((res) => cb(res));
+};
