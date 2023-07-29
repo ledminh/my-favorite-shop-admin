@@ -60,7 +60,7 @@ export default ItemCard;
  */
 
 const ItemWrapper = ({ children }: { children: ReactNode }) => (
-  <div className="flex items-center justify-between gap-4 md:flex-col md:gap-2 md:h-[280px] bg-neutral-300">
+  <div className="relative flex items-center justify-between gap-4 md:flex-col md:gap-2 md:h-[280px] bg-neutral-300">
     {children}
   </div>
 );
