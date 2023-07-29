@@ -59,7 +59,7 @@ export default function ControlPanel({
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         {(searchTerm !== "" || filterID !== null) && (
-          <div className="p-2 bg-gray-200 rounded-lg basis-full">
+          <div className="flex gap-2 p-2 bg-gray-200 rounded-lg basis-full">
             {searchTerm !== "" && (
               <SearchTermTag onClearSearch={onClearSearch}>
                 {searchTerm}
@@ -97,7 +97,7 @@ export default function ControlPanel({
  * Styles
  */
 const FilterTag = ({ children }: { children: ReactNode }) => (
-  <span className="px-2 py-1 text-sm font-medium text-white bg-gray-700 rounded-md">
+  <span className="flex items-center px-2 py-1 text-sm font-medium text-white bg-gray-700 rounded-md">
     {children}
   </span>
 );

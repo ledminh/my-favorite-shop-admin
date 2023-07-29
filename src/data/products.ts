@@ -18,16 +18,16 @@ const PRODUCTS: WithID<Product>[] = _getProducts(50);
  */
 
 type GetProductsParams = {
+  offset?: number;
+  limit?: number;
+
   sortBy: "name" | "price" | "createdAt" | "modifiedAt";
   order: "asc" | "desc";
-  filters?: {
-    variants?: boolean;
-    promotion?: boolean;
-    catID?: string;
-    searchTerm?: string;
-  };
-  limit?: number;
-  offset?: number;
+
+  catID: string;
+  searchTerm: string;
+
+  filter: "with-variants" | "with-promotion" | null;
 };
 
 type GetProducts = (params: GetProductsParams) => Promise<{
@@ -36,34 +36,32 @@ type GetProducts = (params: GetProductsParams) => Promise<{
 }>;
 
 export const getProducts: GetProducts = async ({
+  offset = 0,
+  limit = 10,
   sortBy,
   order,
-  filters,
-  limit = 10,
-  offset = 0,
+  catID,
+  searchTerm,
+  filter,
 }) => {
   let products = PRODUCTS;
 
-  if (filters) {
-    const { variants, promotion, catID, searchTerm } = filters;
+  if (filter === "with-variants") {
+    products = products.filter((product) => product.variants);
+  }
 
-    if (variants) {
-      products = products.filter((product) => product.variants);
-    }
+  if (filter === "with-promotion") {
+    products = products.filter((product) => product.promotion);
+  }
 
-    if (promotion) {
-      products = products.filter((product) => product.promotion);
-    }
+  if (catID) {
+    products = products.filter((product) => product.category.id === catID);
+  }
 
-    if (catID) {
-      products = products.filter((product) => product.category.id === catID);
-    }
-
-    if (searchTerm) {
-      products = products.filter((product) =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+  if (searchTerm) {
+    products = products.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   }
 
   if (sortBy === "name") {
@@ -108,11 +106,12 @@ export const getProducts: GetProducts = async ({
     });
   }
 
+  const total = products.length;
   products = products.slice(offset, offset + limit);
 
   return new Promise((resolve) => {
     resolve({
-      total: PRODUCTS.length,
+      total: total,
       items: products,
     });
   });

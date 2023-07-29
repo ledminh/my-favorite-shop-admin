@@ -9,8 +9,7 @@ import ControlPanel from "@/components/products/ControlPanel";
 
 type Props = {
   searchParams?: {
-    variants?: boolean;
-    promotion?: boolean;
+    filter?: "with-variants" | "with-promotion";
     catID?: string;
     searchTerm?: string;
     sortBy?: "name" | "price" | "createdAt" | "modifiedAt";
@@ -23,15 +22,8 @@ export default async function ProductsPage({ searchParams }: Props) {
   const _order = searchParams?.order || "asc";
   const _searchTerm = searchParams?.searchTerm || "";
   const _catID = searchParams?.catID || "";
-  const _variants = searchParams?.variants || false;
-  const _promotion = searchParams?.promotion || false;
 
-  const filters = {
-    variants: _variants,
-    promotion: _promotion,
-    catID: _catID,
-    searchTerm: _searchTerm,
-  };
+  const _filter = searchParams?.filter || null;
 
   const categoriesPromise = await getCategories({
     sortBy: "name",
@@ -43,7 +35,9 @@ export default async function ProductsPage({ searchParams }: Props) {
     limit: itemsPerPage,
     sortBy: _sortBy,
     order: _order,
-    filters,
+    catID: _catID,
+    searchTerm: _searchTerm,
+    filter: _filter,
   });
 
   const [{ items: categories }, { items: initProducts, total }] =
@@ -61,15 +55,15 @@ export default async function ProductsPage({ searchParams }: Props) {
           initSearchTerm={_searchTerm}
           sortByOptions={sortByOptions}
           filterOptions={filterOptions}
-          initFilterID={
-            _variants ? "with-variants" : _promotion ? "with-promotion" : null
-          }
+          initFilterID={_filter}
         />
       </div>
       <ProductList
         initProducts={initProducts}
         total={total}
-        filters={filters}
+        catID={_catID}
+        searchTerm={_searchTerm}
+        filter={_filter}
         sortBy={_sortBy}
         order={_order}
       />

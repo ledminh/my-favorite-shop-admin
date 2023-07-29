@@ -18,18 +18,17 @@ type Props = {
   total: number;
   sortBy: "name" | "price" | "createdAt" | "modifiedAt";
   order: "asc" | "desc";
-  filters: {
-    variants?: boolean;
-    promotion?: boolean;
-    catID?: string;
-    searchTerm?: string;
-  };
+  filter: "with-variants" | "with-promotion" | null;
+  catID: string;
+  searchTerm: string;
 };
 
 export default function ProductList({
   initProducts,
   total,
-  filters,
+  filter,
+  catID,
+  searchTerm,
   sortBy,
   order,
 }: Props) {
@@ -42,11 +41,14 @@ export default function ProductList({
         limit: itemsPerPage,
         sortBy,
         order,
+        filter,
+        catID,
+        searchTerm,
       });
 
       setInitProducts(items);
     })();
-  }, [sortBy, order]);
+  }, [sortBy, order, filter, catID, searchTerm]);
 
   const getImage = (item: ProductType) => {
     const mainImage = item.images.find(
@@ -70,7 +72,9 @@ export default function ProductList({
     const { items } = await getProducts({
       offset,
       limit,
-      filters,
+      filter,
+      catID,
+      searchTerm,
       sortBy,
       order,
     });

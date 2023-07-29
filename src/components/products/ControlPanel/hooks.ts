@@ -60,12 +60,14 @@ export default function useControlPanel({
     params.set("sortBy", sortByID);
     params.set("order", orderID);
 
-    params.set("searchTerm", searchTerm);
+    if (searchTerm !== "") params.set("searchTerm", searchTerm);
+    else params.delete("searchTerm");
 
     if (filterID !== null) params.set("filter", filterID);
+    else params.delete("filter");
 
     router.push(`${pathname}?${params.toString()}`);
-  }, [sortByID, orderID, searchTerm]);
+  }, [sortByID, orderID, searchTerm, filterID]);
 
   /*********************
    * Public
