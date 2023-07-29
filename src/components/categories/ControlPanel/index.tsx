@@ -3,12 +3,10 @@
 import Sorts from "@/components/Sorts";
 import SearchBar from "@/components/SearchBar";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
 import { ReactNode } from "react";
+import useControlPanel from "./hooks";
 
 type Props = {
   initSortBy: "name" | "createdAt" | "modifiedAt";
@@ -30,43 +28,19 @@ export default function ControlPanel({
   initSearchTerm,
   sortByOptions,
 }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  // States
-  const [sortByID, setSortByID] = useState(initSortBy);
-
-  const [orderOptions, setOrderOptions] = useState(
-    sortByOptions.find((option) => option.id === initSortBy)?.orderOptions ||
-      sortByOptions[0].orderOptions
-  );
-
-  const [orderID, setOrderID] = useState(initOrder);
-
-  const [searchTerm, setSearchTerm] = useState(initSearchTerm);
-
-  const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
-  const onClearSearch = () => setSearchTerm("");
-
-  // Effects
-  useEffect(() => {
-    const orderOptions = sortByOptions.find((option) => option.id === sortByID);
-
-    if (orderOptions) {
-      setOrderOptions(orderOptions.orderOptions);
-    }
-  }, [sortByID]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("sortBy", sortByID);
-    params.set("order", orderID);
-
-    params.set("searchTerm", searchTerm);
-
-    router.push(`${pathname}?${params.toString()}`);
-  }, [sortByID, orderID, searchTerm]);
+  const {
+    searchTerm,
+    onClearSearch,
+    onSearch,
+    setSortByID,
+    setOrderID,
+    orderOptions,
+  } = useControlPanel({
+    initSortBy,
+    initOrder,
+    initSearchTerm,
+    sortByOptions,
+  });
 
   return (
     <>

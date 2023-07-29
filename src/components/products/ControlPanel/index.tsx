@@ -26,11 +26,12 @@ export default function ControlPanel({
   initSortBy,
   initOrder,
 }: Props) {
-  const { onSearch, setSortByID, setOrderID, orderOptions } = useControlPanel({
-    initSortBy,
-    initOrder,
-    sortByOptions,
-  });
+  const { onSearch, onClearSearch, setSortByID, setOrderID, orderOptions } =
+    useControlPanel({
+      initSortBy,
+      initOrder,
+      sortByOptions,
+    });
 
   return (
     <>

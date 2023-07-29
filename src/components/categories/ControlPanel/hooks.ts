@@ -1,12 +1,12 @@
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-
 type Props = {
-  initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
+  initSortBy: "name" | "createdAt" | "modifiedAt";
   initOrder: "asc" | "desc";
+  initSearchTerm: string;
   sortByOptions: {
-    id: "name" | "price" | "createdAt" | "modifiedAt";
+    id: "name" | "createdAt" | "modifiedAt";
     text: string;
     orderOptions: {
       id: "asc" | "desc";
@@ -18,9 +18,10 @@ type Props = {
 export default function useControlPanel({
   initSortBy,
   initOrder,
+  initSearchTerm,
   sortByOptions,
 }: Props) {
-  /*********************
+  /******************
    * Private
    */
 
@@ -31,13 +32,15 @@ export default function useControlPanel({
 
   // States
   const [sortByID, setSortByID] = useState(initSortBy);
-  const [orderID, setOrderID] = useState(initOrder);
-  const [searchTerm, setSearchTerm] = useState("");
 
   const [orderOptions, setOrderOptions] = useState(
     sortByOptions.find((option) => option.id === initSortBy)?.orderOptions ||
       sortByOptions[0].orderOptions
   );
+
+  const [orderID, setOrderID] = useState(initOrder);
+
+  const [searchTerm, setSearchTerm] = useState(initSearchTerm);
 
   // Effects
   useEffect(() => {
@@ -65,8 +68,9 @@ export default function useControlPanel({
   const onClearSearch = () => setSearchTerm("");
 
   return {
-    onSearch,
+    searchTerm,
     onClearSearch,
+    onSearch,
     setSortByID,
     setOrderID,
     orderOptions,
