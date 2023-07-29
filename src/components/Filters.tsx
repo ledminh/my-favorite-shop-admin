@@ -4,20 +4,17 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { FunnelIcon } from "@heroicons/react/20/solid";
 
-import { useState } from "react";
-
 import classNames from "@/utils/classNames";
 
-type Props = {
+type Props<T> = {
   filterOptions: {
-    id: "with-variants" | "with-promotion";
+    id: T;
     text: string;
   }[];
+  onChange: (filter: T | null) => void;
 };
 
-export default function Filters({ filterOptions }: Props) {
-  const [filter, setFilter] = useState<string | null>(null);
-
+export default function Filters<T>({ filterOptions, onChange }: Props<T>) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Header />
@@ -35,7 +32,7 @@ export default function Filters({ filterOptions }: Props) {
             <Menu.Item key="none">
               {({ active }) => (
                 <button
-                  onClick={() => setFilter(null)}
+                  onClick={() => onChange(null)}
                   className={classNames(
                     active ? "bg-gray-400 text-gray-950" : "text-gray-700",
                     "block px-4 py-2 text-sm w-full text-left"
@@ -49,12 +46,7 @@ export default function Filters({ filterOptions }: Props) {
               <Menu.Item key={option.text}>
                 {({ active }) => (
                   <button
-                    onClick={() => {
-                      setFilter(
-                        filterOptions.find((o) => o.text === option.text)
-                          ?.text || null
-                      );
-                    }}
+                    onClick={() => onChange(option.id)}
                     className={classNames(
                       active ? "bg-gray-400 text-gray-950" : "text-gray-700",
                       "block px-4 py-2 text-sm w-full text-left"

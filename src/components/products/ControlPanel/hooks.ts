@@ -14,6 +14,8 @@ type Props = {
       text: string;
     }[];
   }[];
+
+  initFilterID: "with-variants" | "with-promotion" | null;
 };
 
 export default function useControlPanel({
@@ -21,6 +23,7 @@ export default function useControlPanel({
   initOrder,
   initSearchTerm,
   sortByOptions,
+  initFilterID,
 }: Props) {
   /*********************
    * Private
@@ -32,6 +35,7 @@ export default function useControlPanel({
   const searchParams = useSearchParams();
 
   // States
+  const [filterID, setFilterID] = useState(initFilterID);
   const [sortByID, setSortByID] = useState(initSortBy);
   const [orderID, setOrderID] = useState(initOrder);
 
@@ -58,6 +62,8 @@ export default function useControlPanel({
 
     params.set("searchTerm", searchTerm);
 
+    if (filterID !== null) params.set("filter", filterID);
+
     router.push(`${pathname}?${params.toString()}`);
   }, [sortByID, orderID, searchTerm]);
 
@@ -66,13 +72,17 @@ export default function useControlPanel({
    */
   const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
   const onClearSearch = () => setSearchTerm("");
-
+  const onFilterChange = (
+    filterID: "with-variants" | "with-promotion" | null
+  ) => setFilterID(filterID);
   return {
+    filterID,
     searchTerm,
     onSearch,
     onClearSearch,
     setSortByID,
     setOrderID,
     orderOptions,
+    onFilterChange,
   };
 }

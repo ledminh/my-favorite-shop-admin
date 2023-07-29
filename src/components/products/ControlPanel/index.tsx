@@ -13,8 +13,7 @@ import useControlPanel from "./hooks";
 type Props = {
   initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
   initOrder: "asc" | "desc";
-  variants: boolean;
-  promotion: boolean;
+
   initSearchTerm: string;
   sortByOptions: {
     id: "name" | "price" | "createdAt" | "modifiedAt";
@@ -28,48 +27,55 @@ type Props = {
     id: "with-variants" | "with-promotion";
     text: string;
   }[];
+  initFilterID: "with-variants" | "with-promotion" | null;
 };
 
 export default function ControlPanel({
   initSortBy,
   initOrder,
-  variants,
-  promotion,
   initSearchTerm,
   sortByOptions,
   filterOptions,
+  initFilterID,
 }: Props) {
   const {
+    filterID,
     searchTerm,
     onSearch,
     onClearSearch,
     setSortByID,
     setOrderID,
     orderOptions,
+    onFilterChange,
   } = useControlPanel({
     initSortBy,
     initOrder,
     initSearchTerm,
     sortByOptions,
+    initFilterID,
   });
 
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-        {(searchTerm !== "" || variants || promotion) && (
+        {(searchTerm !== "" || filterID !== null) && (
           <div className="p-2 bg-gray-200 rounded-lg basis-full">
             {searchTerm !== "" && (
               <SearchTermTag onClearSearch={onClearSearch}>
                 {searchTerm}
               </SearchTermTag>
             )}
-            {variants && <FilterTag>with Variants</FilterTag>}
-            {promotion && <FilterTag>with Promotion</FilterTag>}
+            {filterID === "with-variants" && (
+              <FilterTag>with Variants</FilterTag>
+            )}
+            {filterID === "with-promotion" && (
+              <FilterTag>with Promotion</FilterTag>
+            )}
           </div>
         )}
 
         <div className="basis-[30px]">
-          <Filters filterOptions={filterOptions} />
+          <Filters filterOptions={filterOptions} onChange={onFilterChange} />
         </div>
         <div className="basis-[calc(100%-60px)] md:basis-[calc(47%-60px)]">
           <SearchBar onSearch={onSearch} />

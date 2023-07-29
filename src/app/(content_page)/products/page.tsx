@@ -58,11 +58,12 @@ export default async function ProductsPage({ searchParams }: Props) {
         <ControlPanel
           initSortBy={_sortBy}
           initOrder={_order}
-          variants={_variants}
-          promotion={_promotion}
           initSearchTerm={_searchTerm}
           sortByOptions={sortByOptions}
           filterOptions={filterOptions}
+          initFilterID={
+            _variants ? "with-variants" : _promotion ? "with-promotion" : null
+          }
         />
       </div>
       <ProductList
