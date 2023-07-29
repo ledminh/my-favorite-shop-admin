@@ -111,6 +111,12 @@ export default function CatProdList<T>({
           )
         }
         <ul className="flex flex-col gap-y-4 md:flex-row md:flex-wrap md:justify-start md:gap-x-[4%] lg:gap-x-[3.5%] xl:gap-x-[2.66%]">
+          <li
+            key={"add-new"}
+            className="overflow-hidden border rounded-lg border-blue-950 md:basis-[48%] lg:basis-[31%] xl:basis-[23%]"
+          >
+            <button>ADD NEW</button>
+          </li>
           {items.map((item) => {
             return (
               <li
