@@ -19,16 +19,16 @@ type Props = {
 };
 
 export default async function ProductsPage({ searchParams }: Props) {
-  const { variants, promotion } = searchParams || {};
-
   const _sortBy = searchParams?.sortBy || "name";
   const _order = searchParams?.order || "asc";
   const _searchTerm = searchParams?.searchTerm || "";
   const _catID = searchParams?.catID || "";
+  const _variants = searchParams?.variants || false;
+  const _promotion = searchParams?.promotion || false;
 
   const filters = {
-    variants: variants || false,
-    promotion: promotion || false,
+    variants: _variants,
+    promotion: _promotion,
     catID: _catID,
     searchTerm: _searchTerm,
   };
@@ -58,8 +58,11 @@ export default async function ProductsPage({ searchParams }: Props) {
         <ControlPanel
           initSortBy={_sortBy}
           initOrder={_order}
+          variants={_variants}
+          promotion={_promotion}
           initSearchTerm={_searchTerm}
           sortByOptions={sortByOptions}
+          filterOptions={filterOptions}
         />
       </div>
       <ProductList
@@ -140,5 +143,19 @@ const sortByOptions: {
         text: "Newest to Oldest",
       },
     ],
+  },
+];
+
+const filterOptions: {
+  id: "with-variants" | "with-promotion";
+  text: string;
+}[] = [
+  {
+    id: "with-variants",
+    text: "With Variants",
+  },
+  {
+    id: "with-promotion",
+    text: "With Promotion",
   },
 ];

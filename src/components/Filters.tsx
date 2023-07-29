@@ -8,7 +8,14 @@ import { useState } from "react";
 
 import classNames from "@/utils/classNames";
 
-export default function Filters() {
+type Props = {
+  filterOptions: {
+    id: "with-variants" | "with-promotion";
+    text: string;
+  }[];
+};
+
+export default function Filters({ filterOptions }: Props) {
   const [filter, setFilter] = useState<string | null>(null);
 
   return (
@@ -38,13 +45,13 @@ export default function Filters() {
                 </button>
               )}
             </Menu.Item>
-            {FilterOptions.map((option) => (
+            {filterOptions.map((option) => (
               <Menu.Item key={option.text}>
                 {({ active }) => (
                   <button
                     onClick={() => {
                       setFilter(
-                        FilterOptions.find((o) => o.text === option.text)
+                        filterOptions.find((o) => o.text === option.text)
                           ?.text || null
                       );
                     }}
@@ -77,17 +84,3 @@ const Header = () => (
     </Menu.Button>
   </div>
 );
-
-/*************************
- * Data
- */
-const FilterOptions = [
-  {
-    id: "with-variants",
-    text: "With Variants",
-  },
-  {
-    id: "with-promotion",
-    text: "With Promotion",
-  },
-];

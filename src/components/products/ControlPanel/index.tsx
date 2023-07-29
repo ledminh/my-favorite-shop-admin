@@ -13,6 +13,8 @@ import useControlPanel from "./hooks";
 type Props = {
   initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
   initOrder: "asc" | "desc";
+  variants: boolean;
+  promotion: boolean;
   initSearchTerm: string;
   sortByOptions: {
     id: "name" | "price" | "createdAt" | "modifiedAt";
@@ -22,13 +24,20 @@ type Props = {
       text: string;
     }[];
   }[];
+  filterOptions: {
+    id: "with-variants" | "with-promotion";
+    text: string;
+  }[];
 };
 
 export default function ControlPanel({
-  sortByOptions,
   initSortBy,
-  initSearchTerm,
   initOrder,
+  variants,
+  promotion,
+  initSearchTerm,
+  sortByOptions,
+  filterOptions,
 }: Props) {
   const {
     searchTerm,
@@ -47,25 +56,20 @@ export default function ControlPanel({
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-        {searchTerm !== "" && (
+        {(searchTerm !== "" || variants || promotion) && (
           <div className="p-2 bg-gray-200 rounded-lg basis-full">
             {searchTerm !== "" && (
               <SearchTermTag onClearSearch={onClearSearch}>
                 {searchTerm}
               </SearchTermTag>
             )}
+            {variants && <FilterTag>with Variants</FilterTag>}
+            {promotion && <FilterTag>with Promotion</FilterTag>}
           </div>
         )}
 
-        {/* {variants ||
-          (promotion && (
-            
-              {variants && <FilterTag>with Variants</FilterTag>}
-              {promotion && <FilterTag>with Promotion</FilterTag>}
-            </div>
-          ))} */}
         <div className="basis-[30px]">
-          <Filters />
+          <Filters filterOptions={filterOptions} />
         </div>
         <div className="basis-[calc(100%-60px)] md:basis-[calc(47%-60px)]">
           <SearchBar onSearch={onSearch} />
