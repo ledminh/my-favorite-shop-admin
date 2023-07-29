@@ -1,3 +1,5 @@
+import Variants from "./Variants";
+
 import {
   Product as ProductType,
   Promotion as PromotionType,
@@ -10,9 +12,9 @@ type Props = {
 const CardContent = ({ item }: Props) => {
   return (
     <>
+      <Content item={item} />
       {item.variants && <Variants variants={item.variants} />}
       {item.promotion && <Promotion promotion={item.promotion} />}
-      <Content item={item} />
     </>
   );
 };
@@ -34,21 +36,6 @@ const Content = ({ item }: Props) => {
 
       <h2 className="text-lg font-semibold">{item.name}</h2>
     </div>
-  );
-};
-
-const Variants = ({ variants }: { variants: VariantType[] }) => {
-  return (
-    <ul className="overflow-y-scroll border-2 border-red-800 max-h-12">
-      {variants.map((variant: VariantType) => (
-        <li key={variant.id} className="flex justify-between">
-          <h3 className="text-sm font-semibold">{variant.name}</h3>
-          <p className="text-sm font-semibold text-blue-900">
-            <span>Price:</span> <span>${variant.price}</span>
-          </p>
-        </li>
-      ))}
-    </ul>
   );
 };
 
