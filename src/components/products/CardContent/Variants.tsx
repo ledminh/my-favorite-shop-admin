@@ -24,9 +24,12 @@ export default Variants;
  */
 const List = ({ variants }: Props) => {
   return (
-    <ul className="overflow-y-scroll border-2 border-red-800 max-h-12">
+    <ul className="px-4 py-1 overflow-y-scroll bg-gray-300 border-2 rounded-full border-blue-950 max-h-12">
       {variants.map((variant: VariantType) => (
-        <li key={variant.id} className="flex justify-between">
+        <li
+          key={variant.id}
+          className="flex justify-between py-2 border-b border-b-blue-950"
+        >
           <h3 className="text-sm font-semibold">{variant.name}</h3>
           <p className="text-sm font-semibold text-blue-900">
             <span>Price:</span> <span>${variant.price}</span>

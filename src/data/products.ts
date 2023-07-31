@@ -190,7 +190,7 @@ export function _getProducts(num: number): WithID<Product>[] {
       products[i].variants = [
         {
           id: "variant-1",
-          name: "Variant 1",
+          name: "A very long name variant, too long to display in only 1 line",
           price: 10,
           image: {
             src: `https://picsum.photos/seed/${i + 1}/300/300`,

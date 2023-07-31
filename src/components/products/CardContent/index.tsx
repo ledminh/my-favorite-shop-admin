@@ -41,10 +41,7 @@ const Content = ({ item }: Props) => {
 
 const Promotion = ({ promotion }: { promotion: PromotionType }) => {
   return (
-    <div className="absolute top-0 right-0 flex justify-between gap-2 pr-2 overflow-hidden text-sm text-white rounded-bl-md bg-blue-950/90 sm:text-base sm:bg-blue-950">
-      <span className="px-2 font-bold bg-red-950/90 sm:bg-red-950">
-        PROMOTION
-      </span>
+    <div className="absolute top-0 right-0 px-2 overflow-hidden text-sm text-white rounded-bl-md bg-blue-950 sm:text-base sm:bg-gray-950/80">
       {promotion.type === "discount" && (
         <p>
           <span>Discount:</span> <span>${promotion.discountPercent}%</span>
