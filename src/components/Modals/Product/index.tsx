@@ -18,18 +18,30 @@ export type OnSubmitProps = {
   description: string;
 };
 
-type Props = {
+export type Props = (
+  | {
+      // Add New Product (user can choose category)
+      type: "add";
+      catName?: undefined;
+      categories: WithID<Category>[];
+    }
+  | {
+      // Edit Product (user cannot change category)
+      type: "edit" | "delete";
+      catName: string;
+      categories?: undefined;
+    }
+) & {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: (isOpen: boolean) => void;
   title: string;
-  categories: WithID<Category>[];
   submitButton: {
     text: string;
     className: string;
     disabledClassName: string;
   };
   onSubmit: (props: OnSubmitProps) => void;
-  initCatID?: string;
+
   initSerial?: string;
   initName?: string;
   initPriceStr?: string;
@@ -37,21 +49,8 @@ type Props = {
   initDescription?: string;
   initImage?: File | null;
 };
-export default function ProductModal({
-  isOpen,
-  setIsOpen,
-  title,
-  categories,
-  submitButton,
-  onSubmit,
-  initSerial,
-  initCatID,
-  initName,
-  initPriceStr,
-  initIntro,
-  initDescription,
-  initImage,
-}: Props) {
+
+export default function ProductModal(props: Props) {
   const {
     categoryID,
     serial,
@@ -68,18 +67,9 @@ export default function ProductModal({
     onDescriptionChange,
     setImage,
     additionalButtons,
-  } = useProductModal({
-    categories,
-    submitButton,
-    onSubmit,
-    initSerial,
-    initCatID,
-    initName,
-    initPriceStr,
-    initIntro,
-    initDescription,
-    initImage,
-  });
+  } = useProductModal(props);
+
+  const { isOpen, setIsOpen, title, type, catName, categories } = props;
 
   return (
     <Modal
@@ -91,16 +81,28 @@ export default function ProductModal({
       <div className="flex flex-col gap-4 max-h-[70vh] overflow-y-scroll px-6">
         <div className="flex flex-col gap-2">
           <label htmlFor="category">Category</label>
-          <Select
-            id="category"
-            options={categories.map((category) => ({
-              id: category.id,
-              text: category.name,
-            }))}
-            defaultValue={categories[0].id}
-            value={categoryID}
-            onChange={(id) => onCategoryChange(id)}
-          />
+          {type === "add" && (
+            <Select
+              id="category"
+              options={categories.map((category) => ({
+                id: category.id,
+                text: category.name,
+              }))}
+              defaultValue={categories[0].id}
+              value={categoryID}
+              onChange={(id) => onCategoryChange(id)}
+            />
+          )}
+          {type === "edit" && (
+            <input
+              type="text"
+              name="category"
+              id="category"
+              value={catName}
+              disabled
+              className="p-2 bg-gray-300 border rounded-lg border-blue-950"
+            />
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="name">Serial #</label>

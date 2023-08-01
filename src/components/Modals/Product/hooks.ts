@@ -1,30 +1,13 @@
 import { Category as CategoryType, WithID } from "@/types";
 
 import { useState } from "react";
-import { OnSubmitProps } from "./";
-
-type Props = {
-  categories: WithID<CategoryType>[];
-  submitButton: {
-    text: string;
-    className: string;
-    disabledClassName: string;
-  };
-  onSubmit: (props: OnSubmitProps) => void;
-  initCatID?: string;
-  initSerial?: string;
-  initName?: string;
-  initPriceStr?: string;
-  initIntro?: string;
-  initDescription?: string;
-  initImage?: File | null;
-};
+import { Props } from "./";
 
 export default function useProductModal({
+  type,
   categories,
   submitButton,
   onSubmit,
-  initCatID,
   initSerial,
   initName,
   initPriceStr,
@@ -37,7 +20,7 @@ export default function useProductModal({
    */
 
   const [categoryID, setCategoryID] = useState<string>(
-    initCatID || categories[0].id
+    type === "add" ? categories[0].id : ""
   );
   const [serial, setSerial] = useState<string>(initSerial || "");
   const [name, setName] = useState<string>(initName || "");
@@ -48,7 +31,7 @@ export default function useProductModal({
   const [image, setImage] = useState<File | null>(initImage || null);
 
   const reset = () => {
-    setCategoryID(categories[0].id);
+    setCategoryID(categories ? categories[0].id : "");
     setSerial("");
     setName("");
     setPriceStr("");

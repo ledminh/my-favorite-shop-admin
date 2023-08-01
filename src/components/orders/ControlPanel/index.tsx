@@ -4,6 +4,9 @@ import Filters from "@/components/Filters";
 import Sorts from "@/components/Sorts";
 import SearchBar from "@/components/SearchBar";
 
+import SearchTermTag from "@/components/SearchTermTag";
+import FilterTag from "@/components/FilterTag";
+
 import { ReactNode } from "react";
 
 import useControlPanel from "./hooks";
@@ -11,6 +14,8 @@ import useControlPanel from "./hooks";
 type Props = {
   initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
   initOrder: "asc" | "desc";
+  initSearchTerm: string;
+
   sortByOptions: {
     id: "name" | "price" | "createdAt" | "modifiedAt";
     text: string;
@@ -19,31 +24,62 @@ type Props = {
       text: string;
     }[];
   }[];
+  filterOptions: {
+    id: "with-variants" | "with-promotion";
+    text: string;
+  }[];
+  initFilterID: "with-variants" | "with-promotion" | null;
 };
 
 export default function ControlPanel({
-  sortByOptions,
   initSortBy,
   initOrder,
+  initSearchTerm,
+  sortByOptions,
+  filterOptions,
+  initFilterID,
 }: Props) {
-  const { onSearch, setSortByID, setOrderID, orderOptions } = useControlPanel({
+  const {
+    filterID,
+    searchTerm,
+    onSearch,
+    onClearSearch,
+    setSortByID,
+    setOrderID,
+    orderOptions,
+    onFilterChange,
+  } = useControlPanel({
     initSortBy,
     initOrder,
+    initSearchTerm,
     sortByOptions,
+    initFilterID,
   });
 
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-        {/* {variants ||
-          (promotion && (
-            <div className="p-2 bg-gray-200 rounded-lg basis-full">
-              {variants && <FilterTag>with Variants</FilterTag>}
-              {promotion && <FilterTag>with Promotion</FilterTag>}
-            </div>
-          ))} */}
+        {(searchTerm !== "" || filterID !== null) && (
+          <div className="flex gap-2 p-2 bg-gray-200 rounded-lg basis-full">
+            {searchTerm !== "" && (
+              <SearchTermTag onClearSearch={onClearSearch}>
+                {searchTerm}
+              </SearchTermTag>
+            )}
+            {filterID === "with-variants" && (
+              <FilterTag onClearFilter={() => onFilterChange(null)}>
+                with Variants
+              </FilterTag>
+            )}
+            {filterID === "with-promotion" && (
+              <FilterTag onClearFilter={() => onFilterChange(null)}>
+                with Promotion
+              </FilterTag>
+            )}
+          </div>
+        )}
         <div className="basis-[30px]">
-          <Filters />
+          <Filters filterOptions={filterOptions} onChange={onFilterChange} />
         </div>
         <div className="basis-[calc(100%-60px)] md:basis-[calc(47%-60px)]">
           <SearchBar onSearch={onSearch} />
@@ -60,12 +96,3 @@ export default function ControlPanel({
     </>
   );
 }
-
-/***********************
- * Styles
- */
-const FilterTag = ({ children }: { children: ReactNode }) => (
-  <span className="px-2 py-1 text-sm font-medium text-white bg-gray-700 rounded-md">
-    {children}
-  </span>
-);

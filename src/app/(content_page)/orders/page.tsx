@@ -6,7 +6,9 @@ import { itemsPerPage } from "@/config";
 
 type Props = {
   searchParams?: {
-    sortBy?: "name" | "createdAt" | "modifiedAt";
+    filter?: "with-variants" | "with-promotion";
+    searchTerm?: string;
+    sortBy?: "name" | "price" | "createdAt" | "modifiedAt";
     order?: "asc" | "desc";
   };
 };
@@ -14,6 +16,9 @@ type Props = {
 export default async function OrdersPage({ searchParams }: Props) {
   const _sortBy = searchParams?.sortBy || "name";
   const _order = searchParams?.order || "asc";
+  const _searchTerm = searchParams?.searchTerm || "";
+
+  const _filter = searchParams?.filter || null;
 
   const { items: initOrders, total } = await getOrders({
     offset: 0,
@@ -26,7 +31,10 @@ export default async function OrdersPage({ searchParams }: Props) {
       <ControlPanel
         initSortBy={_sortBy}
         initOrder={_order}
+        initSearchTerm={_searchTerm}
         sortByOptions={sortByOptions}
+        filterOptions={filterOptions}
+        initFilterID={_filter}
       />
       <OrderList initOrders={initOrders} total={total} />
     </div>
@@ -86,5 +94,19 @@ const sortByOptions: {
         text: "Newest to Oldest",
       },
     ],
+  },
+];
+
+const filterOptions: {
+  id: "with-variants" | "with-promotion";
+  text: string;
+}[] = [
+  {
+    id: "with-variants",
+    text: "With Variants",
+  },
+  {
+    id: "with-promotion",
+    text: "With Promotion",
   },
 ];
