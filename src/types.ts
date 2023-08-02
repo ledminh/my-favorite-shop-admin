@@ -95,6 +95,7 @@ export type Order = {
   paymentInfo: PaymentInfo;
   status: OrderStatus;
   createdAt: Date;
+  modifiedAt: Date;
 };
 
 /***********************

@@ -9,21 +9,27 @@ import {
   WithID,
 } from "@/types";
 import { _getProducts } from "./products";
+import { get } from "http";
+import getOrderPrice from "@/utils/getOrderPrice";
 
 const ORDERS = _getOrders(200);
 
 type getOrdersProps = {
   offset: number;
   limit: number;
-  status?: OrderStatus;
-  sortedOrder: "newest" | "oldest";
+  sortBy: "customer" | "price" | "createdAt" | "modifiedAt";
+  sortedOrder: "asc" | "desc";
+  searchTerm?: string;
+  filter: OrderStatus | null;
 };
 
 export function getOrders({
   offset,
   limit,
-  status,
+  sortBy,
   sortedOrder,
+  searchTerm,
+  filter,
 }: getOrdersProps): Promise<{ items: WithID<Order>[]; total: number }> {
   if (limit === 0) {
     return new Promise((resolve) =>
@@ -36,19 +42,59 @@ export function getOrders({
 
   let orders = ORDERS;
 
-  if (status) {
-    orders = orders.filter((order) => order.status === status);
+  if (searchTerm) {
+    orders = orders.filter(
+      (order) =>
+        order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        getCustomerName(order)
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        order.shippingAddress.streetAddress
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        order.shippingAddress.city
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        order.shippingAddress.state
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        order.shippingAddress.zip
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        order.shippingAddress.email
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        order.shippingAddress.phone
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+    );
   }
 
-  if (sortedOrder === "newest") {
-    orders = orders.sort(
-      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+  if (filter) {
+    orders = orders.filter((order) => order.status === filter);
+  }
+
+  if (sortBy === "customer") {
+    orders = orders.sort((a, b) =>
+      getCustomerName(a).localeCompare(getCustomerName(b))
     );
-  } else if (sortedOrder === "oldest") {
+  } else if (sortBy === "price") {
+    orders = orders.sort((a, b) => getOrderPrice(a) - getOrderPrice(b));
+  } else if (sortBy === "createdAt") {
     orders = orders.sort(
       (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
     );
+  } else if (sortBy === "modifiedAt") {
+    orders = orders.sort(
+      (a, b) => a.modifiedAt.getTime() - b.modifiedAt.getTime()
+    );
   }
+
+  if (sortedOrder === "desc") {
+    orders = orders.reverse();
+  }
+
+  const total = orders.length;
 
   if (offset) {
     orders = orders.slice(offset);
@@ -61,7 +107,7 @@ export function getOrders({
   return new Promise((resolve) =>
     resolve({
       items: orders,
-      total: ORDERS.length,
+      total,
     })
   );
 }
@@ -116,6 +162,7 @@ function _getOrders(num: number): WithID<Order>[] {
       paymentInfo: getPaymentInfo(),
       status: getRandomStatus(),
       createdAt: getRandomDate(),
+      modifiedAt: getRandomDate(),
     };
 
     if (i === 0) {
@@ -246,4 +293,8 @@ function getRandomDate() {
   const newDiff = diff * Math.random();
   const date = new Date(start.getTime() + newDiff);
   return date;
+}
+
+function getCustomerName(order: WithID<Order>): string {
+  return `${order.shippingAddress.firstName} ${order.shippingAddress.lastName}`;
 }

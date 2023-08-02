@@ -4,12 +4,12 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { OrderStatus } from "@/types";
 
 type Props = {
-  initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
+  initSortBy: "customer" | "price" | "createdAt" | "modifiedAt";
   initOrder: "asc" | "desc";
   initSearchTerm: string;
 
   sortByOptions: {
-    id: "name" | "price" | "createdAt" | "modifiedAt";
+    id: "customer" | "price" | "createdAt" | "modifiedAt";
     text: string;
     orderOptions: {
       id: "asc" | "desc";

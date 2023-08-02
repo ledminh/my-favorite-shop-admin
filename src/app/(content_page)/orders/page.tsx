@@ -9,13 +9,13 @@ type Props = {
   searchParams?: {
     filter?: OrderStatus;
     searchTerm?: string;
-    sortBy?: "name" | "price" | "createdAt" | "modifiedAt";
+    sortBy?: "customer" | "price" | "createdAt" | "modifiedAt";
     order?: "asc" | "desc";
   };
 };
 
 export default async function OrdersPage({ searchParams }: Props) {
-  const _sortBy = searchParams?.sortBy || "name";
+  const _sortBy = searchParams?.sortBy || "customer";
   const _order = searchParams?.order || "asc";
   const _searchTerm = searchParams?.searchTerm || "";
 
@@ -24,7 +24,10 @@ export default async function OrdersPage({ searchParams }: Props) {
   const { items: initOrders, total } = await getOrders({
     offset: 0,
     limit: itemsPerPage,
-    sortedOrder: "newest",
+    sortBy: _sortBy,
+    sortedOrder: _order,
+    searchTerm: _searchTerm,
+    filter: _filter,
   });
 
   return (
@@ -47,7 +50,7 @@ export default async function OrdersPage({ searchParams }: Props) {
  */
 
 const sortByOptions: {
-  id: "name" | "createdAt" | "modifiedAt";
+  id: "customer" | "price" | "createdAt" | "modifiedAt";
   text: string;
   orderOptions: {
     id: "asc" | "desc";
@@ -55,8 +58,8 @@ const sortByOptions: {
   }[];
 }[] = [
   {
-    id: "name",
-    text: "Name",
+    id: "customer",
+    text: "Customer's Name",
     orderOptions: [
       {
         id: "asc",
@@ -65,6 +68,20 @@ const sortByOptions: {
       {
         id: "desc",
         text: "Z to A",
+      },
+    ],
+  },
+  {
+    id: "price",
+    text: "Price",
+    orderOptions: [
+      {
+        id: "asc",
+        text: "Lowest to Highest",
+      },
+      {
+        id: "desc",
+        text: "Highest to Lowest",
       },
     ],
   },
