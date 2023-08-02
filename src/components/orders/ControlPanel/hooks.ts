@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { OrderStatus } from "@/types";
 
 type Props = {
   initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
@@ -15,7 +16,7 @@ type Props = {
       text: string;
     }[];
   }[];
-  initFilterID: "with-variants" | "with-promotion" | null;
+  initFilterID: OrderStatus | null;
 };
 
 export default function useControlPanel({
@@ -70,9 +71,8 @@ export default function useControlPanel({
    */
   const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
   const onClearSearch = () => setSearchTerm("");
-  const onFilterChange = (
-    filterID: "with-variants" | "with-promotion" | null
-  ) => setFilterID(filterID);
+  const onFilterChange = (filterID: OrderStatus | null) =>
+    setFilterID(filterID);
 
   return {
     filterID,

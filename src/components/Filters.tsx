@@ -12,9 +12,14 @@ type Props<T> = {
     text: string;
   }[];
   onChange: (filter: T | null) => void;
+  allText?: string;
 };
 
-export default function Filters<T>({ filterOptions, onChange }: Props<T>) {
+export default function Filters<T>({
+  filterOptions,
+  onChange,
+  allText,
+}: Props<T>) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Header />
@@ -38,7 +43,7 @@ export default function Filters<T>({ filterOptions, onChange }: Props<T>) {
                     "block px-4 py-2 text-sm w-full text-left"
                   )}
                 >
-                  None
+                  {allText ?? "All"}
                 </button>
               )}
             </Menu.Item>

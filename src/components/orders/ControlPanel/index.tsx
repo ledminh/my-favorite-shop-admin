@@ -10,6 +10,7 @@ import FilterTag from "@/components/FilterTag";
 import { ReactNode } from "react";
 
 import useControlPanel from "./hooks";
+import { OrderStatus } from "@/types";
 
 type Props = {
   initSortBy: "name" | "price" | "createdAt" | "modifiedAt";
@@ -25,10 +26,10 @@ type Props = {
     }[];
   }[];
   filterOptions: {
-    id: "with-variants" | "with-promotion";
+    id: OrderStatus;
     text: string;
   }[];
-  initFilterID: "with-variants" | "with-promotion" | null;
+  initFilterID: OrderStatus | null;
 };
 
 export default function ControlPanel({
@@ -66,14 +67,9 @@ export default function ControlPanel({
                 {searchTerm}
               </SearchTermTag>
             )}
-            {filterID === "with-variants" && (
+            {filterID !== null && (
               <FilterTag onClearFilter={() => onFilterChange(null)}>
-                with Variants
-              </FilterTag>
-            )}
-            {filterID === "with-promotion" && (
-              <FilterTag onClearFilter={() => onFilterChange(null)}>
-                with Promotion
+                {filterOptions.find((option) => option.id === filterID)?.text}
               </FilterTag>
             )}
           </div>

@@ -3,10 +3,11 @@ import OrderList from "@/components/orders/OrderList";
 import ControlPanel from "@/components/orders/ControlPanel";
 
 import { itemsPerPage } from "@/config";
+import { OrderStatus } from "@/types";
 
 type Props = {
   searchParams?: {
-    filter?: "with-variants" | "with-promotion";
+    filter?: OrderStatus;
     searchTerm?: string;
     sortBy?: "name" | "price" | "createdAt" | "modifiedAt";
     order?: "asc" | "desc";
@@ -98,15 +99,19 @@ const sortByOptions: {
 ];
 
 const filterOptions: {
-  id: "with-variants" | "with-promotion";
+  id: OrderStatus;
   text: string;
 }[] = [
   {
-    id: "with-variants",
-    text: "With Variants",
+    id: "processing",
+    text: "Processing",
   },
   {
-    id: "with-promotion",
-    text: "With Promotion",
+    id: "shipped",
+    text: "Shipped",
+  },
+  {
+    id: "delivered",
+    text: "Delivered",
   },
 ];
