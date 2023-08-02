@@ -7,6 +7,8 @@ import Card from "./Card";
 import MessageTab from "@/components/MessageTab";
 import MessageModal from "@/components/modals/Message";
 
+import { getCustomerMessages } from "@/data/customerMessages";
+
 type Props = {
   initMessages: WithID<CustomerMessage>[];
 };
@@ -14,18 +16,28 @@ type Props = {
 export default function NewMessages({ initMessages }: Props) {
   const [customerMessages, setCustomerMessages] = useState(initMessages);
 
-  const afterDelete = (message: WithID<CustomerMessage>) => {
-    setCustomerMessages((prev) =>
-      prev.filter((prevMessage) => prevMessage.id !== message.id)
-    );
+  const afterDelete = () => {
+    getCustomerMessages({
+      offset: 0,
+      limit: 7,
+      filter: "unread",
+      sortedBy: "createdAt",
+      sortedOrder: "desc",
+    }).then(({ items: updatedMessages }) => {
+      setCustomerMessages(updatedMessages);
+    });
   };
 
-  const afterUpdate = (message: WithID<CustomerMessage>) => {
-    setCustomerMessages((prev) =>
-      prev.map((prevMessage) =>
-        prevMessage.id === message.id ? message : prevMessage
-      )
-    );
+  const afterUpdate = () => {
+    getCustomerMessages({
+      offset: 0,
+      limit: 7,
+      filter: "unread",
+      sortedBy: "createdAt",
+      sortedOrder: "desc",
+    }).then(({ items: updatedMessages }) => {
+      setCustomerMessages(updatedMessages);
+    });
   };
 
   return (

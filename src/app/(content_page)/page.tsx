@@ -42,7 +42,7 @@ export default async function Home() {
         <NewMessages initMessages={customerMessages} />
       </Section>
       <Section>
-        <NewOrders orders={orders} />
+        <NewOrders initOrders={orders} />
       </Section>
       <Section>
         <div className="flex justify-start gap-[4%]">
