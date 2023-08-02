@@ -40,7 +40,14 @@ export default async function OrdersPage({ searchParams }: Props) {
         filterOptions={filterOptions}
         initFilterID={_filter}
       />
-      <OrderList initOrders={initOrders} total={total} />
+      <OrderList
+        initOrders={initOrders}
+        total={total}
+        sortBy={_sortBy}
+        sortedOrder={_order}
+        searchTerm={_searchTerm}
+        filter={_filter}
+      />
     </div>
   );
 }
@@ -87,7 +94,7 @@ const sortByOptions: {
   },
   {
     id: "createdAt",
-    text: "Create At",
+    text: "Created At",
     orderOptions: [
       {
         id: "asc",

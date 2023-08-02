@@ -1,7 +1,7 @@
 "use client";
 import { WithID } from "@/types";
 
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 
 type Props<T> = {
   initItems: WithID<T>[];
@@ -33,6 +33,10 @@ export default function OrderMessList<T>({
   const loadMore = () => {
     console.log("load more");
   };
+
+  useEffect(() => {
+    setItems(initItems);
+  }, [initItems]);
 
   return (
     <>
