@@ -3,23 +3,30 @@ import { getCustomerMessages } from "@/data/customerMessages";
 import MessageList from "@/components/messages/MessageList";
 import { itemsPerPage } from "@/config";
 import ControlPanel from "@/components/messages/ControlPanel";
+import { CustomerMessageStatus } from "@/types";
 
 type Props = {
   searchParams?: {
-    sortBy?: "firstName" | "lastName" | "createdAt" | "email";
+    sortBy?: "customer" | "email" | "createdAt";
     order?: "asc" | "desc";
+    searchTerms?: string;
+    filter?: CustomerMessageStatus;
   };
 };
 
 export default async function MessagesPage({ searchParams }: Props) {
   const _sortBy = searchParams?.sortBy || "createdAt";
   const _order = searchParams?.order || "asc";
+  const _searchTerm = searchParams?.searchTerms || "";
+  const _filter = searchParams?.filter || null;
 
   const { items, total } = await getCustomerMessages({
     offset: 0,
     limit: itemsPerPage,
     sortedBy: _sortBy,
     sortedOrder: _order,
+    searchTerm: _searchTerm,
+    filter: _filter,
   });
 
   return (
@@ -27,9 +34,19 @@ export default async function MessagesPage({ searchParams }: Props) {
       <ControlPanel
         initSortBy={_sortBy}
         initOrder={_order}
+        initSearchTerm={_searchTerm}
         sortByOptions={sortByOptions}
+        filterOptions={filterOptions}
+        initFilterID={_filter}
       />
-      <MessageList initMessages={items} total={total} />
+      <MessageList
+        initMessages={items}
+        total={total}
+        sortBy={_sortBy}
+        sortedOrder={_order}
+        searchTerm={_searchTerm}
+        filter={_filter}
+      />
     </div>
   );
 }
@@ -39,7 +56,7 @@ export default async function MessagesPage({ searchParams }: Props) {
  */
 
 const sortByOptions: {
-  id: "firstName" | "lastName" | "createdAt" | "email";
+  id: "customer" | "email" | "createdAt";
   text: string;
   orderOptions: {
     id: "asc" | "desc";
@@ -47,22 +64,8 @@ const sortByOptions: {
   }[];
 }[] = [
   {
-    id: "firstName",
-    text: "First name",
-    orderOptions: [
-      {
-        id: "asc",
-        text: "A to Z",
-      },
-      {
-        id: "desc",
-        text: "Z to A",
-      },
-    ],
-  },
-  {
-    id: "lastName",
-    text: "Last name",
+    id: "customer",
+    text: "Customer's name",
     orderOptions: [
       {
         id: "asc",
@@ -101,5 +104,19 @@ const sortByOptions: {
         text: "Newest to Oldest",
       },
     ],
+  },
+];
+
+const filterOptions: {
+  id: CustomerMessageStatus;
+  text: string;
+}[] = [
+  {
+    id: "unread",
+    text: "Unread",
+  },
+  {
+    id: "read",
+    text: "Read",
   },
 ];

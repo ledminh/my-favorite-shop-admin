@@ -6,17 +6,19 @@ const CUSTOMER_MESSAGES = _getCustomerMessages(50);
 type getCustomerMessagesProps = {
   offset: number;
   limit: number;
-  status?: CustomerMessageStatus;
-  sortedBy: "firstName" | "lastName" | "createdAt" | "email";
+  sortedBy: "customer" | "email" | "createdAt";
   sortedOrder: "asc" | "desc";
+  searchTerm: string;
+  filter: CustomerMessageStatus | null;
 };
 
 export function getCustomerMessages({
   offset,
   limit,
-  status,
   sortedBy,
   sortedOrder,
+  searchTerm,
+  filter,
 }: getCustomerMessagesProps): Promise<{
   items: WithID<CustomerMessage>[];
   total: number;
@@ -32,33 +34,60 @@ export function getCustomerMessages({
 
   let customerMessages = CUSTOMER_MESSAGES;
 
-  if (status) {
+  if (searchTerm) {
+    customerMessages = customerMessages.filter((customerMessage) => {
+      const searchTermLowerCase = searchTerm.toLowerCase();
+      const firstName = customerMessage.firstName.toLowerCase();
+      const lastName = customerMessage.lastName.toLowerCase();
+      const email = customerMessage.email.toLowerCase();
+      const phone = customerMessage.phone?.toLowerCase();
+      const message = customerMessage.message.toLowerCase();
+
+      return (
+        firstName.includes(searchTermLowerCase) ||
+        lastName.includes(searchTermLowerCase) ||
+        email.includes(searchTermLowerCase) ||
+        phone?.includes(searchTermLowerCase) ||
+        message.includes(searchTermLowerCase)
+      );
+    });
+  }
+
+  if (filter) {
     customerMessages = customerMessages.filter(
-      (customerMessage) => customerMessage.status === status
+      (customerMessage) => customerMessage.status === filter
     );
   }
 
-  if (sortedBy === "firstName") {
-    customerMessages = customerMessages.sort((a, b) =>
-      a.firstName.localeCompare(b.firstName)
-    );
-  } else if (sortedBy === "lastName") {
-    customerMessages = customerMessages.sort((a, b) =>
-      a.lastName.localeCompare(b.lastName)
-    );
-  } else if (sortedBy === "createdAt") {
-    customerMessages = customerMessages.sort(
-      (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
-    );
-  } else if (sortedBy === "email") {
-    customerMessages = customerMessages.sort((a, b) =>
-      a.email.localeCompare(b.email)
-    );
+  if (sortedBy === "customer") {
+    customerMessages = customerMessages.sort((a, b) => {
+      const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
+      const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
+
+      return nameA.localeCompare(nameB);
+    });
   }
 
-  if (sortedOrder === "asc") {
+  if (sortedBy === "email") {
+    customerMessages = customerMessages.sort((a, b) => {
+      const emailA = a.email.toLowerCase();
+      const emailB = b.email.toLowerCase();
+
+      return emailA.localeCompare(emailB);
+    });
+  }
+
+  if (sortedBy === "createdAt") {
+    customerMessages = customerMessages.sort((a, b) => {
+      return a.createdAt.getTime() - b.createdAt.getTime();
+    });
+  }
+
+  if (sortedOrder === "desc") {
     customerMessages = customerMessages.reverse();
   }
+
+  const total = customerMessages.length;
 
   if (offset) {
     customerMessages = customerMessages.slice(offset);
@@ -69,7 +98,7 @@ export function getCustomerMessages({
   }
 
   return new Promise((resolve) => {
-    resolve({ items: customerMessages, total: CUSTOMER_MESSAGES.length });
+    resolve({ items: customerMessages, total });
   });
 }
 

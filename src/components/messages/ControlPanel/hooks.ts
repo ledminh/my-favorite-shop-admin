@@ -2,23 +2,16 @@ import { useEffect, useState } from "react";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-type Props = {
-  initSortBy: "firstName" | "lastName" | "createdAt" | "email";
-  initOrder: "asc" | "desc";
-  sortByOptions: {
-    id: "firstName" | "lastName" | "createdAt" | "email";
-    text: string;
-    orderOptions: {
-      id: "asc" | "desc";
-      text: string;
-    }[];
-  }[];
-};
+import { CustomerMessageStatus } from "@/types";
+import { Props } from "./";
 
 export default function useControlPanel({
   initSortBy,
   initOrder,
+  initSearchTerm,
   sortByOptions,
+  filterOptions,
+  initFilterID,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -33,8 +26,6 @@ export default function useControlPanel({
   );
 
   const [searchTerm, setSearchTerm] = useState("");
-
-  const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
 
   // Effects
   useEffect(() => {
@@ -57,8 +48,12 @@ export default function useControlPanel({
     router.push(`${pathname}?${params.toString()}`);
   }, [sortByID, orderID, searchTerm]);
 
+  const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
+  const onFilterChange = (filter: CustomerMessageStatus | null) => {};
+
   return {
     onSearch,
+    onFilterChange,
     setSortByID,
     setOrderID,
     orderOptions,

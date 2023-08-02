@@ -7,30 +7,32 @@ import SearchBar from "@/components/SearchBar";
 import { ReactNode } from "react";
 
 import useControlPanel from "./hooks";
+import { CustomerMessageStatus } from "@/types";
 
-type Props = {
-  initSortBy: "firstName" | "lastName" | "createdAt" | "email";
+export type Props = {
+  initSortBy: "customer" | "email" | "createdAt";
   initOrder: "asc" | "desc";
+  initSearchTerm: string;
   sortByOptions: {
-    id: "firstName" | "lastName" | "createdAt" | "email";
+    id: "customer" | "email" | "createdAt";
     text: string;
     orderOptions: {
       id: "asc" | "desc";
       text: string;
     }[];
   }[];
+  filterOptions: {
+    id: CustomerMessageStatus;
+    text: string;
+  }[];
+  initFilterID: CustomerMessageStatus | null;
 };
 
-export default function ControlPanel({
-  sortByOptions,
-  initSortBy,
-  initOrder,
-}: Props) {
-  const { onSearch, setSortByID, setOrderID, orderOptions } = useControlPanel({
-    initSortBy,
-    initOrder,
-    sortByOptions,
-  });
+export default function ControlPanel(props: Props) {
+  const { onSearch, setSortByID, setOrderID, orderOptions, onFilterChange } =
+    useControlPanel(props);
+
+  const { sortByOptions, filterOptions } = props;
 
   return (
     <>
@@ -43,7 +45,7 @@ export default function ControlPanel({
             </div>
           ))} */}
         <div className="basis-[30px]">
-          <Filters />
+          <Filters filterOptions={filterOptions} onChange={onFilterChange} />
         </div>
         <div className="basis-[calc(100%-60px)] md:basis-[calc(47%-60px)]">
           <SearchBar onSearch={onSearch} />

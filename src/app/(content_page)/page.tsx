@@ -11,8 +11,9 @@ export default async function Home() {
   const getOrdersPromise = getOrders({
     offset: 0,
     limit: 7,
-    status: "processing",
-    sortedOrder: "newest",
+    filter: "processing",
+    sortBy: "createdAt",
+    sortedOrder: "asc",
   });
 
   const getMessagesPromise = getCustomerMessages({
