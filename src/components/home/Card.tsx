@@ -15,6 +15,8 @@ type Props<T> = {
   ItemModal: (props: {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    afterDelete: (item: T) => void;
+    afterUpdate: (item: T) => void;
     item: T;
   }) => JSX.Element;
 
@@ -23,6 +25,9 @@ type Props<T> = {
     link: string;
     text: string;
   };
+
+  afterDelete: (item: T) => void;
+  afterUpdate: (item: T) => void;
 };
 
 export default function Card<T>({
@@ -31,6 +36,8 @@ export default function Card<T>({
   ItemModal,
   title,
   button,
+  afterDelete,
+  afterUpdate,
 }: Props<T>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<T | null>(null);
@@ -78,6 +85,8 @@ export default function Card<T>({
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
           item={currentItem}
+          afterDelete={afterDelete}
+          afterUpdate={afterUpdate}
         />
       )}
     </>

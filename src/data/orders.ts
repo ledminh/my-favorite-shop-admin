@@ -9,7 +9,6 @@ import {
   WithID,
 } from "@/types";
 import { _getProducts } from "./products";
-import { get } from "http";
 import getOrderPrice from "@/utils/getOrderPrice";
 
 const ORDERS = _getOrders(200);

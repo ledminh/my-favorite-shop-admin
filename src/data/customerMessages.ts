@@ -8,7 +8,7 @@ type getCustomerMessagesProps = {
   limit: number;
   sortedBy: "customer" | "email" | "createdAt";
   sortedOrder: "asc" | "desc";
-  searchTerm: string;
+  searchTerm?: string;
   filter: CustomerMessageStatus | null;
 };
 

@@ -19,9 +19,9 @@ export default async function Home() {
   const getMessagesPromise = getCustomerMessages({
     offset: 0,
     limit: 7,
-    status: "unread",
+    filter: "unread",
     sortedBy: "createdAt",
-    sortedOrder: "asc",
+    sortedOrder: "desc",
   });
 
   const getCategoriesPromise = getCategories({ sortBy: "name", order: "asc" });
@@ -39,7 +39,7 @@ export default async function Home() {
   return (
     <Wrapper>
       <Section>
-        <NewMessages customerMessages={customerMessages} />
+        <NewMessages initMessages={customerMessages} />
       </Section>
       <Section>
         <NewOrders orders={orders} />
