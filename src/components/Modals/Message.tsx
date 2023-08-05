@@ -12,9 +12,17 @@ type MessageModalProps = {
   item: WithID<CustomerMessage>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  afterDelete: (item: WithID<CustomerMessage>) => void;
+  afterUpdate: (item: WithID<CustomerMessage>) => void;
 };
 
-const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
+const MessageModal = ({
+  item,
+  isOpen,
+  setIsOpen,
+  afterDelete,
+  afterUpdate,
+}: MessageModalProps) => {
   const { firstName, lastName, email, phone, message, createdAt, status } =
     item;
 
@@ -28,7 +36,7 @@ const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
             throw new Error(res.errorMessage);
           }
 
-          console.log(res);
+          afterDelete(res.data as WithID<CustomerMessage>);
         });
       },
     },
@@ -47,7 +55,7 @@ const MessageModal = ({ item, isOpen, setIsOpen }: MessageModalProps) => {
               throw new Error(res.errorMessage);
             }
 
-            console.log(res);
+            afterUpdate(res.data as WithID<CustomerMessage>);
           }
         );
       },

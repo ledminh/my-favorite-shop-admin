@@ -6,6 +6,13 @@ import ItemCard from "@/components/layout/CatProdList/ItemCard";
 import { FC, useEffect, useState } from "react";
 import { itemsPerPage } from "@/config";
 
+import Image, { StaticImageData } from "next/image";
+
+export type AddNewButtonType = {
+  text: string;
+  image: StaticImageData;
+};
+
 type CatProdListProps<T> = {
   initItems: WithID<T>[];
   total: number;
@@ -17,7 +24,14 @@ type CatProdListProps<T> = {
     limit: number;
   }) => Promise<WithID<T>[]>;
   getImage: (item: WithID<T>) => { src: string; alt: string };
+  addNewButton: AddNewButtonType;
   CardContent: FC<{ item: WithID<T> }>;
+
+  AddNewModal: FC<{
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+  }>;
+
   EditModal: FC<{
     item: WithID<T>;
     isOpen: boolean;
@@ -36,7 +50,9 @@ export default function CatProdList<T>({
   total,
   onLoadMore,
   getImage,
+  addNewButton,
   CardContent,
+  AddNewModal,
   EditModal,
   DeleteModal,
 }: CatProdListProps<T>) {
@@ -44,7 +60,13 @@ export default function CatProdList<T>({
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isAddNewModalOpen, setIsAddNewModalOpen] = useState(false);
+
   const [currentItem, setCurrentItem] = useState<WithID<T> | null>(null);
+
+  const onAddNew = () => {
+    setIsAddNewModalOpen(true);
+  };
 
   const onEdit = (id: string) => {
     const item = items.find((item) => item.id === id);
@@ -79,6 +101,15 @@ export default function CatProdList<T>({
 
   return (
     <>
+      {
+        // Show add new modal
+        isAddNewModalOpen && (
+          <AddNewModal
+            isOpen={isAddNewModalOpen}
+            setIsOpen={setIsAddNewModalOpen}
+          />
+        )
+      }
       {
         // Show item modal if currentItem is not null
         currentItem && (
@@ -115,7 +146,7 @@ export default function CatProdList<T>({
             key={"add-new"}
             className="overflow-hidden border rounded-lg border-blue-950 md:basis-[48%] lg:basis-[31%] xl:basis-[23%]"
           >
-            <button>ADD NEW</button>
+            <AddNewButton {...addNewButton} onClick={onAddNew} />
           </li>
           {items.map((item) => {
             return (
@@ -156,5 +187,21 @@ const LoadMoreButton = ({ onClick }: LoadMoreButtonProps) => (
     onClick={onClick}
   >
     LOAD MORE
+  </button>
+);
+
+const AddNewButton = ({
+  text,
+  onClick,
+  image,
+}: AddNewButtonType & { onClick: () => void }) => (
+  <button
+    className="flex flex-col items-center justify-center w-full h-full gap-4 bg-gray-400 hover:bg-gray-200 active:bg-gray-500"
+    onClick={onClick}
+  >
+    <div className="relative w-1/2">
+      <Image src={image} alt="Folder Icon" className="object-cover" />
+    </div>
+    <span className="text-lg font-semibold">{text}</span>
   </button>
 );

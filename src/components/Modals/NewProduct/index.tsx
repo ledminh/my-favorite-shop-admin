@@ -18,6 +18,7 @@ export default function NewProductModal({
 
   return (
     <ProductModal
+      type="add"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title="ADD NEW PRODUCT"

@@ -15,7 +15,7 @@ export type Props = {
   type: "add" | "edit" | "delete";
   title: string;
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: (isOpen: boolean) => void;
   submitButton: {
     text: string;
     className: string;

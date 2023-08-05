@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { Switch } from "@headlessui/react";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import classNames from "@/utils/classNames";
 
-export default function ToggleButton() {
-  const [enabled, setEnabled] = useState(false);
+type Props = {
+  enabled: boolean;
+  setEnabled: (enabled: boolean) => void;
+};
 
+export default function ToggleButton({ enabled, setEnabled }: Props) {
   return (
     <Switch
       checked={enabled}

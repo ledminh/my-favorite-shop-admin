@@ -5,16 +5,30 @@ import { CheckCircleIcon } from "@heroicons/react/20/solid";
 
 import { useState } from "react";
 
+import classNames from "@/utils/classNames";
 import ToggleButton from "./ToggleButton";
 
 export default function Promotion() {
-  const [selectedPromotion, setSelectedPromotion] = useState(promotionList[0]);
+  const [enabled, setEnabled] = useState(false);
+
+  const [selectedPromotion, setSelectedPromotion] =
+    useState<PromotionType | null>(null);
+
   return (
-    <RadioGroup value={selectedPromotion} onChange={setSelectedPromotion}>
-      <RadioGroup.Label className="flex gap-2 text-base leading-6 text-gray-900">
-        <span>Promotion</span>
+    <RadioGroup
+      value={selectedPromotion}
+      onChange={setSelectedPromotion}
+      className={classNames(
+        "p-4 border-2 rounded-lg border-blue-950 hover:bg-gray-200",
+        enabled && "bg-gray-200"
+      )}
+    >
+      <RadioGroup.Label className="flex gap-2 text-base leading-6">
+        <span className={classNames(enabled ? "font-bold" : "font-normal")}>
+          Promotion
+        </span>
         <div>
-          <ToggleButton />
+          <ToggleButton enabled={enabled} setEnabled={setEnabled} />
         </div>
       </RadioGroup.Label>
 
@@ -26,9 +40,9 @@ export default function Promotion() {
             className={({ active }) =>
               classNames(
                 active
-                  ? "border-blue-950 ring-2 ring-blue-950"
+                  ? "border-blue-950 ring-2 ring-blue-950 ring-opacity-60"
                   : "border-gray-300",
-                "relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none"
+                "relative flex cursor-pointer rounded-lg border p-2 shadow-sm focus:outline-none"
               )
             }
           >
@@ -38,7 +52,10 @@ export default function Promotion() {
                   <span className="flex flex-col gap-4">
                     <RadioGroup.Label
                       as="span"
-                      className="block text-sm font-medium text-gray-900"
+                      className={classNames(
+                        "block text-sm font-medium text-gray-900",
+                        enabled ? "font-bold" : "font-normal"
+                      )}
                     >
                       {promotion.title}
                     </RadioGroup.Label>
@@ -46,14 +63,33 @@ export default function Promotion() {
                       as="span"
                       className="flex items-center mt-1 text-sm text-gray-500"
                     >
-                      <input
-                        className="border border-gray-300 rounded-md"
-                        type="number"
-                        placeholder="0"
-                        min="0"
-                        max="100"
-                        step="1"
-                      />
+                      <div className="flex mt-2 rounded-md shadow-sm">
+                        {promotion.unit.position === "left" && (
+                          <span className="inline-flex items-center px-2 text-white border border-r-0 border-blue-950 rounded-l-md sm:text-sm bg-blue-950">
+                            {promotion.unit.text}
+                          </span>
+                        )}
+                        <input
+                          type="number"
+                          placeholder="0"
+                          min="0"
+                          max="100"
+                          step=".1"
+                          disabled={!checked}
+                          className={classNames(
+                            "block w-full min-w-0 flex-1 rounded-none  py-1.5 px-2 text-gray-900 border placeholder:text-gray-400 sm:text-sm sm:leading-6 border-blue-950 focus:outline-none focus:border-blue-500 focus:ring-inset focus:ring-blue-500",
+                            promotion.unit.position === "left" &&
+                              "rounded-r-md border-l-0",
+                            promotion.unit.position === "right" &&
+                              "rounded-l-md border-r-0"
+                          )}
+                        />
+                        {promotion.unit.position === "right" && (
+                          <span className="inline-flex items-center pl-2 pr-3 text-white border border-l-0 border-blue-950 rounded-r-md sm:text-sm bg-blue-950">
+                            {promotion.unit.text}
+                          </span>
+                        )}
+                      </div>
                     </RadioGroup.Description>
                   </span>
                 </span>
@@ -81,28 +117,34 @@ export default function Promotion() {
   );
 }
 
-/******************************
- * Utils
- */
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 /****************************
  * Data
  */
 
-const promotionList = [
+type PromotionType = {
+  id: "discount" | "sale";
+  title: string;
+  unit: {
+    text: "$" | "%";
+    position: "left" | "right";
+  };
+};
+
+const promotionList: PromotionType[] = [
   {
     id: "discount",
     title: "Discount",
-    description: "Last message sent an hour ago",
-    users: "621 users",
+    unit: {
+      text: "%",
+      position: "right",
+    },
   },
   {
     id: "sale",
     title: "Sale",
-    description: "Last message sent 2 weeks ago",
-    users: "1200 users",
+    unit: {
+      text: "$",
+      position: "left",
+    },
   },
 ];

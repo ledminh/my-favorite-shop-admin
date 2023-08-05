@@ -11,14 +11,23 @@ import {
 } from "@/types";
 
 import ChangeButton from "./ChangeButton";
+import getOrderProductName from "@/utils/getOrderProductName";
 
 type Props = {
   item: WithID<Order>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  afterDelete: (o: WithID<Order>) => void;
+  afterUpdate: (o: WithID<Order>) => void;
 };
 
-const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
+const OrderModal = ({
+  item,
+  isOpen,
+  setIsOpen,
+  afterDelete,
+  afterUpdate,
+}: Props) => {
   const additionalButtons = [
     {
       text: "DELETE",
@@ -29,18 +38,18 @@ const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
             throw new Error(res.errorMessage);
           }
 
-          console.log(res);
+          afterDelete(item);
         }),
     },
   ];
 
-  const setStatus = (status: OrderStatus) => {
+  const updateStatus = (status: OrderStatus) => {
     updateOrder(item.id, { status }, (res) => {
       if (res.errorMessage) {
         throw new Error(res.errorMessage);
       }
 
-      console.log(res);
+      afterUpdate({ ...item, status });
     });
   };
 
@@ -74,14 +83,17 @@ const OrderModal = ({ item, isOpen, setIsOpen }: Props) => {
         <InfoTab label="Zip" value={item.shippingAddress.zip} />
         <InfoTab
           label="Products"
-          value={item.orderedProducts.map((product) => product.name).join(", ")}
+          value={item.orderedProducts.map(getOrderProductName).join(", ")}
           small={true}
         />
         <InfoTab
           label="Status"
           value={item.status}
           Button={
-            <ChangeButton currentStatus={item.status} setStatus={setStatus} />
+            <ChangeButton
+              currentStatus={item.status}
+              updateStatus={updateStatus}
+            />
           }
         />
       </div>

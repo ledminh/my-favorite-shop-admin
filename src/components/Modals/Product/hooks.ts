@@ -13,7 +13,7 @@ export default function useProductModal({
   initPriceStr,
   initIntro,
   initDescription,
-  initImage,
+  initImages,
 }: Props) {
   /******************
    * PRIVATE
@@ -28,7 +28,7 @@ export default function useProductModal({
   const [intro, setIntro] = useState<string>(initIntro || "");
   const [description, setDescription] = useState<string>(initDescription || "");
 
-  const [image, setImage] = useState<File | null>(initImage || null);
+  const [images, setImages] = useState<File[]>(initImages || []);
 
   const reset = () => {
     setCategoryID(categories ? categories[0].id : "");
@@ -54,7 +54,7 @@ export default function useProductModal({
     reset();
   };
 
-  const onDisabled = () => {
+  const isDisabled = () => {
     return (
       serial === "" ||
       name === "" ||
@@ -70,14 +70,18 @@ export default function useProductModal({
   const onCategoryChange = (id: string) => {
     setCategoryID(id);
   };
-  const onSerialChange = (serial: string) => {
+  const onSerialChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const serial = e.target.value;
     setSerial(serial);
   };
-  const onNameChange = (name: string) => {
+  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
     setName(name);
   };
 
-  const onPriceChange = (priceStr: string) => {
+  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let priceStr = e.target.value;
+
     // only allow number and decimal point
     const regex = /^[0-9.]*$/;
     if (!regex.test(priceStr)) {
@@ -87,18 +91,20 @@ export default function useProductModal({
     setPriceStr(priceStr);
   };
 
-  const onIntroChange = (intro: string) => {
+  const onIntroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const intro = e.target.value;
     setIntro(intro);
   };
 
-  const onDescriptionChange = (description: string) => {
+  const onDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const description = e.target.value;
     setDescription(description);
   };
 
   const additionalButtons = [
     {
       ...submitButton,
-      disabled: onDisabled(),
+      disabled: isDisabled(),
       onClick: _onSubmit,
     },
   ];
@@ -110,14 +116,14 @@ export default function useProductModal({
     priceStr,
     intro,
     description,
-    image,
+    images,
     onCategoryChange,
     onSerialChange,
     onNameChange,
     onPriceChange,
     onIntroChange,
     onDescriptionChange,
-    setImage,
+    setImages,
     additionalButtons,
   };
 }

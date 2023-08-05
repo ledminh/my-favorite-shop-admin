@@ -7,6 +7,7 @@ import Promotion from "./Promotion";
 import { Category, WithID } from "@/types";
 
 import Image from "next/image";
+import Variants from "./Variants";
 
 export type OnSubmitProps = {
   id: string;
@@ -47,7 +48,7 @@ export type Props = (
   initPriceStr?: string;
   initIntro?: string;
   initDescription?: string;
-  initImage?: File | null;
+  initImages?: File[];
 };
 
 export default function ProductModal(props: Props) {
@@ -58,14 +59,14 @@ export default function ProductModal(props: Props) {
     priceStr,
     intro,
     description,
-    image,
+    images,
     onCategoryChange,
     onSerialChange,
     onNameChange,
     onPriceChange,
     onIntroChange,
     onDescriptionChange,
-    setImage,
+    setImages,
     additionalButtons,
   } = useProductModal(props);
 
@@ -90,7 +91,7 @@ export default function ProductModal(props: Props) {
               }))}
               defaultValue={categories[0].id}
               value={categoryID}
-              onChange={(id) => onCategoryChange(id)}
+              onChange={onCategoryChange}
             />
           )}
           {type === "edit" && (
@@ -111,7 +112,7 @@ export default function ProductModal(props: Props) {
             name="serial"
             id="serial"
             value={serial}
-            onChange={(e) => onSerialChange(e.target.value)}
+            onChange={onSerialChange}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
         </div>
@@ -122,7 +123,7 @@ export default function ProductModal(props: Props) {
             name="name"
             id="name"
             value={name}
-            onChange={(e) => onNameChange(e.target.value)}
+            onChange={onNameChange}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
         </div>
@@ -133,7 +134,7 @@ export default function ProductModal(props: Props) {
             name="price"
             id="price"
             value={priceStr}
-            onChange={(e) => onPriceChange(e.target.value)}
+            onChange={onPriceChange}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
         </div>
@@ -144,7 +145,7 @@ export default function ProductModal(props: Props) {
             name="intro"
             id="intro"
             value={intro}
-            onChange={(e) => onIntroChange(e.target.value)}
+            onChange={onIntroChange}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
         </div>
@@ -154,62 +155,70 @@ export default function ProductModal(props: Props) {
             name="description"
             id="description"
             value={description}
-            onChange={(e) => onDescriptionChange(e.target.value)}
+            onChange={onDescriptionChange}
             className="p-2 border-2 rounded-lg border-blue-950"
           />
         </div>
         <Promotion />
         <div className="flex flex-col gap-2">
-          <span>Variant</span>
-          <ul>
-            <li>
-              <button>Add new variant</button>
-            </li>
-            <li>
-              <button>Variant 1</button>
-            </li>
-            <li>
-              <button>Variant 2</button>
-            </li>
-            <li>
-              <button>Variant 3</button>
-            </li>
-            <li>
-              <button>Variant 4</button>
-            </li>
-          </ul>
+          <Variants />
         </div>
-        <div className="flex justify-center">
-          <label
-            htmlFor="image"
-            className="p-2 text-center bg-gray-300 border-2 border-black rounded-lg shadow-sm cursor-pointer hover:bg-gray-200 shadow-black w-[150px] mx-auto active:bg-gray-300 active:shadow-none"
-          >
-            {image ? "Change Image" : "Add Image"}
-          </label>
-          <input
-            hidden
-            id="image"
-            name="image"
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              if (e.target.files) {
-                setImage(e.target.files[0]);
-              }
-            }}
-          />
-        </div>
+        <div className="p-4 border-2 rounded-lg border-blue-950">
+          <div className="flex gap-4">
+            <div className="font-bold">Images</div>
+            <div>
+              <label
+                htmlFor="image"
+                className="px-2 py-1 text-center bg-blue-950 border text-white border-black rounded-lg shadow-sm cursor-pointer hover:bg-blue-950/80 shadow-black w-[150px] mx-auto active:bg-blue-950/60 active:shadow-none"
+              >
+                Add Image(s)
+              </label>
+              <input
+                hidden
+                id="image"
+                name="image"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => {
+                  if (e.target.files) {
+                    // get files array from e.target.files
+                    // and set it to images state
 
-        <div className="flex justify-center">
-          {image ? (
-            <Image
-              src={URL.createObjectURL(image)}
-              alt="category image"
-              width={208}
-              height={208}
-              className="rounded-lg w-52 h-52"
-            />
-          ) : null}
+                    const files = Array.from(e.target.files);
+                    setImages([...images, ...files]);
+                  }
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-center">
+            {images.length > 0 ? (
+              <div className="flex flex-wrap gap-4 mt-4">
+                {images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative w-[150px] h-[150px] border rounded-lg border-blue-950"
+                  >
+                    <Image
+                      src={URL.createObjectURL(image)}
+                      alt="product image"
+                      fill
+                      className="object-fill rounded-lg"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-2 mt-4">
+                <div className="text-2xl font-bold">No Images</div>
+                <div className="text-sm text-gray-500">
+                  Please add some images
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Modal>

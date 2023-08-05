@@ -6,10 +6,10 @@ import { OrderStatus } from "@/types";
 
 type Props = {
   currentStatus: OrderStatus;
-  setStatus: (status: OrderStatus) => void;
+  updateStatus: (status: OrderStatus) => void;
 };
 
-export default function ChangeButton({ currentStatus, setStatus }: Props) {
+export default function ChangeButton({ currentStatus, updateStatus }: Props) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Header />
@@ -30,7 +30,7 @@ export default function ChangeButton({ currentStatus, setStatus }: Props) {
               <Menu.Item key={option.text}>
                 {({ active }) => (
                   <button
-                    onClick={() => setStatus(option.value)}
+                    onClick={() => updateStatus(option.value)}
                     className={classNames(
                       active ? "bg-gray-400 text-gray-950" : "text-gray-700",
                       "block px-4 py-2 text-sm w-full text-left"

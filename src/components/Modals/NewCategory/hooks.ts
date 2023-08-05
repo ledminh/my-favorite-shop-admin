@@ -2,16 +2,10 @@ import { useState } from "react";
 
 import { AddNewCategoryResponse } from "@/types";
 
+import { OnSubmitProps } from "../Category";
+
 export default function useNewCatModal() {
-  const [image, setImage] = useState<File | null>(null);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-
-  const onClose = () => {
-    setImage(null);
-  };
-
-  const onAdd = () => {
+  const onAdd = ({ name, description, image }: OnSubmitProps) => {
     addNewCategory(
       {
         name,
@@ -28,39 +22,15 @@ export default function useNewCatModal() {
     );
   };
 
-  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+  const submitButton = {
+    text: "Add",
+    className: "bg-white text-blue-950 hover:bg-blue-950 hover:text-white",
+    disabledClassName: "bg-gray-300 text-gray-500 cursor-not-allowed",
   };
-
-  const onDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value);
-  };
-
-  const additionalButtons: {
-    text: string;
-    className: string;
-    onClick: () => void;
-    disabled?: boolean;
-    disabledClassName?: string;
-  }[] = [
-    {
-      text: "Add",
-      className: "bg-white text-blue-950 hover:bg-blue-950 hover:text-white",
-      onClick: onAdd,
-      disabled: !image || name === "" || description === "",
-      disabledClassName: "bg-gray-300 text-gray-500 cursor-not-allowed",
-    },
-  ];
 
   return {
-    image,
-    name,
-    description,
-    setImage,
-    onClose,
-    onNameChange,
-    onDescriptionChange,
-    additionalButtons,
+    submitButton,
+    onAdd,
   };
 }
 

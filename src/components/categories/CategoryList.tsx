@@ -2,12 +2,15 @@
 
 import { Category as CategoryType, WithID } from "@/types";
 import { getCategories } from "@/data/categories";
-import CatProdList from "@/components/layout/CatProdList";
+import CatProdList, { AddNewButtonType } from "@/components/layout/CatProdList";
 
 import { itemsPerPage } from "@/config";
 import { useEffect, useState } from "react";
+import NewCategoryModal from "@/components/modals/NewCategory";
 import EditCategoryModal from "@/components/modals/EditCategory";
 import DeleteCategoryModal from "@/components/modals/DeleteCategory";
+
+import FolderPNG from "@/assets/images/folder.png";
 
 type Props = {
   sortBy: "name" | "createdAt" | "modifiedAt";
@@ -60,12 +63,19 @@ export default function CategoryList({
     return items;
   };
 
+  const addNewButton: AddNewButtonType = {
+    text: "Add New Category",
+    image: FolderPNG,
+  };
+
   return (
     <>
       <CatProdList
         initItems={_initCategories}
         total={total}
         CardContent={CardContent}
+        addNewButton={addNewButton}
+        AddNewModal={NewCategoryModal}
         EditModal={EditCategoryModal}
         DeleteModal={DeleteCategoryModal}
         getImage={getImage}
