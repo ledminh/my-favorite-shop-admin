@@ -29,24 +29,39 @@ export async function POST(
  */
 
 async function add(request: NextRequest) {
-  const formData = await request.formData();
+  try {
+    const formData = await request.formData();
 
-  const name = formData.get("name");
-  const description = formData.get("description");
-  const image = formData.get("image");
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+    const imageFile = formData.get("image") as File;
 
-  const uploadedImage = await uploadImage(image as File, "categories");
+    const { imagePath, error } = await uploadImage(
+      name.split(" ").join("-"),
+      "category",
+      imageFile
+    );
 
-  const newCategory = await addCategory({
-    name: name as string,
-    link: name?.toString().toLowerCase().replace(/\s/g, "-") as string,
-    description: description as string,
-    image: uploadedImage,
-  });
+    if (error) {
+      throw new Error(error.message);
+    }
 
-  return NextResponse.json({
-    data: newCategory,
-  });
+    const newCategory = await addCategory({
+      name: name as string,
+      link: name?.toString().toLowerCase().replace(/\s/g, "-") as string,
+      description: description as string,
+      image: {
+        src: imagePath,
+        alt: name,
+      },
+    });
+
+    return NextResponse.json({
+      data: newCategory,
+    });
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
 }
 
 async function edit(request: NextRequest) {
@@ -57,15 +72,34 @@ async function edit(request: NextRequest) {
   const description = formData.get("description") as string;
   const formImage = formData.get("image") as string | File;
 
-  const uploadedImage = isValidJSON(formImage)
-    ? (JSON.parse(formImage as string) as ImageType)
-    : await uploadImage(formImage as File, "categories");
+  let image: ImageType;
+
+  if (isValidJSON(formImage)) {
+    // user didn't change the image --> image === ImageType
+    image = JSON.parse(formImage as string) as ImageType;
+  } else {
+    // user changed the image --> image === File
+    const { imagePath, error } = await uploadImage(
+      name.split(" ").join("-"),
+      "category",
+      formImage as File
+    );
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    image = {
+      src: imagePath,
+      alt: name,
+    };
+  }
 
   const updatedCategory = await updateCategory(id, {
     name: name as string,
     link: name?.toString().toLowerCase().replace(/\s/g, "-") as string,
     description: description as string,
-    image: uploadedImage,
+    image,
   });
 
   return NextResponse.json({

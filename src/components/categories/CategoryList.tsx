@@ -68,6 +68,10 @@ export default function CategoryList({
     image: FolderPNG,
   };
 
+  const afterAdd = (newCategory: WithID<CategoryType>) => {
+    setInitCategories((prev) => [newCategory, ...prev]);
+  };
+
   return (
     <>
       <CatProdList
@@ -76,6 +80,7 @@ export default function CategoryList({
         CardContent={CardContent}
         addNewButton={addNewButton}
         AddNewModal={NewCategoryModal}
+        afterAdd={afterAdd}
         EditModal={EditCategoryModal}
         DeleteModal={DeleteCategoryModal}
         getImage={getImage}
