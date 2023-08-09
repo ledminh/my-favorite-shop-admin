@@ -23,6 +23,7 @@ export default async function uploadImage(
   const fileOptions: FileOptions = {
     contentType: image.type || "image/jpeg",
     cacheControl: "3600",
+    upsert: true,
   };
 
   const { data, error } = await supabase.storage

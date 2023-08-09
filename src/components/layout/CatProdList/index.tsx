@@ -26,6 +26,7 @@ type CatProdListProps<T> = {
   getImage: (item: WithID<T>) => { src: string; alt: string };
   addNewButton: AddNewButtonType;
   afterAdd: (item: WithID<T>) => void;
+  afterEdit: (item: WithID<T>) => void;
   CardContent: FC<{ item: WithID<T> }>;
 
   AddNewModal: FC<{
@@ -38,6 +39,7 @@ type CatProdListProps<T> = {
     item: WithID<T>;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    afterEdit: (item: WithID<T>) => void;
   }>;
 
   DeleteModal: FC<{
@@ -54,6 +56,7 @@ export default function CatProdList<T>({
   getImage,
   addNewButton,
   afterAdd,
+  afterEdit,
   CardContent,
   AddNewModal,
   EditModal,
@@ -121,6 +124,7 @@ export default function CatProdList<T>({
             item={currentItem}
             isOpen={isEditModalOpen}
             setIsOpen={setIsEditModalOpen}
+            afterEdit={afterEdit}
           />
         )
       }

@@ -72,21 +72,28 @@ export default function CategoryList({
     setInitCategories((prev) => [newCategory, ...prev]);
   };
 
+  const afterEdit = (editedCategory: WithID<CategoryType>) => {
+    setInitCategories((prev) =>
+      prev.map((category) =>
+        category.id === editedCategory.id ? editedCategory : category
+      )
+    );
+  };
+
   return (
-    <>
-      <CatProdList
-        initItems={_initCategories}
-        total={total}
-        CardContent={CardContent}
-        addNewButton={addNewButton}
-        AddNewModal={NewCategoryModal}
-        afterAdd={afterAdd}
-        EditModal={EditCategoryModal}
-        DeleteModal={DeleteCategoryModal}
-        getImage={getImage}
-        onLoadMore={onLoadMore}
-      />
-    </>
+    <CatProdList
+      initItems={_initCategories}
+      total={total}
+      CardContent={CardContent}
+      addNewButton={addNewButton}
+      AddNewModal={NewCategoryModal}
+      afterAdd={afterAdd}
+      afterEdit={afterEdit}
+      EditModal={EditCategoryModal}
+      DeleteModal={DeleteCategoryModal}
+      getImage={getImage}
+      onLoadMore={onLoadMore}
+    />
   );
 }
 
