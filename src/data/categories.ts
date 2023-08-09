@@ -410,6 +410,20 @@ export const updateCategory = async (
   });
 };
 
+export const deleteCategory = async (id: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const index = CATEGORIES.findIndex((cat) => cat.id === id);
+
+    if (index === -1) {
+      return reject(new Error("Category not found"));
+    }
+
+    CATEGORIES.splice(index, 1);
+
+    return resolve();
+  });
+};
+
 /*******************************************************************
  * getCategory
  * @param {slug, id}

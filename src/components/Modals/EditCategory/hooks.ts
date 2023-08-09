@@ -2,86 +2,50 @@ import { Category as CategoryType, Image as ImageType, WithID } from "@/types";
 
 import isImageType from "@/utils/isImageType";
 
-import { useEffect, useState } from "react";
+import { CategoryResponse } from "@/types";
 
-import { UpdateCategoryResponse } from "@/types";
+import { OnSubmitProps } from "../Category";
 
 export default function useEditCategoryModal(item: WithID<CategoryType>) {
   /**********************
-   * Private
-   */
-  const {
-    name: initName,
-    description: initDescription,
-    image: initImage,
-  } = item;
-
-  const [name, setName] = useState(initName);
-  const [description, setDescription] = useState(initDescription);
-  const [image, setImage] = useState<File | ImageType>(initImage);
-
-  useEffect(() => {
-    setName(initName);
-    setDescription(initDescription);
-    setImage(initImage);
-  }, [initName, initDescription, initImage]);
-
-  /**********************
    * Public
    */
-  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
 
-  const onDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value);
-  };
+  const onSave = ({
+    name,
+    description,
+    image,
+  }: OnSubmitProps): Promise<{ data: WithID<CategoryType> }> => {
+    return new Promise((resolve, reject) => {
+      updateCategory(
+        {
+          id: item.id,
+          name,
+          description,
+          image: image as File | ImageType,
+        },
+        (res) => {
+          if (res.errorMessage) {
+            reject(new Error(res.errorMessage));
+          }
 
-  const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-    }
-  };
-
-  const reset = () => {
-    setName(initName);
-    setDescription(initDescription);
-    setImage(initImage);
-  };
-
-  const onSave = () => {
-    updateCategory(
-      {
-        id: item.id,
-        name,
-        description,
-        image,
-      },
-      (res) => {
-        if (res.errorMessage) {
-          throw new Error(res.errorMessage);
+          resolve({
+            data: res.data as WithID<CategoryType>,
+          });
         }
+      );
+    });
+  };
 
-        console.log(res);
-      }
-    );
+  const submitButton = {
+    text: "Save",
+    className: "bg-white text-blue-950 hover:bg-blue-950 hover:text-white",
+    disabledClassName: "bg-gray-300 text-gray-500 cursor-not-allowed",
   };
 
   return {
-    name,
-    description,
-    image: isImageType(image)
-      ? image
-      : {
-          src: URL.createObjectURL(image),
-          alt: image.name,
-        },
-    onNameChange,
-    onDescriptionChange,
-    onImageChange,
     onSave,
-    reset,
+    submitButton,
   };
 }
 
@@ -96,7 +60,7 @@ type UpdateCategory = (
     description: string;
     image: File | ImageType;
   },
-  cb: (res: UpdateCategoryResponse) => void
+  cb: (res: CategoryResponse) => void
 ) => void;
 
 const updateCategory: UpdateCategory = (category, cb) => {

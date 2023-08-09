@@ -1,5 +1,10 @@
-import { addCategory, getCategory, updateCategory } from "@/data/categories";
-import { AddNewCategoryResponse, Image as ImageType } from "@/types";
+import {
+  addCategory,
+  getCategory,
+  updateCategory,
+  deleteCategory,
+} from "@/data/categories";
+import { CategoryResponse, Image as ImageType } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 import uploadImage from "@/utils/uploadImage";
@@ -9,7 +14,7 @@ import deleteImages from "@/utils/deleteImages";
 
 export async function POST(
   request: NextRequest
-): Promise<NextResponse<AddNewCategoryResponse>> {
+): Promise<NextResponse<CategoryResponse>> {
   try {
     const action = request.nextUrl.searchParams.get("action");
 
@@ -18,6 +23,9 @@ export async function POST(
         return add(request);
       case "edit":
         return edit(request);
+      case "delete":
+        return del(request);
+
       default:
         throw new Error("action not found");
     }
@@ -115,5 +123,26 @@ async function edit(request: NextRequest) {
 
   return NextResponse.json({
     data: updatedCategory,
+  });
+}
+
+async function del(request: NextRequest) {
+  const { id } = await request.json();
+
+  const oldCategory = await getCategory({ id });
+
+  const filePath = ("category/" +
+    oldCategory.image.src.split("/").pop()) as string;
+
+  const { error: deleteImageError } = await deleteImages([filePath]);
+
+  if (deleteImageError) {
+    throw new Error(deleteImageError.message);
+  }
+
+  await deleteCategory(id);
+
+  return NextResponse.json({
+    data: oldCategory,
   });
 }

@@ -1,7 +1,7 @@
 import { Category as CategoryType, WithID } from "@/types";
 import useDeleteCategoryModal from "./hooks";
 
-import Modal from "@/components/layout/Modal";
+import CategoryModal from "../Category";
 
 import Image from "next/image";
 
@@ -9,31 +9,30 @@ type Props = {
   item: WithID<CategoryType>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  afterDelete: (item: WithID<CategoryType>) => void;
 };
 
-const DeleteCategoryModal = ({ item, isOpen, setIsOpen }: Props) => {
-  const { onDelete, name, description, image } = useDeleteCategoryModal(item);
-
-  const additionalButtons = [
-    {
-      text: "Delete",
-      className: "text-blue-950 bg-white hover:bg-gray-200 active:bg-gray-300",
-      onClick: onDelete,
-    },
-  ];
+const DeleteCategoryModal = ({
+  item,
+  isOpen,
+  setIsOpen,
+  afterDelete,
+}: Props) => {
+  const { submitButton, onDelete } = useDeleteCategoryModal(item);
 
   return (
-    <Modal
-      type="attention"
-      size="sm"
+    <CategoryModal
+      type="delete"
+      title="Delete Category"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      title="DELETE CATEGORY"
-      additionalButtons={additionalButtons}
-    >
-      <h3>Do you want to delete this category?</h3>
-      <CategoryDetails name={name} description={description} image={image} />
-    </Modal>
+      submitButton={submitButton}
+      onSubmit={onDelete}
+      afterSubmit={afterDelete}
+      initName={item.name}
+      initDescription={item.description}
+      initImage={item.image}
+    />
   );
 };
 
@@ -42,6 +41,7 @@ export default DeleteCategoryModal;
 /**************************
  * Components
  */
+// TODO: add this block to CategoryModal for type="delete"
 const CategoryDetails = ({
   name,
   description,

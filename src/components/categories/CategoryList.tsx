@@ -80,6 +80,12 @@ export default function CategoryList({
     );
   };
 
+  const afterDelete = (deletedCategory: WithID<CategoryType>) => {
+    setInitCategories((prev) =>
+      prev.filter((category) => category.id !== deletedCategory.id)
+    );
+  };
+
   return (
     <CatProdList
       initItems={_initCategories}
@@ -89,6 +95,7 @@ export default function CategoryList({
       AddNewModal={NewCategoryModal}
       afterAdd={afterAdd}
       afterEdit={afterEdit}
+      afterDelete={afterDelete}
       EditModal={EditCategoryModal}
       DeleteModal={DeleteCategoryModal}
       getImage={getImage}

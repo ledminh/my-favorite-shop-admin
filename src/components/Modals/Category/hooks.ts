@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { AddNewCategoryResponse } from "@/types";
+import { Image as ImageType } from "@/types";
 
 import { Props } from "./";
 
@@ -10,12 +10,26 @@ export default function useNewCatModal(props: Props) {
    */
 
   // States
-  const { initName, initDescription, initImage, submitButton, onSubmit } =
-    props;
+  const {
+    initName,
+    initDescription,
+    initImage,
+    submitButton,
+    onSubmit,
+    afterSubmit,
+  } = props;
 
   const [name, setName] = useState(initName || "");
   const [description, setDescription] = useState(initDescription || "");
-  const [image, setImage] = useState<File | null>(initImage || null);
+  const [image, setImage] = useState<File | ImageType | null>(
+    initImage || null
+  );
+
+  useEffect(() => {
+    setName(initName || "");
+    setDescription(initDescription || "");
+    setImage(initImage || null);
+  }, [initName, initDescription, initImage]);
 
   // Functions
   const onClose = () => {
@@ -32,8 +46,16 @@ export default function useNewCatModal(props: Props) {
     onSubmit({
       name,
       description,
-      image: image as File,
-    });
+      image: image as File | ImageType,
+    })
+      .then(({ data: category }) => {
+        if (category) {
+          afterSubmit(category);
+        }
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
 
     reset();
   };
@@ -86,30 +108,3 @@ export default function useNewCatModal(props: Props) {
     additionalButtons,
   };
 }
-
-/*******************************
- * Utils
- */
-
-type AddNewCategory = (
-  category: {
-    name: string;
-    description: string;
-    image: File;
-  },
-  cb: (res: AddNewCategoryResponse) => void
-) => void;
-
-const addNewCategory: AddNewCategory = (category, cb) => {
-  const formData = new FormData();
-  formData.append("name", category.name);
-  formData.append("description", category.description);
-  formData.append("image", category.image);
-
-  fetch("/api/categories?action=add", {
-    method: "POST",
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then((res) => cb(res));
-};

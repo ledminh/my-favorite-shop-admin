@@ -1,25 +1,31 @@
-import { useState } from "react";
-
-import { AddNewCategoryResponse } from "@/types";
+import { CategoryResponse, Category as CategoryType, WithID } from "@/types";
 
 import { OnSubmitProps } from "../Category";
 
 export default function useNewCatModal() {
-  const onAdd = ({ name, description, image }: OnSubmitProps) => {
-    addNewCategory(
-      {
-        name,
-        description,
-        image: image as File,
-      },
-      (res) => {
-        if (res.errorMessage) {
-          throw new Error(res.errorMessage);
-        }
+  const onAdd = ({
+    name,
+    description,
+    image,
+  }: OnSubmitProps): Promise<{ data: WithID<CategoryType> }> => {
+    return new Promise((resolve, reject) => {
+      addNewCategory(
+        {
+          name,
+          description,
+          image: image as File,
+        },
+        (res) => {
+          if (res.errorMessage) {
+            reject(new Error(res.errorMessage));
+          }
 
-        console.log(res);
-      }
-    );
+          resolve({
+            data: res.data as WithID<CategoryType>,
+          });
+        }
+      );
+    });
   };
 
   const submitButton = {
@@ -44,7 +50,7 @@ type AddNewCategory = (
     description: string;
     image: File;
   },
-  cb: (res: AddNewCategoryResponse) => void
+  cb: (res: CategoryResponse) => void
 ) => void;
 
 const addNewCategory: AddNewCategory = (category, cb) => {
