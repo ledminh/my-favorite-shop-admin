@@ -139,3 +139,4 @@ export type DeleteOrderResponse = ServerResponse<WithID<Order>>;
 export type UpdateOrderResponse = ServerResponse<WithID<Order>>;
 
 export type CategoryResponse = ServerResponse<WithID<Category>>;
+export type ProductResponse = ServerResponse<WithID<Product>>;

@@ -6,12 +6,15 @@ import CardContent from "@/components/products/CardContent";
 
 import { itemsPerPage } from "@/config";
 import { Product, Product as ProductType, WithID } from "@/types";
-import CatProdList from "@/components/layout/CatProdList";
+import CatProdList, { AddNewButtonType } from "@/components/layout/CatProdList";
+import NewProductModal from "@/components/modals/NewProduct";
 
 import EditProductModal from "@/components/modals/EditProduct";
 import DeleteProductModal from "@/components/modals/DeleteProduct";
 
 import { getProducts } from "@/data/products";
+
+import ParcelPNG from "@/assets/images/parcel.png";
 
 type Props = {
   initProducts: WithID<Product>[];
@@ -82,11 +85,39 @@ export default function ProductList({
     return items;
   };
 
+  const addNewButton: AddNewButtonType = {
+    text: "Add New Product",
+    image: ParcelPNG,
+  };
+
+  const afterAdd = (newProduct: WithID<ProductType>) => {
+    setInitProducts((prev) => [newProduct, ...prev]);
+  };
+
+  const afterEdit = (editedProduct: WithID<ProductType>) => {
+    setInitProducts((prev) =>
+      prev.map((product) =>
+        product.id === editedProduct.id ? editedProduct : product
+      )
+    );
+  };
+
+  const afterDelete = (deletedProduct: WithID<ProductType>) => {
+    setInitProducts((prev) =>
+      prev.filter((product) => product.id !== deletedProduct.id)
+    );
+  };
+
   return (
     <CatProdList
       initItems={_initProducts}
       total={total}
       CardContent={CardContent}
+      addNewButton={addNewButton}
+      AddNewModal={NewProductModal}
+      afterAdd={afterAdd}
+      afterEdit={afterEdit}
+      afterDelete={afterDelete}
       EditModal={EditProductModal}
       DeleteModal={DeleteProductModal}
       getImage={getImage}
