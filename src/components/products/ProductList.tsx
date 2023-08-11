@@ -3,9 +3,15 @@
 import { useState, useEffect } from "react";
 
 import CardContent from "@/components/products/CardContent";
+import { getCategories } from "@/data/categories";
 
 import { itemsPerPage } from "@/config";
-import { Product, Product as ProductType, WithID } from "@/types";
+import {
+  Product,
+  Product as ProductType,
+  Category as CategoryType,
+  WithID,
+} from "@/types";
 import CatProdList, { AddNewButtonType } from "@/components/layout/CatProdList";
 import NewProductModal from "@/components/modals/NewProduct";
 
@@ -36,6 +42,18 @@ export default function ProductList({
   order,
 }: Props) {
   const [_initProducts, setInitProducts] = useState(initProducts);
+  const [categories, setCategories] = useState<WithID<CategoryType>[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const { items } = await getCategories({
+        sortBy: "name",
+        order: "asc",
+      });
+
+      setCategories(items);
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -114,10 +132,11 @@ export default function ProductList({
       total={total}
       CardContent={CardContent}
       addNewButton={addNewButton}
-      AddNewModal={NewProductModal}
+      categories={categories}
       afterAdd={afterAdd}
       afterEdit={afterEdit}
       afterDelete={afterDelete}
+      AddNewModal={NewProductModal}
       EditModal={EditProductModal}
       DeleteModal={DeleteProductModal}
       getImage={getImage}

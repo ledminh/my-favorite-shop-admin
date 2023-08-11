@@ -1,6 +1,6 @@
 "use client";
 
-import { WithID } from "@/types";
+import { Category, WithID } from "@/types";
 import ItemCard from "@/components/layout/CatProdList/ItemCard";
 
 import { FC, useEffect, useState } from "react";
@@ -23,16 +23,22 @@ type CatProdListProps<T> = {
     offset: number;
     limit: number;
   }) => Promise<WithID<T>[]>;
+
   getImage: (item: WithID<T>) => { src: string; alt: string };
   addNewButton: AddNewButtonType;
+
   afterAdd: (item: WithID<T>) => void;
   afterEdit: (item: WithID<T>) => void;
   afterDelete: (item: WithID<T>) => void;
+
   CardContent: FC<{ item: WithID<T> }>;
+
+  categories: WithID<Category>[];
 
   AddNewModal: FC<{
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    categories: WithID<Category>[];
     afterAdd: (item: WithID<T>) => void;
   }>;
 
@@ -61,6 +67,7 @@ export default function CatProdList<T>({
   afterEdit,
   afterDelete,
   CardContent,
+  categories,
   AddNewModal,
   EditModal,
   DeleteModal,
@@ -116,6 +123,7 @@ export default function CatProdList<T>({
           <AddNewModal
             isOpen={isAddNewModalOpen}
             setIsOpen={setIsAddNewModalOpen}
+            categories={categories}
             afterAdd={afterAdd}
           />
         )
