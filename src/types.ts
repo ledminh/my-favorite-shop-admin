@@ -36,7 +36,6 @@ export type Promotion =
     };
 
 export type Variant = {
-  id: string;
   name: string;
   price: number;
   promotion?: Promotion;
