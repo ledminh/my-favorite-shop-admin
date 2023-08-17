@@ -1,6 +1,6 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 
-import { Props } from ".";
+import { Props, _PromotionType } from "./types";
 
 export default function usePromotion(props: Props) {
   const { onChange } = props;
@@ -10,25 +10,26 @@ export default function usePromotion(props: Props) {
   const [selectedPromotion, setSelectedPromotion] =
     useState<_PromotionType | null>(null);
 
-  const [discountPercent, setDiscountPercent] = useState(0);
-  const [salePrice, setSalePrice] = useState(0);
+  const [discountPercentStr, setDiscountPercentStr] = useState("0");
+  const [salePriceStr, setSalePriceStr] = useState("0");
 
   const [discountDescription, setDiscountDescription] = useState("");
   const [saleDescription, setSaleDescription] = useState("");
 
   const resetDiscount = () => {
-    setDiscountPercent(0);
+    setDiscountPercentStr("0");
     setDiscountDescription("");
   };
 
   const resetSale = () => {
-    setSalePrice(0);
+    setSalePriceStr("0");
     setSaleDescription("");
   };
 
   useEffect(() => {
     if (!enabled) {
       setSelectedPromotion(null);
+      onChange(null);
       resetDiscount();
       resetSale();
     } else {
@@ -51,31 +52,48 @@ export default function usePromotion(props: Props) {
       if (selectedPromotion.id === "discount") {
         onChange({
           type: "discount",
-          discountPercent,
+          discountPercent: parseFloat(discountPercentStr),
           description: discountDescription,
         });
       } else if (selectedPromotion.id === "sale") {
         onChange({
           type: "sale",
-          salePrice,
+          salePrice: parseFloat(salePriceStr),
           description: saleDescription,
         });
       }
     }
-  }, [discountPercent, salePrice, discountDescription, saleDescription]);
+  }, [
+    discountPercentStr,
+    salePriceStr,
+    discountDescription,
+    saleDescription,
+    selectedPromotion,
+  ]);
 
   const setNumValue = (numStr: string, promotionID: string) => {
-    // only allow number and decimal point
-    const regex = /^[0-9.]*$/;
+    numStr = numStr.replace(/^0+/, "0");
+
+    // Only allow digits and a single optional dot
+    const regex = /^[0-9]*(\.[0-9]*)?$/;
 
     if (!regex.test(numStr)) {
-      numStr = numStr.slice(0, -1);
+      // Remove all characters that are not digits or dots
+      numStr = numStr.replace(/[^\d.]/g, "");
+
+      // Remove extra dots beyond the first one
+      const dotIndex = numStr.indexOf(".");
+      if (dotIndex !== -1) {
+        numStr =
+          numStr.slice(0, dotIndex + 1) +
+          numStr.slice(dotIndex).replace(/\./g, "");
+      }
     }
 
     if (promotionID === "discount") {
-      setDiscountPercent(numStr === "" ? 0 : parseFloat(numStr));
+      setDiscountPercentStr(numStr);
     } else if (promotionID === "sale") {
-      setSalePrice(numStr === "" ? 0 : parseFloat(numStr));
+      setSalePriceStr(numStr);
     }
   };
 
@@ -93,13 +111,11 @@ export default function usePromotion(props: Props) {
     promotionList,
     selectedPromotion,
     setSelectedPromotion,
-    numValue:
-      selectedPromotion?.id === "discount" ? discountPercent : salePrice,
+    discountPercentStr,
+    salePriceStr,
+    saleDescription,
+    discountDescription,
     setNumValue,
-    description:
-      selectedPromotion?.id === "discount"
-        ? discountDescription
-        : saleDescription,
     setDescription,
   };
 }
@@ -107,15 +123,6 @@ export default function usePromotion(props: Props) {
 /****************************
  * Data
  */
-
-type _PromotionType = {
-  id: "discount" | "sale";
-  title: string;
-  unit: {
-    text: "$" | "%";
-    position: "left" | "right";
-  };
-};
 
 const promotionList: _PromotionType[] = [
   {

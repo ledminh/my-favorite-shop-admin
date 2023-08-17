@@ -2,18 +2,18 @@ import { Props } from "./types";
 import useVariants from "./hooks";
 
 export default function Variants(props: Props) {
-  const { variants } = useVariants(props);
+  const { variants, addNew, edit } = useVariants(props);
 
   return (
     <Wrapper>
       <Title>Variant</Title>
       <List>
         <Item>
-          <Button>Add new variant</Button>
+          <Button onClick={addNew}>Add new variant</Button>
         </Item>
         {variants.map((variant) => (
           <Item>
-            <Button>{variant.name}</Button>
+            <Button onClick={() => edit(variant)}>{variant.name}</Button>
           </Item>
         ))}
       </List>
@@ -40,6 +40,17 @@ const Item = ({ children }: { children: React.ReactNode }) => (
   <li className="flex flex-col gap-2">{children}</li>
 );
 
-const Button = ({ children }: { children: React.ReactNode }) => (
-  <button className="p-4 border border-blue-950">{children}</button>
+const Button = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+}) => (
+  <button
+    className="p-4 border border-blue-950 hover:bg-gray-200 active:bg-gray-300"
+    onClick={onClick}
+  >
+    {children}
+  </button>
 );

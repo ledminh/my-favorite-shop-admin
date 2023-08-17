@@ -4,7 +4,7 @@ import { Image as ImageType } from "@/types";
 
 import { Props } from "./";
 
-export default function useNewCatModal(props: Props) {
+export default function useCategoryModal(props: Props) {
   /***********************
    * PRIVATE
    */

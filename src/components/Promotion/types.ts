@@ -1,7 +1,7 @@
 import { Promotion as PromotionType } from "@/types";
 
 export type Props = {
-  onChange: (promotion: PromotionType) => void;
+  onChange: (promotion: PromotionType | null) => void;
 };
 
 export type _PromotionType = {

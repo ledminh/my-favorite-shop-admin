@@ -38,10 +38,10 @@ export type Promotion =
 export type Variant = {
   id: string;
   name: string;
-  image: Image;
   price: number;
-  shown: boolean;
   promotion?: Promotion;
+  image: Image;
+  shown: boolean;
 };
 
 export type Product = {
