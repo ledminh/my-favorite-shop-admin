@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Props } from "./types";
 
 export default function useVariantsModal(props: Props) {
-  const { initVariants, openVariantModal } = props;
+  const { initVariants, openNewVariantModal } = props;
   /******************
    * PRIVATE
    */
@@ -14,7 +14,7 @@ export default function useVariantsModal(props: Props) {
    * PUBLIC
    */
   const addNew = () => {
-    openVariantModal();
+    openNewVariantModal();
   };
 
   const edit = (variant: VariantType) => {

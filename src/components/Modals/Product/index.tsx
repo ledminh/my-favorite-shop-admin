@@ -4,12 +4,14 @@ import useProductModal from "./hooks";
 
 import Promotion from "@/components/Promotion";
 
-import VariantModal from "@/components/modals/Variant";
+import NewVariantModal from "@/components/modals/NewVariant";
 
 import { Category, WithID, Product as ProductType } from "@/types";
 
 import Image from "next/image";
 import Variants from "./Variants";
+
+import { Dispatch, SetStateAction } from "react";
 
 export type OnSubmitProps = {
   id: string;
@@ -56,8 +58,8 @@ export type Props = (
 
 export default function ProductModal(props: Props) {
   const {
-    isVariantModalOpen,
-    setIsVariantModalOpen,
+    isNewVariantModalOpen,
+    setIsNewVariantModalOpen,
     categoryID,
     serial,
     name,
@@ -80,12 +82,6 @@ export default function ProductModal(props: Props) {
 
   return (
     <>
-      {isVariantModalOpen && (
-        <VariantModal
-          isOpen={isVariantModalOpen}
-          setIsOpen={setIsVariantModalOpen}
-        />
-      )}{" "}
       <Modal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -175,68 +171,89 @@ export default function ProductModal(props: Props) {
           <div className="flex flex-col gap-2">
             <Variants
               initVariants={[]}
-              openVariantModal={() => setIsVariantModalOpen(true)}
+              openNewVariantModal={() => setIsNewVariantModalOpen(true)}
             />
           </div>
-          <div className="p-4 border-2 rounded-lg border-blue-950">
-            <div className="flex gap-4">
-              <div className="font-bold">Images</div>
-              <div>
-                <label
-                  htmlFor="image"
-                  className="px-2 py-1 text-center bg-blue-950 border text-white border-black rounded-lg shadow-sm cursor-pointer hover:bg-blue-950/80 shadow-black w-[150px] mx-auto active:bg-blue-950/60 active:shadow-none"
-                >
-                  Add Image(s)
-                </label>
-                <input
-                  hidden
-                  id="image"
-                  name="image"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={(e) => {
-                    if (e.target.files) {
-                      // get files array from e.target.files
-                      // and set it to images state
-
-                      const files = Array.from(e.target.files);
-                      setImages([...images, ...files]);
-                    }
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-center">
-              {images.length > 0 ? (
-                <div className="flex flex-wrap gap-4 mt-4">
-                  {images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="relative w-[150px] h-[150px] border rounded-lg border-blue-950"
-                    >
-                      <Image
-                        src={URL.createObjectURL(image)}
-                        alt="product image"
-                        fill
-                        className="object-fill rounded-lg"
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center gap-2 mt-4">
-                  <div className="text-2xl font-bold">No Images</div>
-                  <div className="text-sm text-gray-500">
-                    Please add some images
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          {!isNewVariantModalOpen ? (
+            <ImagesUpload images={images} setImages={setImages} />
+          ) : null}
         </div>
+        {isNewVariantModalOpen && (
+          <NewVariantModal
+            isOpen={isNewVariantModalOpen}
+            setIsOpen={setIsNewVariantModalOpen}
+            afterAdd={() => {}}
+          />
+        )}{" "}
       </Modal>
     </>
   );
 }
+
+/***********************
+ * Components
+ */
+
+const ImagesUpload = ({
+  images,
+  setImages,
+}: {
+  images: File[];
+  setImages: Dispatch<SetStateAction<File[]>>;
+}) => (
+  <div className="p-4 border-2 rounded-lg border-blue-950">
+    <div className="flex gap-4">
+      <div className="font-bold">Images</div>
+      <div>
+        <label
+          htmlFor="image"
+          className="px-2 py-1 text-center bg-blue-950 border text-white border-black rounded-lg shadow-sm cursor-pointer hover:bg-blue-950/80 shadow-black w-[150px] mx-auto active:bg-blue-950/60 active:shadow-none"
+        >
+          Add Image(s)
+        </label>
+        <input
+          hidden
+          id="image"
+          name="image"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={(e) => {
+            e.preventDefault();
+            if (e.target.files) {
+              // get files array from e.target.files
+              // and set it to images state
+              const files = Array.from(e.target.files);
+              setImages([...images, ...files]);
+            }
+          }}
+        />
+      </div>
+    </div>
+
+    <div className="flex justify-center">
+      {images.length > 0 ? (
+        <div className="flex flex-wrap gap-4 mt-4">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className="relative w-[150px] h-[150px] border rounded-lg border-blue-950"
+            >
+              <Image
+                src={URL.createObjectURL(image)}
+                alt="product image"
+                fill
+                className="object-fill rounded-lg"
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-2 mt-4">
+          <div className="text-2xl font-bold">No Images</div>
+          <div className="text-sm text-gray-500">Please add some images</div>
+        </div>
+      )}
+    </div>
+  </div>
+);

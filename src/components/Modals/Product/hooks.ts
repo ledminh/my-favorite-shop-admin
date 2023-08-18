@@ -34,7 +34,8 @@ export default function useProductModal({
     undefined
   ); // Promotion is undefined when it is enabled but user has not finished filling in the form
 
-  const [isVariantModalOpen, setIsVariantModalOpen] = useState<boolean>(false);
+  const [isNewVariantModalOpen, setIsNewVariantModalOpen] =
+    useState<boolean>(false);
   const [images, setImages] = useState<File[]>(initImages || []);
 
   const reset = () => {
@@ -140,8 +141,8 @@ export default function useProductModal({
   ];
 
   return {
-    isVariantModalOpen,
-    setIsVariantModalOpen,
+    isNewVariantModalOpen,
+    setIsNewVariantModalOpen,
     categoryID,
     serial,
     name,

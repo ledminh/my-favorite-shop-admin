@@ -66,7 +66,6 @@ export default function VariantModal(props: Props) {
             />
           </div>
           <Promotion onChange={onPromotionChange} />
-
           {props.type === "delete" ? null : (
             <div className="flex justify-center">
               <label
@@ -92,7 +91,7 @@ export default function VariantModal(props: Props) {
                 src={
                   isImageType(image) ? image.src : URL.createObjectURL(image)
                 }
-                alt="category image"
+                alt="variant image"
                 width={208}
                 height={208}
                 className="rounded-lg w-52 h-52"

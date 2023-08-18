@@ -6,6 +6,7 @@ import {
 } from "@/types";
 
 export type OnSubmitProps = {
+  shown: boolean;
   name: string;
   price: number;
   image: File | ImageType;
@@ -22,8 +23,8 @@ export type Props = {
     className: string;
     disabledClassName: string;
   };
-  onSubmit: (props: OnSubmitProps) => Promise<{ data: WithID<VariantType> }>;
-  afterSubmit: (variant: WithID<VariantType>) => void;
+  onSubmit: (props: OnSubmitProps) => Promise<{ data: OnSubmitProps }>;
+  afterSubmit: (variant: OnSubmitProps) => void;
   initShown?: boolean;
   initName?: string;
   initPriceStr?: string;

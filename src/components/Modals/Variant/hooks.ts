@@ -51,6 +51,7 @@ export default function useVariantModal(props: Props) {
 
   const _onSubmit = () => {
     const dataToSubmit: OnSubmitProps = {
+      shown,
       name,
       price: parseFloat(priceStr),
       image: image as File | ImageType,
@@ -119,8 +120,10 @@ export default function useVariantModal(props: Props) {
   };
 
   const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     const files = e.target.files;
     if (files && files.length > 0) {
+      console.log(files[0]);
       setImage(files[0]);
     }
   };
