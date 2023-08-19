@@ -1,5 +1,8 @@
 "use client";
 
+import classNames from "@/utils/classNames";
+import { Switch } from "@headlessui/react";
+
 import Image from "next/image";
 import Modal from "@/components/layout/Modal";
 
@@ -12,6 +15,8 @@ import Promotion from "@/components/Promotion";
 
 export default function VariantModal(props: Props) {
   const {
+    shown,
+    setShown,
     onClose,
     additionalButtons,
     name,
@@ -23,7 +28,7 @@ export default function VariantModal(props: Props) {
     onImageChange,
   } = useVariantModal(props);
 
-  const { isOpen, setIsOpen, title } = props;
+  const { isOpen, setIsOpen, title, initPromotion } = props;
 
   return (
     <Modal
@@ -43,7 +48,9 @@ export default function VariantModal(props: Props) {
               </span>
             </div>
           )}
-          <div className="flex flex-col gap-2">Show/notshow</div>
+          <div className="flex flex-col gap-2">
+            <ShowNotShow show={shown} setShow={setShown} />
+          </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Name</label>
             <input
@@ -65,7 +72,10 @@ export default function VariantModal(props: Props) {
               className="p-2 border-2 rounded-lg border-blue-950"
             />
           </div>
-          <Promotion onChange={onPromotionChange} />
+          <Promotion
+            onChange={onPromotionChange}
+            initPromotion={initPromotion}
+          />
           {props.type === "delete" ? null : (
             <div className="flex justify-center">
               <label
@@ -103,3 +113,41 @@ export default function VariantModal(props: Props) {
     </Modal>
   );
 }
+
+/*************************
+ * Components
+ */
+
+const ShowNotShow = ({
+  show,
+  setShow,
+}: {
+  show: boolean;
+  setShow: (show: boolean) => void;
+}) => {
+  return (
+    <Switch.Group as="div" className="flex items-center">
+      <Switch
+        checked={show}
+        onChange={setShow}
+        className={classNames(
+          show ? "bg-blue-950" : "bg-gray-200",
+          "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+        )}
+      >
+        <span
+          aria-hidden="true"
+          className={classNames(
+            show ? "translate-x-5" : "translate-x-0",
+            "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+          )}
+        />
+      </Switch>
+      <Switch.Label as="span" className="ml-3 text-sm">
+        <span className="text-lg text-gray-900">
+          {show ? "Show" : "Not Show"}
+        </span>{" "}
+      </Switch.Label>
+    </Switch.Group>
+  );
+};

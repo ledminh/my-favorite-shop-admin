@@ -1,11 +1,7 @@
-import {
-  Image as ImageType,
-  Variant as VariantType,
-  Promotion as PromotionType,
-  WithID,
-} from "@/types";
+import { Image as ImageType, Promotion as PromotionType } from "@/types";
 
 export type OnSubmitProps = {
+  delete?: boolean;
   shown: boolean;
   name: string;
   price: number;

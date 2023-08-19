@@ -143,6 +143,8 @@ export default function useVariantModal(props: Props) {
   ];
 
   return {
+    shown,
+    setShown,
     image,
     name,
     onClose,

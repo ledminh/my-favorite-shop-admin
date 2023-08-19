@@ -1,5 +1,12 @@
+import { Image as ImageType, Variant as VariantType } from "@/types";
+
+import Image from "next/image";
+
 import { Props } from "./types";
+
 import useVariants from "./hooks";
+import { OnSubmitProps } from "@/components/modals/Variant/types";
+import isImageType from "@/utils/isImageType";
 
 export default function Variants(props: Props) {
   const { variants, addNew, edit } = useVariants(props);
@@ -13,7 +20,7 @@ export default function Variants(props: Props) {
         </Item>
         {variants.map((variant) => (
           <Item>
-            <Button onClick={() => edit(variant)}>{variant.name}</Button>
+            <VariantItem variant={variant} onClick={() => edit(variant)} />
           </Item>
         ))}
       </List>
@@ -37,7 +44,7 @@ const List = ({ children }: { children: React.ReactNode }) => (
 );
 
 const Item = ({ children }: { children: React.ReactNode }) => (
-  <li className="flex flex-col gap-2">{children}</li>
+  <li className="self-stretch justify-self-stretch">{children}</li>
 );
 
 const Button = ({
@@ -52,5 +59,34 @@ const Button = ({
     onClick={onClick}
   >
     {children}
+  </button>
+);
+
+const VariantItem = ({
+  variant,
+  onClick,
+}: {
+  variant: VariantType | OnSubmitProps;
+  onClick: () => void;
+}) => (
+  <button
+    className="flex items-center justify-between h-full gap-2 border border-blue-950 hover:bg-gray-200 active:bg-gray-300"
+    onClick={onClick}
+  >
+    <div className="relative w-16 h-[80%] rounded-lg overflow-hidden">
+      <Image
+        src={
+          isImageType(variant.image)
+            ? variant.image.src
+            : URL.createObjectURL(variant.image)
+        }
+        alt="variant image"
+        fill
+        className="object-cover rounded-lg"
+      />
+    </div>
+    <div className="flex items-center self-stretch justify-center p-4">
+      {variant.name}
+    </div>
   </button>
 );

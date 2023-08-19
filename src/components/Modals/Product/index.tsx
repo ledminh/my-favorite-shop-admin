@@ -5,8 +5,15 @@ import useProductModal from "./hooks";
 import Promotion from "@/components/Promotion";
 
 import NewVariantModal from "@/components/modals/NewVariant";
+import EditVariantModal from "@/components/modals/EditVariant";
 
-import { Category, WithID, Product as ProductType } from "@/types";
+import {
+  Category,
+  WithID,
+  Product as ProductType,
+  Variant,
+  Promotion as PromotionType,
+} from "@/types";
 
 import Image from "next/image";
 import Variants from "./Variants";
@@ -53,6 +60,8 @@ export type Props = (
   initPriceStr?: string;
   initIntro?: string;
   initDescription?: string;
+  initPromotion?: PromotionType | null;
+  initVariants?: WithID<Variant>[];
   initImages?: File[];
 };
 
@@ -60,12 +69,17 @@ export default function ProductModal(props: Props) {
   const {
     isNewVariantModalOpen,
     setIsNewVariantModalOpen,
+    isEditDeleteVariantModalOpen,
+    setIsEditDeleteVariantModalOpen,
     categoryID,
     serial,
     name,
     priceStr,
     intro,
     description,
+    beingEditedVariant,
+    setBeingEditedVariant,
+
     images,
     onCategoryChange,
     onSerialChange,
@@ -76,9 +90,13 @@ export default function ProductModal(props: Props) {
     onPromotionChange,
     setImages,
     additionalButtons,
+    variants,
+    afterAddVariant,
+    afterEditVariant,
   } = useProductModal(props);
 
-  const { isOpen, setIsOpen, title, type, catName, categories } = props;
+  const { isOpen, setIsOpen, title, type, catName, categories, initPromotion } =
+    props;
 
   return (
     <>
@@ -167,14 +185,21 @@ export default function ProductModal(props: Props) {
               className="p-2 border-2 rounded-lg border-blue-950"
             />
           </div>
-          <Promotion onChange={onPromotionChange} />
+          <Promotion
+            onChange={onPromotionChange}
+            initPromotion={initPromotion}
+          />
           <div className="flex flex-col gap-2">
             <Variants
-              initVariants={[]}
+              initVariants={variants}
               openNewVariantModal={() => setIsNewVariantModalOpen(true)}
+              opentEditDeleteVariantModal={(variant) => {
+                setBeingEditedVariant(variant);
+                setIsEditDeleteVariantModalOpen(true);
+              }}
             />
           </div>
-          {!isNewVariantModalOpen ? (
+          {!isNewVariantModalOpen && variants.length === 0 ? (
             <ImagesUpload images={images} setImages={setImages} />
           ) : null}
         </div>
@@ -182,7 +207,15 @@ export default function ProductModal(props: Props) {
           <NewVariantModal
             isOpen={isNewVariantModalOpen}
             setIsOpen={setIsNewVariantModalOpen}
-            afterAdd={() => {}}
+            afterAdd={afterAddVariant}
+          />
+        )}{" "}
+        {isEditDeleteVariantModalOpen && beingEditedVariant && (
+          <EditVariantModal
+            isOpen={isEditDeleteVariantModalOpen}
+            setIsOpen={setIsEditDeleteVariantModalOpen}
+            afterEdit={afterEditVariant}
+            variant={beingEditedVariant}
           />
         )}{" "}
       </Modal>

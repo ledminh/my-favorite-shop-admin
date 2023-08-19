@@ -11,7 +11,7 @@ export default function NewVariantModal(props: Props) {
   return (
     <VariantModal
       type="add"
-      title="Add New Category"
+      title="Add New Variant"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       submitButton={submitButton}

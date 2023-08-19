@@ -1,9 +1,9 @@
-import { Category as CategoryType, Promotion, WithID } from "@/types";
+import { Variant as VariantType, Promotion, WithID } from "@/types";
 
 import { useState } from "react";
 import { Props } from "./";
 
-import isFilledPromotion from "@/utils/isFilledPromotion";
+import { OnSubmitProps as VariantData } from "../Variant/types";
 
 export default function useProductModal({
   type,
@@ -16,6 +16,7 @@ export default function useProductModal({
   initPriceStr,
   initIntro,
   initDescription,
+  initVariants,
   initImages,
 }: Props) {
   /******************
@@ -30,12 +31,19 @@ export default function useProductModal({
   const [priceStr, setPriceStr] = useState<string>(initPriceStr || "");
   const [intro, setIntro] = useState<string>(initIntro || "");
   const [description, setDescription] = useState<string>(initDescription || "");
-  const [promotion, setPromotion] = useState<Promotion | null | undefined>(
-    undefined
-  ); // Promotion is undefined when it is enabled but user has not finished filling in the form
-
+  const [promotion, setPromotion] = useState<Promotion | null>(null); // initPromotion is processed in Promotion component
   const [isNewVariantModalOpen, setIsNewVariantModalOpen] =
     useState<boolean>(false);
+  const [variants, setVariants] = useState<
+    (WithID<VariantType> | VariantData)[]
+  >(initVariants || []);
+
+  const [beingEditedVariant, setBeingEditedVariant] = useState<
+    WithID<VariantType> | VariantData | null
+  >(null);
+  const [isEditDeleteVariantModalOpen, setIsEditDeleteVariantModalOpen] =
+    useState<boolean>(false);
+
   const [images, setImages] = useState<File[]>(initImages || []);
 
   const reset = () => {
@@ -117,6 +125,7 @@ export default function useProductModal({
 
   const onIntroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const intro = e.target.value;
+    console.log(intro);
     setIntro(intro);
   };
 
@@ -126,10 +135,22 @@ export default function useProductModal({
   };
 
   const onPromotionChange = (promo: Promotion | null) => {
-    const _promotion =
-      promo !== null ? (isFilledPromotion(promo) ? promo : undefined) : null;
+    setPromotion(promo);
+  };
 
-    setPromotion(_promotion);
+  const afterAddVariant = (variant: VariantData) => {
+    setVariants([...variants, variant]);
+  };
+
+  const afterEditVariant = (variant: VariantData) => {
+    setVariants(
+      variants.map((v) => {
+        if (v.name === variant.name) {
+          return variant;
+        }
+        return v;
+      })
+    );
   };
 
   const additionalButtons = [
@@ -143,12 +164,17 @@ export default function useProductModal({
   return {
     isNewVariantModalOpen,
     setIsNewVariantModalOpen,
+    isEditDeleteVariantModalOpen,
+    setIsEditDeleteVariantModalOpen,
     categoryID,
     serial,
     name,
     priceStr,
     intro,
     description,
+    promotion,
+    beingEditedVariant,
+    setBeingEditedVariant,
     images,
     onCategoryChange,
     onSerialChange,
@@ -159,5 +185,8 @@ export default function useProductModal({
     onPromotionChange,
     setImages,
     additionalButtons,
+    variants,
+    afterAddVariant,
+    afterEditVariant,
   };
 }

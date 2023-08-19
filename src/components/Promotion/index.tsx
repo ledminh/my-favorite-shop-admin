@@ -177,10 +177,18 @@ const DescriptionInput = (props: {
 }) => (
   <input
     type="text"
+    id="description"
     placeholder="Description"
     disabled={!props.checked}
     value={props.description}
-    onChange={(e) => props.setDescription(e.target.value, props.promotionID)}
+    onChange={(e) => {
+      props.setDescription(e.target.value, props.promotionID);
+    }}
+    onKeyDown={(e) => {
+      if (e.key === " ") {
+        props.setDescription(props.description + " ", props.promotionID);
+      }
+    }}
     className={classNames(
       "block w-full min-w-0 flex-1 rounded-md py-1.5 px-2 text-gray-900 border placeholder:text-gray-400 sm:text-sm sm:leading-6 border-blue-950 focus:outline-none focus:border-blue-500 focus:ring-inset focus:ring-blue-500"
     )}
