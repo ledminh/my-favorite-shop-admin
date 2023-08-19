@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import { Props, _PromotionType } from "./types";
-import { init } from "next/dist/compiled/@vercel/og/satori";
 
 export default function usePromotion(props: Props) {
   const { onChange, initPromotion } = props;
