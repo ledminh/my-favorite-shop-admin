@@ -216,12 +216,14 @@ const AddNewButton = ({
   image,
 }: AddNewButtonType & { onClick: () => void }) => (
   <button
-    className="flex flex-col items-center justify-center w-full h-full gap-4 bg-gray-400 hover:bg-gray-200 active:bg-gray-500"
+    className="flex items-center justify-between w-full h-full gap-4 p-4 bg-gray-400 md:justify-center md:flex-col hover:bg-gray-200 active:bg-gray-500"
     onClick={onClick}
   >
-    <div className="relative w-1/2">
+    <div className="relative w-32 md:w-1/2">
       <Image src={image} alt="Folder Icon" className="object-cover" />
     </div>
-    <span className="text-lg font-semibold">{text}</span>
+    <div className="flex items-center justify-center basis-full md:basis-auto">
+      <span className="text-2xl font-semibold">{text}</span>
+    </div>
   </button>
 );
