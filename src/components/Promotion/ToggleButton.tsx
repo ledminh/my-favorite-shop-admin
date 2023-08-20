@@ -3,15 +3,17 @@ import { Switch } from "@headlessui/react";
 import classNames from "@/utils/classNames";
 
 type Props = {
+  disabled?: boolean; // for delete variant modal
   enabled: boolean;
   setEnabled: (enabled: boolean) => void;
 };
 
-export default function ToggleButton({ enabled, setEnabled }: Props) {
+export default function ToggleButton({ disabled, enabled, setEnabled }: Props) {
   return (
     <Switch
       checked={enabled}
       onChange={setEnabled}
+      disabled={disabled}
       className={classNames(
         enabled ? "bg-blue-950" : "bg-gray-200",
         "relative inline-flex h-4 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"

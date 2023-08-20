@@ -37,7 +37,11 @@ export default function Promotion(props: Props) {
           Promotion
         </span>
         <div>
-          <ToggleButton enabled={enabled} setEnabled={setEnabled} />
+          <ToggleButton
+            disabled={props.disabled}
+            enabled={enabled}
+            setEnabled={setEnabled}
+          />
         </div>
       </RadioGroup.Label>
 
@@ -46,7 +50,7 @@ export default function Promotion(props: Props) {
           <RadioGroup.Option
             key={promotion.id}
             value={promotion}
-            disabled={!enabled}
+            disabled={props.disabled || !enabled}
             className={({ active }) =>
               classNames(
                 active
