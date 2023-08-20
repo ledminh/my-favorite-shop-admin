@@ -79,24 +79,6 @@ export default function usePromotion(props: Props) {
       setSelectedPromotion(null);
       onChange(null);
     } else {
-      /**
-       * Where does it come from?
-       * 1. user clicks on the promotion toggle when enabled === false
-       *    - initPromotion is null/undefined, null when there is a product with no promotion, undefined when there is no product --> also no promotion --> selectedPromotion =  promotionList[0]
-       *    - initPromotion is not null/undefined --> there is an initProduct with promotion but user already deleted it --> still selectedPromotion =  promotionList[0]
-       *
-       * 2. first time loading the modal and initPromotion is not null
-       *  - initPromotion is not null/undefined --> there is an initProduct with promotion --> selectedPromotion = listPromotion.find(promotion => promotion.id === initPromotion.type), set description, set discountPercentStr/salePriceStr
-       *
-       *  how to tell if it is the first case or the second case?
-       *  - if initPromotion is null/undefined --> first case
-       * - if initPromotion is not null/undefined --> second case
-       *   can't be, because initPromotion is either null or undefined in both cases.
-       *  --> so we can't tell if it is the first case or the second case. So how?
-       *
-       *
-       */
-
       if (!initPromotion) setSelectedPromotion(promotionList[0]);
       else {
         const initSelectedPromotion = promotionList.find(
