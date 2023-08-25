@@ -211,6 +211,26 @@ export const updateProduct = async (
   });
 };
 
+/**********************************
+ * deleteProduct
+ * @param {id: string}
+ * @returns Promise<WithID<Product>>;
+ */
+
+export const deleteProduct = async (id: string) => {
+  return new Promise(async (resolve, reject) => {
+    const index = PRODUCTS.findIndex((p) => p.id === id);
+
+    if (index === -1) {
+      return reject(new Error("Product not found"));
+    }
+
+    PRODUCTS.splice(index, 1);
+
+    resolve(null);
+  });
+};
+
 /*****************************
  * Helpers
  *****************************/
