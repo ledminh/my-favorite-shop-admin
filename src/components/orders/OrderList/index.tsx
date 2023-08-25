@@ -1,6 +1,5 @@
 "use client";
 
-import { WithID, Order, OrderStatus } from "@/types";
 import OrderMessList from "@/components/layout/OrderMessList";
 
 import OrderTab from "@/components/OrderTab";
@@ -12,13 +11,16 @@ import useOrders from "./hooks";
 
 export default function OrderList(props: Props) {
   const { total } = props;
-  const { _initOrders, onLoadMore } = useOrders(props);
+  const { _initOrders, onLoadMore, afterDelete, afterUpdate } =
+    useOrders(props);
 
   return (
     <OrderMessList
       initItems={_initOrders}
       total={total}
       onLoadMore={onLoadMore}
+      afterDelete={afterDelete}
+      afterUpdate={afterUpdate}
       ItemTab={OrderTab}
       ItemModal={OrderModal}
       getTotalPrice={getTotalPrice}

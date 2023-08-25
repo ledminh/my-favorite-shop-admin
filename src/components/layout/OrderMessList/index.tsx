@@ -22,11 +22,16 @@ type Props<T> = {
     setCurrentItem: (item: WithID<T>) => void;
   }>;
   ItemModal: FC<{
+    item: WithID<T>;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
-    item: WithID<T>;
+    afterDelete: (o: WithID<T>) => void;
+    afterUpdate: (o: WithID<T>) => void;
   }>;
   getTotalPrice?: (item: T[]) => number;
+
+  afterDelete: (o: WithID<T>) => void;
+  afterUpdate: (o: WithID<T>) => void;
 };
 
 export default function OrderMessList<T>({
@@ -36,6 +41,8 @@ export default function OrderMessList<T>({
   ItemTab,
   ItemModal,
   getTotalPrice,
+  afterDelete,
+  afterUpdate,
 }: Props<T>) {
   const [items, setItems] = useState(initItems); // [WithID<T>[], (items: WithID<T>[]) => void
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,6 +92,8 @@ export default function OrderMessList<T>({
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
           item={currentItem}
+          afterDelete={afterDelete}
+          afterUpdate={afterUpdate}
         />
       )}
     </>

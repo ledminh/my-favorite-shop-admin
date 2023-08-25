@@ -3,6 +3,7 @@ import { getOrders } from "@/data/orders";
 import { smallItemsPerPage } from "@/config";
 
 import { Props } from "./types";
+import { Order, WithID } from "@/types";
 
 export default function useOrders(props: Props) {
   const { initOrders, sortBy, sortedOrder, searchTerm, filter } = props;
@@ -24,6 +25,9 @@ export default function useOrders(props: Props) {
     })();
   }, [sortBy, sortedOrder, searchTerm, filter]);
 
+  /*************************
+   * Public
+   */
   const onLoadMore = async ({
     offset,
     limit,
@@ -43,8 +47,24 @@ export default function useOrders(props: Props) {
     return items;
   };
 
+  const afterDelete = (order: WithID<Order>) => {
+    setInitOrders((prev) => prev.filter((item) => item.id !== order.id));
+  };
+
+  const afterUpdate = (order: WithID<Order>) => {
+    setInitOrders((prev) => {
+      const index = prev.findIndex((item) => item.id === order.id);
+
+      if (index === -1) return prev;
+
+      return [...prev.slice(0, index), order, ...prev.slice(index + 1)];
+    });
+  };
+
   return {
     _initOrders,
     onLoadMore,
+    afterDelete,
+    afterUpdate,
   };
 }
