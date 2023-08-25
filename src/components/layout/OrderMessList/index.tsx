@@ -3,9 +3,19 @@ import { WithID } from "@/types";
 
 import { FC, useState, useEffect } from "react";
 
+import { itemsPerPage } from "@/config";
+
 type Props<T> = {
   initItems: WithID<T>[];
   total: number;
+  onLoadMore: ({
+    offset,
+    limit,
+  }: {
+    offset: number;
+    limit: number;
+  }) => Promise<WithID<T>[]>;
+
   ItemTab: FC<{
     item: WithID<T>;
     setIsModalOpen: (isOpen: boolean) => void;
@@ -22,6 +32,7 @@ type Props<T> = {
 export default function OrderMessList<T>({
   initItems,
   total,
+  onLoadMore,
   ItemTab,
   ItemModal,
   getTotalPrice,
@@ -30,8 +41,13 @@ export default function OrderMessList<T>({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<WithID<T> | null>(null);
 
-  const loadMore = () => {
-    console.log("load more");
+  const _onLoadMore = () => {
+    onLoadMore({
+      offset: items.length,
+      limit: itemsPerPage,
+    }).then((newItems) => {
+      setItems((prevItems) => [...prevItems, ...newItems]);
+    });
   };
 
   useEffect(() => {
@@ -53,7 +69,7 @@ export default function OrderMessList<T>({
           ))}
           {total > items.length && (
             <div className="flex justify-center pt-4">
-              <Button label="Load More" onClick={loadMore} />
+              <Button label="Load More" onClick={_onLoadMore} />
             </div>
           )}
         </ul>
