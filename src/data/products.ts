@@ -1,7 +1,7 @@
 import type { Product, Product as ProductType, WithID } from "@/types";
 import { faker } from "@faker-js/faker";
 
-import { getCategory } from "./categories";
+import { getCategories, getCategory } from "./categories";
 
 const PRODUCTS: WithID<ProductType>[] = _getProducts(50);
 
@@ -119,6 +119,26 @@ export const getProducts: GetProducts = async ({
   });
 };
 
+/***********************************************
+ * getProduct
+ * @param {id: string}
+ * @returns Promise<WithID<Product>>;
+ */
+
+type GetProduct = (params: { id: string }) => Promise<WithID<ProductType>>;
+
+export const getProduct: GetProduct = async ({ id }) => {
+  return new Promise((resolve, reject) => {
+    const product = PRODUCTS.find((product) => product.id === id);
+
+    if (!product) {
+      return reject(new Error("Product not found"));
+    }
+
+    resolve(product);
+  });
+};
+
 /**********************************
  * addProduct
  */
@@ -145,6 +165,49 @@ export const addProduct = async (
     PRODUCTS.push(newProduct);
 
     resolve(newProduct);
+  });
+};
+
+/**********************************
+ * updateProduct
+ * @param {id: string}
+ * @returns Promise<WithID<Product>>;
+ */
+export const updateProduct = async (
+  product: Omit<
+    WithID<ProductType>,
+    "category" | "link" | "createdAt" | "modifiedAt"
+  > & {
+    categoryID: string;
+  }
+): Promise<WithID<ProductType>> => {
+  return new Promise(async (resolve, reject) => {
+    const oldProductPromise = getProduct({ id: product.id });
+
+    const categoryPromise = getCategory({ id: product.categoryID });
+
+    const [oldProduct, category] = await Promise.all([
+      oldProductPromise,
+      categoryPromise,
+    ]);
+
+    const updatedProduct = {
+      ...product,
+      category,
+      link: `/product/${product.id}`,
+      createdAt: oldProduct.createdAt,
+      modifiedAt: new Date(),
+    };
+
+    const index = PRODUCTS.findIndex((p) => p.id === product.id);
+
+    if (index === -1) {
+      return reject(new Error("Product not found"));
+    }
+
+    PRODUCTS[index] = updatedProduct;
+
+    resolve(updatedProduct);
   });
 };
 
@@ -177,16 +240,16 @@ export function _getProducts(num: number): WithID<Product>[] {
     products.push({
       id,
       category: {
-        id: `category-${generateRandomNumber(1000, 999999)}`,
-        name: faker.commerce.department(),
-        description: faker.commerce.productDescription(),
-        link: `/shop/nail-polish`,
+        id: "cat-1-nail-polish",
+        name: "Nail Polish",
+        description: "A wide range of nail polish colors",
+        link: "/shop/nail-polish",
         image: {
-          src: `https://picsum.photos/seed/${i + 1}/300/300`,
-          alt: `Category ${i + 1}`,
+          src: "https://picsum.photos/seed/1/300/300",
+          alt: "Nail Polish",
         },
-        createdAt: new Date(),
-        modifiedAt: new Date(),
+        createdAt: faker.date.past(),
+        modifiedAt: faker.date.past(),
       },
       link: `/product/${id}`,
       name: faker.commerce.productName(),
