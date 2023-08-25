@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getOrders } from "@/data/orders";
-import { itemsPerPage } from "@/config";
+import { smallItemsPerPage } from "@/config";
 
 import { Props } from "./types";
 
@@ -13,7 +13,7 @@ export default function useOrders(props: Props) {
     (async () => {
       const { items } = await getOrders({
         offset: 0,
-        limit: itemsPerPage,
+        limit: smallItemsPerPage,
         sortBy,
         sortedOrder,
         searchTerm,

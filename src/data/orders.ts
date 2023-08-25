@@ -202,7 +202,6 @@ function _getOrders(num: number): WithID<Order>[] {
           modifiedAt: new Date(),
           quantity: 2,
           selectedVariant: {
-            id: "variant-1",
             name: "Variant selected",
             price: 20.3,
             image: {

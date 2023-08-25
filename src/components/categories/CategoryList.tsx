@@ -88,6 +88,7 @@ export default function CategoryList({
 
   return (
     <CatProdList
+      categories={_initCategories}
       initItems={_initCategories}
       total={total}
       CardContent={CardContent}

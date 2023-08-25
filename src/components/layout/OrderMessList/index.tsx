@@ -75,7 +75,7 @@ export default function OrderMessList<T>({
         </ul>
         {getTotalPrice && (
           <div className="flex justify-end p-4 text-xl font-bold text-blue-950">
-            Total: ${getTotalPrice(items).toFixed(2)}
+            Total: ${getTotalPrice(items).toFixed(2)} ({items.length} items)
           </div>
         )}
       </div>
