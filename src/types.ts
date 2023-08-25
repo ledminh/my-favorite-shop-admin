@@ -53,7 +53,7 @@ export type Product = {
   mainImageID: string;
   images: WithID<Image>[];
   promotion?: Promotion;
-  variants?: Variant[];
+  variants?: WithID<Variant>[];
   createdAt: Date;
   modifiedAt: Date;
 };

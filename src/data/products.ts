@@ -1,7 +1,9 @@
-import type { Product, WithID } from "@/types";
+import type { Product, Product as ProductType, WithID } from "@/types";
 import { faker } from "@faker-js/faker";
 
-const PRODUCTS: WithID<Product>[] = _getProducts(50);
+import { getCategory } from "./categories";
+
+const PRODUCTS: WithID<ProductType>[] = _getProducts(50);
 
 /*****************************
  * APIs
@@ -32,7 +34,7 @@ type GetProductsParams = {
 
 type GetProducts = (params: GetProductsParams) => Promise<{
   total: number;
-  items: WithID<Product>[];
+  items: WithID<ProductType>[];
 }>;
 
 export const getProducts: GetProducts = async ({
@@ -117,6 +119,38 @@ export const getProducts: GetProducts = async ({
   });
 };
 
+/**********************************
+ * addProduct
+ */
+
+export const addProduct = async (
+  product: Omit<
+    WithID<ProductType>,
+    "category" | "link" | "createdAt" | "modifiedAt"
+  > & {
+    categoryID: string;
+  }
+): Promise<WithID<ProductType>> => {
+  return new Promise(async (resolve) => {
+    const category = await getCategory({ id: product.categoryID });
+
+    const newProduct = {
+      ...product,
+      category,
+      link: `/product/${product.id}`,
+      createdAt: new Date(),
+      modifiedAt: new Date(),
+    };
+
+    PRODUCTS.push(newProduct);
+
+    resolve(newProduct);
+  });
+};
+
+/*****************************
+ * Helpers
+ *****************************/
 function generateRandomNumber(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
