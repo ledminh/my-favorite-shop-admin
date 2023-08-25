@@ -1,7 +1,7 @@
 import type { Product, Product as ProductType, WithID } from "@/types";
 import { faker } from "@faker-js/faker";
 
-import { getCategories, getCategory } from "./categories";
+import { getCategory } from "./categories";
 
 const PRODUCTS: WithID<ProductType>[] = _getProducts(50);
 
