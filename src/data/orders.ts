@@ -134,6 +134,8 @@ export function updateOrder(
   return new Promise((resolve, reject) => {
     const order = ORDERS.find((order) => order.id === id);
 
+    console.log(id);
+
     if (!order) {
       return reject(new Error("Order not found"));
     }
@@ -213,6 +215,10 @@ function _getOrders(num: number): WithID<Order>[] {
           },
         },
       ];
+    }
+
+    if (i === 0) {
+      order.id = "order-1-test";
     }
 
     orders.push(order);

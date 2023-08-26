@@ -59,6 +59,16 @@ export default function OrderMessList<T>({
 
   useEffect(() => {
     setItems(initItems);
+
+    setCurrentItem((prev) => {
+      if (!prev) return null;
+
+      const found = initItems.find((item) => item.id === prev.id);
+
+      if (found) return found;
+
+      return null;
+    });
   }, [initItems]);
 
   return (
