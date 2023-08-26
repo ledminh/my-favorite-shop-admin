@@ -13,10 +13,13 @@ export default function useControlPanel({
   filterOptions,
   initFilterID,
 }: Props) {
+  // Hooks
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  // States
+  const [filterID, setFilterID] = useState(initFilterID);
   const [sortByID, setSortByID] = useState(initSortBy);
   const [orderID, setOrderID] = useState(initOrder);
 
@@ -25,7 +28,7 @@ export default function useControlPanel({
       sortByOptions[0].orderOptions
   );
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(initSearchTerm);
 
   // Effects
   useEffect(() => {
@@ -41,21 +44,30 @@ export default function useControlPanel({
     params.set("sortBy", sortByID);
     params.set("order", orderID);
 
-    if (searchTerm !== "") {
-      params.set("search", searchTerm);
-    }
+    if (searchTerm !== "") params.set("searchTerm", searchTerm);
+    else params.delete("searchTerm");
+
+    if (filterID !== null) params.set("filter", filterID);
+    else params.delete("filter");
 
     router.push(`${pathname}?${params.toString()}`);
-  }, [sortByID, orderID, searchTerm]);
-
+  }, [sortByID, orderID, searchTerm, filterID]);
+  /*********************
+   * Public
+   */
   const onSearch = (searchTerm: string) => setSearchTerm(searchTerm);
-  const onFilterChange = (filter: CustomerMessageStatus | null) => {};
+  const onClearSearch = () => setSearchTerm("");
+  const onFilterChange = (filterID: CustomerMessageStatus | null) =>
+    setFilterID(filterID);
 
   return {
+    filterID,
+    searchTerm,
     onSearch,
-    onFilterChange,
+    onClearSearch,
     setSortByID,
     setOrderID,
     orderOptions,
+    onFilterChange,
   };
 }

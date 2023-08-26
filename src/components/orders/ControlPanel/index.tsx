@@ -30,14 +30,7 @@ type Props = {
   initFilterID: OrderStatus | null;
 };
 
-export default function ControlPanel({
-  initSortBy,
-  initOrder,
-  initSearchTerm,
-  sortByOptions,
-  filterOptions,
-  initFilterID,
-}: Props) {
+export default function ControlPanel(props: Props) {
   const {
     filterID,
     searchTerm,
@@ -47,13 +40,9 @@ export default function ControlPanel({
     setOrderID,
     orderOptions,
     onFilterChange,
-  } = useControlPanel({
-    initSortBy,
-    initOrder,
-    initSearchTerm,
-    sortByOptions,
-    initFilterID,
-  });
+  } = useControlPanel(props);
+
+  const { sortByOptions, filterOptions } = props;
 
   return (
     <>

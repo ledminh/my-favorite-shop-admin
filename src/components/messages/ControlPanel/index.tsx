@@ -9,6 +9,9 @@ import { ReactNode } from "react";
 import useControlPanel from "./hooks";
 import { CustomerMessageStatus } from "@/types";
 
+import SearchTermTag from "@/components/SearchTermTag";
+import FilterTag from "@/components/FilterTag";
+
 export type Props = {
   initSortBy: "customer" | "email" | "createdAt";
   initOrder: "asc" | "desc";
@@ -29,21 +32,36 @@ export type Props = {
 };
 
 export default function ControlPanel(props: Props) {
-  const { onSearch, setSortByID, setOrderID, orderOptions, onFilterChange } =
-    useControlPanel(props);
+  const {
+    filterID,
+    searchTerm,
+    onSearch,
+    onClearSearch,
+    setSortByID,
+    setOrderID,
+    orderOptions,
+    onFilterChange,
+  } = useControlPanel(props);
 
   const { sortByOptions, filterOptions } = props;
 
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-        {/* {variants ||
-          (promotion && (
-            <div className="p-2 bg-gray-200 rounded-lg basis-full">
-              {variants && <FilterTag>with Variants</FilterTag>}
-              {promotion && <FilterTag>with Promotion</FilterTag>}
-            </div>
-          ))} */}
+        {(searchTerm !== "" || filterID !== null) && (
+          <div className="flex gap-2 p-2 bg-gray-200 rounded-lg basis-full">
+            {searchTerm !== "" && (
+              <SearchTermTag onClearSearch={onClearSearch}>
+                {searchTerm}
+              </SearchTermTag>
+            )}
+            {filterID !== null && (
+              <FilterTag onClearFilter={() => onFilterChange(null)}>
+                {filterOptions.find((option) => option.id === filterID)?.text}
+              </FilterTag>
+            )}
+          </div>
+        )}
         <div className="basis-[30px]">
           <Filters filterOptions={filterOptions} onChange={onFilterChange} />
         </div>
@@ -62,12 +80,3 @@ export default function ControlPanel(props: Props) {
     </>
   );
 }
-
-/***********************
- * Styles
- */
-const FilterTag = ({ children }: { children: ReactNode }) => (
-  <span className="px-2 py-1 text-sm font-medium text-white bg-gray-700 rounded-md">
-    {children}
-  </span>
-);

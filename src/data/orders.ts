@@ -134,13 +134,12 @@ export function updateOrder(
   return new Promise((resolve, reject) => {
     const order = ORDERS.find((order) => order.id === id);
 
-    console.log(id);
-
     if (!order) {
       return reject(new Error("Order not found"));
     }
 
     order.status = status;
+    order.modifiedAt = new Date();
 
     return resolve(order);
   });
