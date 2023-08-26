@@ -107,6 +107,8 @@ export function updateMessage(
   status: CustomerMessageStatus
 ): Promise<WithID<CustomerMessage>> {
   return new Promise((resolve, reject) => {
+    console.log(id, status);
+
     const customerMessage = CUSTOMER_MESSAGES.find(
       (customerMessage) => customerMessage.id === id
     );
@@ -123,6 +125,7 @@ export function updateMessage(
 
 export function deleteMessage(id: string): Promise<WithID<CustomerMessage>> {
   return new Promise((resolve, reject) => {
+    console.log(id);
     const customerMessage = CUSTOMER_MESSAGES.find(
       (customerMessage) => customerMessage.id === id
     );
@@ -160,6 +163,9 @@ function _getCustomerMessages(num: number): WithID<CustomerMessage>[] {
       createdAt: faker.date.past(),
     });
   }
+
+  customerMessages[0].id = "cm-1";
+  customerMessages[0].createdAt = new Date();
 
   return customerMessages;
 }

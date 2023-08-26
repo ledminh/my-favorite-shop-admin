@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import { CustomerMessageStatus } from "@/types";
 import { Props } from "./types";
+import { set } from "react-hook-form";
 
 export default function useControlPanel({
   initSortBy,
@@ -30,6 +31,7 @@ export default function useControlPanel({
   const [searchTerm, setSearchTerm] = useState(initSearchTerm);
 
   // Effects
+
   useEffect(() => {
     const orderOptions = sortByOptions.find((option) => option.id === sortByID);
 
@@ -61,6 +63,8 @@ export default function useControlPanel({
     setFilterID(filterID);
 
   return {
+    sortByID,
+    orderID,
     filterID,
     searchTerm,
     onSearch,

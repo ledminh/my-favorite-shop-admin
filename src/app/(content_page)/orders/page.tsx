@@ -15,8 +15,8 @@ type Props = {
 };
 
 export default async function OrdersPage({ searchParams }: Props) {
-  const _sortBy = searchParams?.sortBy || "customer";
-  const _order = searchParams?.order || "asc";
+  const _sortBy = searchParams?.sortBy || "createdAt"; //TODO
+  const _order = searchParams?.order || "desc";
   const _searchTerm = searchParams?.searchTerm || "";
 
   const _filter = searchParams?.filter || null;

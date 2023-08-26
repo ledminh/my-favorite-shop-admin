@@ -61,6 +61,8 @@ export default function useControlPanel({
     setFilterID(filterID);
 
   return {
+    sortByID,
+    orderID,
     filterID,
     searchTerm,
     onSearch,

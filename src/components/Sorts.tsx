@@ -3,6 +3,8 @@
 import Select from "@/components/layout/Select";
 
 type Props<SID, OID> = {
+  defaultSortByID: SID;
+  defaultOrderID: OID;
   sortByOptions: {
     id: SID;
     text: string;
@@ -20,6 +22,8 @@ type Props<SID, OID> = {
 };
 
 export default function Sorts<SID, OID>({
+  defaultSortByID,
+  defaultOrderID,
   sortByOptions,
   setSortByID,
   setOrderID,
@@ -27,7 +31,6 @@ export default function Sorts<SID, OID>({
 }: Props<SID, OID>) {
   // Event handlers
   const sortByOnChange = (id: SID) => setSortByID(id as SID);
-
   const orderOnChange = (id: OID) => setOrderID(id as OID);
 
   return (
@@ -42,7 +45,7 @@ export default function Sorts<SID, OID>({
         <Select
           id="sortBy"
           options={sortByOptions}
-          defaultValue={sortByOptions[0].id}
+          defaultValue={defaultSortByID}
           onChange={sortByOnChange}
         />
       </div>
@@ -56,7 +59,7 @@ export default function Sorts<SID, OID>({
         <Select
           id="order"
           options={orderOptions}
-          defaultValue={orderOptions[0].id}
+          defaultValue={defaultOrderID}
           onChange={orderOnChange}
         />
       </div>

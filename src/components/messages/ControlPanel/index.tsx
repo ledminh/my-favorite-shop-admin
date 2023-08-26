@@ -13,6 +13,8 @@ import type { Props } from "./types";
 
 export default function ControlPanel(props: Props) {
   const {
+    sortByID,
+    orderID,
     filterID,
     searchTerm,
     onSearch,
@@ -52,6 +54,8 @@ export default function ControlPanel(props: Props) {
           <Sorts
             setSortByID={setSortByID}
             setOrderID={setOrderID}
+            defaultSortByID={sortByID}
+            defaultOrderID={orderID}
             sortByOptions={sortByOptions}
             orderOptions={orderOptions}
           />
