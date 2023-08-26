@@ -2,7 +2,7 @@ import { getOrders } from "@/data/orders";
 import OrderList from "@/components/orders/OrderList";
 import ControlPanel from "@/components/orders/ControlPanel";
 
-import { itemsPerPage } from "@/config";
+import { smallItemsPerPage } from "@/config";
 import { OrderStatus } from "@/types";
 
 type Props = {
@@ -23,7 +23,7 @@ export default async function OrdersPage({ searchParams }: Props) {
 
   const { items: initOrders, total } = await getOrders({
     offset: 0,
-    limit: itemsPerPage,
+    limit: smallItemsPerPage,
     sortBy: _sortBy,
     sortedOrder: _order,
     searchTerm: _searchTerm,

@@ -1,7 +1,7 @@
 import { getCustomerMessages } from "@/data/customerMessages";
 
 import MessageList from "@/components/messages/MessageList";
-import { itemsPerPage } from "@/config";
+import { smallItemsPerPage } from "@/config";
 import ControlPanel from "@/components/messages/ControlPanel";
 import { CustomerMessageStatus } from "@/types";
 
@@ -22,7 +22,7 @@ export default async function MessagesPage({ searchParams }: Props) {
 
   const { items, total } = await getCustomerMessages({
     offset: 0,
-    limit: itemsPerPage,
+    limit: smallItemsPerPage,
     sortedBy: _sortBy,
     sortedOrder: _order,
     searchTerm: _searchTerm,
