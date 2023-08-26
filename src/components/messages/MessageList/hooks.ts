@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { getCustomerMessages } from "@/data/customerMessages";
 import { smallItemsPerPage } from "@/config";
 

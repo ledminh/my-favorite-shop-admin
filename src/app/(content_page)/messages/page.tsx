@@ -7,17 +7,17 @@ import { CustomerMessageStatus } from "@/types";
 
 type Props = {
   searchParams?: {
+    filter?: CustomerMessageStatus;
+    searchTerm?: string;
     sortBy?: "customer" | "email" | "createdAt";
     order?: "asc" | "desc";
-    searchTerms?: string;
-    filter?: CustomerMessageStatus;
   };
 };
 
 export default async function MessagesPage({ searchParams }: Props) {
   const _sortBy = searchParams?.sortBy || "createdAt";
   const _order = searchParams?.order || "asc";
-  const _searchTerm = searchParams?.searchTerms || "";
+  const _searchTerm = searchParams?.searchTerm || "";
   const _filter = searchParams?.filter || null;
 
   const { items, total } = await getCustomerMessages({

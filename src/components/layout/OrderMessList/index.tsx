@@ -84,6 +84,11 @@ export default function OrderMessList<T>({
               />
             </li>
           ))}
+          {items.length === 0 && (
+            <div className="flex justify-center pt-4">
+              <p className="text-xl font-bold text-blue-950">No items</p>
+            </div>
+          )}
           {total > items.length && (
             <div className="flex justify-center pt-4">
               <Button label="Load More" onClick={_onLoadMore} />
