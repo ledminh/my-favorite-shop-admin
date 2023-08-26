@@ -125,7 +125,6 @@ export function updateMessage(
 
 export function deleteMessage(id: string): Promise<WithID<CustomerMessage>> {
   return new Promise((resolve, reject) => {
-    console.log(id);
     const customerMessage = CUSTOMER_MESSAGES.find(
       (customerMessage) => customerMessage.id === id
     );
