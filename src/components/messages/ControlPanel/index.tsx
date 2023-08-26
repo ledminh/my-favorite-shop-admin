@@ -4,32 +4,12 @@ import Filters from "@/components/Filters";
 import Sorts from "@/components/Sorts";
 import SearchBar from "@/components/SearchBar";
 
-import { ReactNode } from "react";
-
 import useControlPanel from "./hooks";
-import { CustomerMessageStatus } from "@/types";
 
 import SearchTermTag from "@/components/SearchTermTag";
 import FilterTag from "@/components/FilterTag";
 
-export type Props = {
-  initSortBy: "customer" | "email" | "createdAt";
-  initOrder: "asc" | "desc";
-  initSearchTerm: string;
-  sortByOptions: {
-    id: "customer" | "email" | "createdAt";
-    text: string;
-    orderOptions: {
-      id: "asc" | "desc";
-      text: string;
-    }[];
-  }[];
-  filterOptions: {
-    id: CustomerMessageStatus;
-    text: string;
-  }[];
-  initFilterID: CustomerMessageStatus | null;
-};
+import type { Props } from "./types";
 
 export default function ControlPanel(props: Props) {
   const {

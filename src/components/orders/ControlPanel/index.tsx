@@ -8,27 +8,8 @@ import SearchTermTag from "@/components/SearchTermTag";
 import FilterTag from "@/components/FilterTag";
 
 import useControlPanel from "./hooks";
-import { OrderStatus } from "@/types";
 
-type Props = {
-  initSortBy: "customer" | "price" | "createdAt" | "modifiedAt";
-  initOrder: "asc" | "desc";
-  initSearchTerm: string;
-
-  sortByOptions: {
-    id: "customer" | "price" | "createdAt" | "modifiedAt";
-    text: string;
-    orderOptions: {
-      id: "asc" | "desc";
-      text: string;
-    }[];
-  }[];
-  filterOptions: {
-    id: OrderStatus;
-    text: string;
-  }[];
-  initFilterID: OrderStatus | null;
-};
+import type { Props } from "./types";
 
 export default function ControlPanel(props: Props) {
   const {

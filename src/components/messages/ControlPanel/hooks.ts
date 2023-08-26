@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import { CustomerMessageStatus } from "@/types";
-import { Props } from "./";
+import { Props } from "./types";
 
 export default function useControlPanel({
   initSortBy,
   initOrder,
   initSearchTerm,
   sortByOptions,
-  filterOptions,
   initFilterID,
 }: Props) {
   // Hooks
@@ -52,6 +51,7 @@ export default function useControlPanel({
 
     router.push(`${pathname}?${params.toString()}`);
   }, [sortByID, orderID, searchTerm, filterID]);
+
   /*********************
    * Public
    */
