@@ -42,7 +42,7 @@ export default async function MessagesPage({ searchParams }: Props) {
       <MessageList
         initMessages={items}
         total={total}
-        sortBy={_sortBy}
+        sortedBy={_sortBy}
         sortedOrder={_order}
         searchTerm={_searchTerm}
         filter={_filter}
