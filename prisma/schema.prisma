@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+ 
+// export type Image = {
+//   src: string;
+//   alt: string;
+// };
+
+// export type ComponentWithChildren = FC<{ children: ReactNode }>;
+
+// /**********************
+//  * Category types
+//  */
+
+// export type Category = {
+//   name: string;
+//   description: string;
+//   link: string;
+//   image: Image;
+//   createdAt: Date;
+//   modifiedAt: Date;
+// };
+
+model Category {
+  id          String   @id 
+  name        String
+  description String
+  link        String
+  image       String
+  createdAt   DateTime @default(now())
+  modifiedAt  DateTime @updatedAt
+}
+
+
