@@ -1,14 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCategories } from "@/data/categories";
+import { getProducts } from "@/data/products";
 
-import { CategoriesRequest } from "@/types";
+import { ProductsRequest } from "@/types";
 
 export default async function getMultiple(request: NextRequest) {
   const offsetStr = request.nextUrl.searchParams.get("offset");
   const limitStr = request.nextUrl.searchParams.get("limit");
   const sortByStr = request.nextUrl.searchParams.get("sortBy");
+  const catID = request.nextUrl.searchParams.get("catID");
   const orderStr = request.nextUrl.searchParams.get("order");
   const searchTermStr = request.nextUrl.searchParams.get("searchTerm");
+  const filterStr = request.nextUrl.searchParams.get("filter");
+
+  if (!catID) {
+    throw new Error("catID is required");
+  }
 
   if (!sortByStr) {
     throw new Error("sortBy is required");
@@ -18,15 +24,21 @@ export default async function getMultiple(request: NextRequest) {
     throw new Error("order is required");
   }
 
-  const { items: categories } = await getCategories({
+  if (!filterStr) {
+    throw new Error("filter is required");
+  }
+
+  const { items: products } = await getProducts({
     offset: offsetStr ? parseInt(offsetStr) : undefined,
     limit: limitStr ? parseInt(limitStr) : undefined,
-    sortBy: sortByStr as CategoriesRequest["sortBy"],
-    order: orderStr as CategoriesRequest["order"],
+    sortBy: sortByStr as ProductsRequest["sortBy"],
+    order: orderStr as ProductsRequest["order"],
+    catID: catID,
     searchTerm: searchTermStr ? searchTermStr : undefined,
+    filter: filterStr !== "" ? (filterStr as ProductsRequest["filter"]) : null,
   });
 
   return NextResponse.json({
-    data: categories,
+    data: products,
   });
 }

@@ -2,7 +2,10 @@ import add from "./add";
 import edit from "./edit";
 import del from "./del";
 
-import { ProductResponse } from "@/types";
+import getMultiple from "./getMultiple";
+import getSingle from "./getSingle";
+
+import { ProductResponse, ProductsResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -21,6 +24,26 @@ export async function POST(
 
       default:
         throw new Error("action not found");
+    }
+  } catch (error: any) {
+    return NextResponse.json({ errorMessage: error.message });
+  }
+}
+
+export async function GET(
+  request: NextRequest
+): Promise<NextResponse<ProductResponse | ProductsResponse>> {
+  try {
+    const type = request.nextUrl.searchParams.get("type");
+
+    switch (type) {
+      case "single":
+        return getSingle(request);
+      case "multiple":
+        return getMultiple(request);
+
+      default:
+        throw new Error("type not found");
     }
   } catch (error: any) {
     return NextResponse.json({ errorMessage: error.message });
