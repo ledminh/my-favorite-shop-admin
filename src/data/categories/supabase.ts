@@ -2,12 +2,11 @@ import type {
   WithID,
   Category as CategoryType,
   Image as ImageType,
+  CategoryRequest,
 } from "@/types";
 import getID from "@/utils/getID";
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../prismaClient";
 
 // /*****************************************
 //  * API
@@ -19,13 +18,7 @@ type GetCategories = ({
   sortBy,
   order,
   searchTerm,
-}: {
-  offset?: number;
-  limit?: number;
-  searchTerm?: string;
-  sortBy: "name" | "createdAt" | "modifiedAt";
-  order: "asc" | "desc";
-}) => Promise<{
+}: CategoryRequest) => Promise<{
   total: number;
   items: WithID<CategoryType>[];
 }>;

@@ -6,4 +6,5 @@ export type Props = {
   setIsOpen: (isOpen: boolean) => void;
   afterEdit: (item: OnSubmitProps) => void;
   variant: OnSubmitProps | VariantType;
+  disabled?: boolean;
 };

@@ -55,7 +55,12 @@ const MessageModal = ({
               throw new Error(res.errorMessage);
             }
 
-            afterUpdate(res.data as WithID<CustomerMessage>);
+            const message: WithID<CustomerMessage> = {
+              ...res.data,
+              createdAt: new Date(res.data?.createdAt || ""),
+            } as WithID<CustomerMessage>;
+
+            afterUpdate(message);
           }
         );
       },

@@ -4,6 +4,6 @@ import { OnSubmitProps } from "../Variant/types";
 export type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  afterEdit: (item: OnSubmitProps) => void;
+  afterRemove: (item: OnSubmitProps) => void;
   variant: OnSubmitProps | VariantType;
 };

@@ -137,5 +137,15 @@ export type UpdateMessageResponse = ServerResponse<WithID<CustomerMessage>>;
 export type DeleteOrderResponse = ServerResponse<WithID<Order>>;
 export type UpdateOrderResponse = ServerResponse<WithID<Order>>;
 
-export type CategoryResponse = ServerResponse<WithID<Category>>;
+export type CategoryRequest = {
+  offset?: number;
+  limit?: number;
+  searchTerm?: string;
+  sortBy: "name" | "createdAt" | "modifiedAt";
+  order: "asc" | "desc";
+};
+
+export type CategoryResponse = ServerResponse<
+  WithID<Category> | WithID<Category>[]
+>;
 export type ProductResponse = ServerResponse<WithID<Product>>;

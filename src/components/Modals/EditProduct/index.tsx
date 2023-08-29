@@ -8,9 +8,17 @@ type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   item: WithID<ProductType>;
+  afterEdit: (item: WithID<ProductType>) => void;
 };
-export default function EditProductModal({ isOpen, setIsOpen, item }: Props) {
-  const { submitButton, onSubmit } = useEditProductModal();
+export default function EditProductModal({
+  isOpen,
+  setIsOpen,
+  item,
+  afterEdit,
+}: Props) {
+  const { submitButton, onEdit } = useEditProductModal();
+  const { id, name, price, intro, description, promotion, variants, images } =
+    item;
 
   return (
     <ProductModal
@@ -18,9 +26,18 @@ export default function EditProductModal({ isOpen, setIsOpen, item }: Props) {
       catName={item.category.name}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      title="EDIT PRODUCT"
+      title="Edit Product"
       submitButton={submitButton}
-      onSubmit={onSubmit}
+      onSubmit={onEdit}
+      afterSubmit={afterEdit}
+      initSerial={id}
+      initName={name}
+      initPriceStr={price.toString()}
+      initIntro={intro}
+      initDescription={description}
+      initPromotion={promotion}
+      initVariants={variants}
+      initImages={images}
     />
   );
 }

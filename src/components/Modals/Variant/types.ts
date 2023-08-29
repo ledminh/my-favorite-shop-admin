@@ -1,7 +1,6 @@
 import { Image as ImageType, Promotion as PromotionType } from "@/types";
 
 export type OnSubmitProps = {
-  delete?: boolean;
   shown: boolean;
   name: string;
   price: number;
@@ -26,4 +25,6 @@ export type Props = {
   initPriceStr?: string;
   initPromotion?: PromotionType;
   initImage?: File | ImageType | null;
+
+  disabled?: boolean;
 };

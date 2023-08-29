@@ -1,5 +1,3 @@
-import { CategoryResponse, Variant as VariantType, WithID } from "@/types";
-
 import { OnSubmitProps } from "@/components/modals/Variant/types";
 
 export default function useEditVariantModal() {

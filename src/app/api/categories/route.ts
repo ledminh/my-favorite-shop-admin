@@ -3,8 +3,9 @@ import {
   getCategory,
   updateCategory,
   deleteCategory,
+  getCategories,
 } from "@/data/categories";
-import { CategoryResponse, Image as ImageType } from "@/types";
+import { CategoryRequest, CategoryResponse, Image as ImageType } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 import uploadImage from "@/utils/uploadImage";
@@ -34,9 +35,31 @@ export async function POST(
   }
 }
 
+export async function GET(
+  request: NextRequest
+): Promise<NextResponse<CategoryResponse>> {
+  try {
+    const type = request.nextUrl.searchParams.get("type");
+
+    switch (type) {
+      case "single":
+        return getSingle(request);
+      case "multiple":
+        return getMultiple(request);
+
+      default:
+        throw new Error("type not found");
+    }
+  } catch (error: any) {
+    return NextResponse.json({ errorMessage: error.message });
+  }
+}
+
 /*****************************
  * Utils
  */
+
+// POST Utils
 
 async function add(request: NextRequest) {
   const formData = await request.formData();
@@ -144,5 +167,39 @@ async function del(request: NextRequest) {
 
   return NextResponse.json({
     data: oldCategory,
+  });
+}
+
+// GET Utils
+
+// TODO: Check if this is correct
+
+async function getSingle(request: NextRequest) {
+  const { id } = await request.json();
+
+  const category = await getCategory({ id });
+
+  return NextResponse.json({
+    data: category,
+  });
+}
+
+async function getMultiple(request: NextRequest) {
+  const offsetStr = request.nextUrl.searchParams.get("offset");
+  const limitStr = request.nextUrl.searchParams.get("limit");
+  const sortByStr = request.nextUrl.searchParams.get("sortBy");
+  const orderStr = request.nextUrl.searchParams.get("order");
+  const searchTermStr = request.nextUrl.searchParams.get("searchTerm");
+
+  const { items: categories } = await getCategories({
+    offset: offsetStr ? parseInt(offsetStr) : undefined,
+    limit: limitStr ? parseInt(limitStr) : undefined,
+    sortBy: sortByStr as CategoryRequest["sortBy"],
+    order: orderStr as CategoryRequest["order"],
+    searchTerm: searchTermStr as CategoryRequest["searchTerm"],
+  });
+
+  return NextResponse.json({
+    data: categories,
   });
 }

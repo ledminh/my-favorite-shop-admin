@@ -6,22 +6,15 @@ export default function useNewProductModal() {
     props: OnSubmitProps
   ): Promise<{ data: WithID<ProductType> }> => {
     return new Promise((resolve, reject) => {
-      addNewProduct(
-        {
-          // name,
-          // description,
-          // image: image as File,
-        },
-        (res) => {
-          if (res.errorMessage) {
-            reject(new Error(res.errorMessage));
-          }
-
-          resolve({
-            data: res.data as WithID<ProductType>,
-          });
+      addNewProduct(props, (res) => {
+        if (res.errorMessage) {
+          reject(new Error(res.errorMessage));
         }
-      );
+
+        resolve({
+          data: res.data as WithID<ProductType>,
+        });
+      });
     });
   };
 
@@ -42,19 +35,42 @@ export default function useNewProductModal() {
  */
 
 type AddNewProduct = (
-  product: {
-    // name: string;
-    // description: string;
-    // image: File;
-  },
+  product: OnSubmitProps,
   cb: (res: ProductResponse) => void
 ) => void;
 
 const addNewProduct: AddNewProduct = (product, cb) => {
   const formData = new FormData();
-  // formData.append("name", category.name);
-  // formData.append("description", category.description);
-  // formData.append("image", category.image);
+  formData.append("id", product.id);
+  formData.append("categoryID", product.categoryID);
+  formData.append("name", product.name);
+  formData.append("price", product.price.toString());
+  formData.append("intro", product.intro);
+  formData.append("description", product.description);
+
+  formData.append("promotion", JSON.stringify(product.promotion));
+
+  for (let i = 0; i < product.variants.length; i++) {
+    const { shown, name, price, image, promotion } = product.variants[i];
+
+    const variantJSON = {
+      shown,
+      name,
+      price,
+      promotion,
+    };
+
+    formData.append("variant-" + (i + 1), JSON.stringify(variantJSON));
+    formData.append("variant-image-" + (i + 1), image as File);
+  }
+
+  formData.append("numberOfVariants", product.variants.length.toString());
+
+  for (let i = 0; i < product.images.length; i++) {
+    formData.append("image-" + (i + 1), product.images[i]);
+  }
+
+  formData.append("numberOfImages", product.images.length.toString());
 
   fetch("/api/products?action=add", {
     method: "POST",

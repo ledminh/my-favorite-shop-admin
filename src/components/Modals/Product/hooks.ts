@@ -1,9 +1,15 @@
-import { Variant as VariantType, Promotion, WithID } from "@/types";
+import {
+  Variant as VariantType,
+  Promotion,
+  WithID,
+  Image as ImageType,
+} from "@/types";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Props } from "./";
 
 import { OnSubmitProps as VariantData } from "../Variant/types";
+import isFilledPromotion from "@/utils/isFilledPromotion";
 
 export default function useProductModal({
   type,
@@ -32,6 +38,7 @@ export default function useProductModal({
   const [intro, setIntro] = useState<string>(initIntro || "");
   const [description, setDescription] = useState<string>(initDescription || "");
   const [promotion, setPromotion] = useState<Promotion | null>(null); // initPromotion is processed in Promotion component
+
   const [isNewVariantModalOpen, setIsNewVariantModalOpen] =
     useState<boolean>(false);
   const [variants, setVariants] = useState<
@@ -41,10 +48,16 @@ export default function useProductModal({
   const [beingEditedVariant, setBeingEditedVariant] = useState<
     WithID<VariantType> | VariantData | null
   >(null);
-  const [isEditDeleteVariantModalOpen, setIsEditDeleteVariantModalOpen] =
+  const [isEditVariantModalOpen, setIsEditVariantModalOpen] =
     useState<boolean>(false);
 
-  const [images, setImages] = useState<File[]>(initImages || []);
+  const [beingRemovedVariant, setBeingRemovedVariant] = useState<
+    WithID<VariantType> | VariantData | null
+  >(null);
+  const [isRemoveVariantModalOpen, setIsRemoveVariantModalOpen] =
+    useState<boolean>(false);
+
+  const [images, setImages] = useState<(File | ImageType)[]>(initImages || []);
 
   const reset = () => {
     setCategoryID(categories ? categories[0].id : "");
@@ -55,16 +68,39 @@ export default function useProductModal({
     setDescription("");
   };
 
+  useEffect(() => {
+    setCategoryID(categories ? categories[0].id : "");
+    setSerial(initSerial || "");
+    setName(initName || "");
+    setPriceStr(initPriceStr || "");
+    setIntro(initIntro || "");
+    setDescription(initDescription || "");
+    setPromotion(null);
+    setVariants(initVariants || []);
+    setImages(initImages || []);
+  }, [
+    categories,
+    initSerial,
+    initName,
+    initPriceStr,
+    initIntro,
+    initDescription,
+    initVariants,
+    initImages,
+  ]);
+
   // For submit button
   const _onSubmit = () => {
     onSubmit({
       id: serial,
       categoryID,
-
       name,
       price: parseFloat(priceStr),
       intro,
       description,
+      promotion,
+      variants,
+      images,
     })
       .then(({ data: product }) => {
         if (product) {
@@ -84,7 +120,11 @@ export default function useProductModal({
       name === "" ||
       priceStr === "" ||
       intro === "" ||
-      description === ""
+      description === "" ||
+      (promotion !== null && !isFilledPromotion(promotion)) ||
+      // At least one variant or one image but not both
+      (variants.length === 0 && images.length === 0) ||
+      (variants.length !== 0 && images.length !== 0)
     );
   };
 
@@ -125,7 +165,6 @@ export default function useProductModal({
 
   const onIntroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const intro = e.target.value;
-    console.log(intro);
     setIntro(intro);
   };
 
@@ -153,6 +192,10 @@ export default function useProductModal({
     );
   };
 
+  const afterRemoveVariant = (variant: VariantData) => {
+    setVariants(variants.filter((v) => v.name !== variant.name));
+  };
+
   const additionalButtons = [
     {
       ...submitButton,
@@ -164,17 +207,23 @@ export default function useProductModal({
   return {
     isNewVariantModalOpen,
     setIsNewVariantModalOpen,
-    isEditDeleteVariantModalOpen,
-    setIsEditDeleteVariantModalOpen,
+    isEditVariantModalOpen,
+    setIsEditVariantModalOpen,
+    isRemoveVariantModalOpen,
+    setIsRemoveVariantModalOpen,
     categoryID,
     serial,
     name,
     priceStr,
     intro,
     description,
-    promotion,
+
     beingEditedVariant,
     setBeingEditedVariant,
+
+    beingRemovedVariant,
+    setBeingRemovedVariant,
+
     images,
     onCategoryChange,
     onSerialChange,
@@ -188,5 +237,6 @@ export default function useProductModal({
     variants,
     afterAddVariant,
     afterEditVariant,
+    afterRemoveVariant,
   };
 }

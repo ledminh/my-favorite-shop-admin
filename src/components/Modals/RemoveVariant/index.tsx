@@ -1,26 +1,24 @@
 "use client";
 
 import { Props } from "./types";
-import useEditVariantModal from "./hooks";
+import useRemoveVariantModal from "./hooks";
 import VariantModal from "../Variant";
 
-export default function EditDeleteVariantModal(props: Props) {
-  const { submitButton, onEdit } = useEditVariantModal();
+export default function RemoveVariantModal(props: Props) {
+  const { submitButton, onRemove } = useRemoveVariantModal();
 
-  const { isOpen, setIsOpen, afterEdit, variant } = props;
+  const { isOpen, setIsOpen, afterRemove, variant } = props;
   const { shown, name, promotion, price, image } = variant;
-
-  console.log(promotion);
 
   return (
     <VariantModal
-      type="edit"
-      title="Edit Variant"
+      type="delete"
+      title="Remove Variant"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       submitButton={submitButton}
-      onSubmit={onEdit}
-      afterSubmit={afterEdit}
+      onSubmit={onRemove}
+      afterSubmit={afterRemove}
       initShown={shown}
       initName={name}
       initPriceStr={price.toString()}

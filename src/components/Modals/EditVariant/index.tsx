@@ -4,11 +4,13 @@ import { Props } from "./types";
 import useEditVariantModal from "./hooks";
 import VariantModal from "../Variant";
 
-export default function EditDeleteVariantModal(props: Props) {
+export default function EditVariantModal(props: Props) {
   const { submitButton, onEdit } = useEditVariantModal();
 
-  const { isOpen, setIsOpen, afterEdit, variant } = props;
+  const { isOpen, setIsOpen, afterEdit, variant, disabled } = props;
   const { shown, name, promotion, price, image } = variant;
+
+  console.log(promotion);
 
   return (
     <VariantModal
@@ -24,6 +26,7 @@ export default function EditDeleteVariantModal(props: Props) {
       initPriceStr={price.toString()}
       initPromotion={promotion}
       initImage={image}
+      disabled={disabled}
     />
   );
 }

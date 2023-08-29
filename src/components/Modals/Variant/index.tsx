@@ -28,7 +28,7 @@ export default function VariantModal(props: Props) {
     onImageChange,
   } = useVariantModal(props);
 
-  const { isOpen, setIsOpen, title, initPromotion } = props;
+  const { isOpen, setIsOpen, title, initPromotion, disabled } = props;
 
   return (
     <Modal
@@ -49,7 +49,11 @@ export default function VariantModal(props: Props) {
             </div>
           )}
           <div className="flex flex-col gap-2">
-            <ShowNotShow show={shown} setShow={setShown} />
+            <ShowNotShow
+              show={shown}
+              setShow={setShown}
+              disabled={props.type === "delete" || disabled}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Name</label>
@@ -57,7 +61,7 @@ export default function VariantModal(props: Props) {
               id="name"
               name="name"
               value={name}
-              disabled={props.type === "delete"}
+              disabled={props.type === "delete" || disabled}
               onChange={onNameChange}
               className="p-2 border-2 rounded-lg border-blue-950"
             />
@@ -68,6 +72,7 @@ export default function VariantModal(props: Props) {
               name="price"
               id="price"
               value={priceStr}
+              disabled={props.type === "delete" || disabled}
               onChange={onPriceChange}
               className="p-2 border-2 rounded-lg border-blue-950"
             />
@@ -75,8 +80,9 @@ export default function VariantModal(props: Props) {
           <Promotion
             onChange={onPromotionChange}
             initPromotion={initPromotion}
+            disabled={props.type === "delete" || disabled}
           />
-          {props.type === "delete" ? null : (
+          {props.type === "delete" || disabled ? null : (
             <div className="flex justify-center">
               <label
                 htmlFor="image"
@@ -121,10 +127,20 @@ export default function VariantModal(props: Props) {
 const ShowNotShow = ({
   show,
   setShow,
+  disabled,
 }: {
   show: boolean;
   setShow: (show: boolean) => void;
+  disabled?: boolean;
 }) => {
+  if (disabled)
+    return (
+      <div className="flex items-center">
+        <div className="text-lg font-bold text-gray-900">
+          {show ? "Show" : "Not Show"}
+        </div>
+      </div>
+    );
   return (
     <Switch.Group as="div" className="flex items-center">
       <Switch

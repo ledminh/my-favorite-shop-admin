@@ -4,8 +4,12 @@ import { useState, useEffect } from "react";
 import { Props } from "./types";
 
 export default function useVariantsModal(props: Props) {
-  const { initVariants, openNewVariantModal, opentEditDeleteVariantModal } =
-    props;
+  const {
+    initVariants,
+    openNewVariantModal,
+    opentEditVariantModal,
+    openRemoveVariantModal,
+  } = props;
 
   /******************
    * PRIVATE
@@ -26,12 +30,17 @@ export default function useVariantsModal(props: Props) {
   };
 
   const edit = (variant: VariantType | VariantData) => {
-    opentEditDeleteVariantModal(variant);
+    opentEditVariantModal(variant);
+  };
+
+  const remove = (variant: VariantType | VariantData) => {
+    openRemoveVariantModal(variant);
   };
 
   return {
     variants,
     addNew,
     edit,
+    remove,
   };
 }

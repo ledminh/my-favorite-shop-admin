@@ -21,6 +21,7 @@ export default function useVariantModal(props: Props) {
     submitButton,
     onSubmit,
     afterSubmit,
+    disabled,
   } = props;
 
   const [shown, setShown] = useState(initShown || false);
@@ -123,7 +124,6 @@ export default function useVariantModal(props: Props) {
     e.preventDefault();
     const files = e.target.files;
     if (files && files.length > 0) {
-      console.log(files[0]);
       setImage(files[0]);
     }
   };
@@ -134,13 +134,15 @@ export default function useVariantModal(props: Props) {
     disabledClassName?: string;
     onClick: () => void;
     disabled?: boolean;
-  }[] = [
-    {
-      ...submitButton,
-      disabled: isDisabled(),
-      onClick: _onSubmit,
-    },
-  ];
+  }[] = disabled
+    ? []
+    : [
+        {
+          ...submitButton,
+          disabled: isDisabled(),
+          onClick: _onSubmit,
+        },
+      ];
 
   return {
     shown,

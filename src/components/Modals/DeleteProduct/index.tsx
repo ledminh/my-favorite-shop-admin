@@ -7,10 +7,18 @@ type Props = {
   item: WithID<ProductType>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  afterDelete: (item: WithID<ProductType>) => void;
 };
 
-const DeleteProductModal = ({ item, isOpen, setIsOpen }: Props) => {
-  const { submitButton, onSubmit } = useDeleteProductModal();
+const DeleteProductModal = ({
+  item,
+  isOpen,
+  setIsOpen,
+  afterDelete,
+}: Props) => {
+  const { submitButton, onDelete } = useDeleteProductModal();
+  const { id, name, price, intro, description, promotion, variants, images } =
+    item;
 
   return (
     <ProductModal
@@ -18,9 +26,18 @@ const DeleteProductModal = ({ item, isOpen, setIsOpen }: Props) => {
       catName={item.category.name}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      title="DELETE PRODUCT"
+      title="Delete Product"
       submitButton={submitButton}
-      onSubmit={onSubmit}
+      onSubmit={onDelete}
+      afterSubmit={afterDelete}
+      initSerial={id}
+      initName={name}
+      initPriceStr={price.toString()}
+      initIntro={intro}
+      initDescription={description}
+      initPromotion={promotion}
+      initVariants={variants}
+      initImages={images}
     />
   );
 };

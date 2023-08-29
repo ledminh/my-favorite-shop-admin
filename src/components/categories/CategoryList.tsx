@@ -1,7 +1,6 @@
 "use client";
 
-import { Category as CategoryType, WithID } from "@/types";
-import { getCategories } from "@/data/categories";
+import { CategoryResponse, Category as CategoryType, WithID } from "@/types";
 import CatProdList, { AddNewButtonType } from "@/components/layout/CatProdList";
 
 import { itemsPerPage } from "@/config";
@@ -31,7 +30,7 @@ export default function CategoryList({
 
   useEffect(() => {
     (async () => {
-      const { items } = await getCategories({
+      const { categories } = await getCategories({
         offset: 0,
         limit: itemsPerPage,
         searchTerm,
@@ -39,7 +38,7 @@ export default function CategoryList({
         order,
       });
 
-      setInitCategories(items);
+      setInitCategories(categories);
     })();
   }, [sortBy, order, searchTerm]);
 
@@ -52,7 +51,7 @@ export default function CategoryList({
     offset: number;
     limit: number;
   }) => {
-    const { items } = await getCategories({
+    const { categories } = await getCategories({
       offset,
       limit,
       sortBy,
@@ -60,7 +59,7 @@ export default function CategoryList({
       searchTerm,
     });
 
-    return items;
+    return categories;
   };
 
   const addNewButton: AddNewButtonType = {
@@ -116,3 +115,30 @@ type CardContentProps = {
 const CardContent = ({ item }: CardContentProps) => (
   <h2 className="text-lg font-semibold">{item.name}</h2>
 );
+
+/**************************
+ * API
+ */
+const getCategories = async (props: {
+  offset: number;
+  limit: number;
+  sortBy: "name" | "createdAt" | "modifiedAt";
+  order: "asc" | "desc";
+  searchTerm: string;
+}) => {
+  const { offset, limit, sortBy, order, searchTerm } = props;
+
+  const res = await fetch(
+    `/api/categories?type=multiple&offset=${offset}&limit=${limit}&sortBy=${sortBy}&order=${order}&searchTerm=${searchTerm}`
+  );
+
+  const { errorMessage, data } = (await res.json()) as CategoryResponse;
+
+  if (errorMessage) {
+    throw new Error(errorMessage);
+  }
+
+  return {
+    categories: data as WithID<CategoryType>[],
+  };
+};

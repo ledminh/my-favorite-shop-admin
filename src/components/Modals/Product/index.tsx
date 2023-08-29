@@ -1,3 +1,5 @@
+import { OnSubmitProps as VariantData } from "../Variant/types";
+
 import Select from "@/components/layout/Select";
 import Modal from "../../layout/Modal";
 import useProductModal from "./hooks";
@@ -6,6 +8,7 @@ import Promotion from "@/components/Promotion";
 
 import NewVariantModal from "@/components/modals/NewVariant";
 import EditVariantModal from "@/components/modals/EditVariant";
+import RemoveVariantModal from "@/components/modals/RemoveVariant";
 
 import {
   Category,
@@ -13,12 +16,14 @@ import {
   Product as ProductType,
   Variant,
   Promotion as PromotionType,
+  Image as ImageType,
 } from "@/types";
 
 import Image from "next/image";
 import Variants from "./Variants";
 
 import { Dispatch, SetStateAction } from "react";
+import isImageType from "@/utils/isImageType";
 
 export type OnSubmitProps = {
   id: string;
@@ -28,6 +33,9 @@ export type OnSubmitProps = {
   price: number;
   intro: string;
   description: string;
+  promotion: PromotionType | null;
+  variants: (WithID<Variant> | VariantData)[];
+  images: (File | ImageType)[];
 };
 
 export type Props = (
@@ -53,7 +61,7 @@ export type Props = (
     disabledClassName: string;
   };
   onSubmit: (props: OnSubmitProps) => Promise<{ data: WithID<ProductType> }>;
-  afterSubmit: (category: WithID<ProductType>) => void;
+  afterSubmit: (product: WithID<ProductType>) => void;
 
   initSerial?: string;
   initName?: string;
@@ -62,23 +70,29 @@ export type Props = (
   initDescription?: string;
   initPromotion?: PromotionType | null;
   initVariants?: WithID<Variant>[];
-  initImages?: File[];
+  initImages?: ImageType[];
 };
 
 export default function ProductModal(props: Props) {
   const {
     isNewVariantModalOpen,
     setIsNewVariantModalOpen,
-    isEditDeleteVariantModalOpen,
-    setIsEditDeleteVariantModalOpen,
+    isEditVariantModalOpen,
+    setIsEditVariantModalOpen,
+    isRemoveVariantModalOpen,
+    setIsRemoveVariantModalOpen,
     categoryID,
     serial,
     name,
     priceStr,
     intro,
     description,
+
     beingEditedVariant,
     setBeingEditedVariant,
+
+    beingRemovedVariant,
+    setBeingRemovedVariant,
 
     images,
     onCategoryChange,
@@ -93,6 +107,7 @@ export default function ProductModal(props: Props) {
     variants,
     afterAddVariant,
     afterEditVariant,
+    afterRemoveVariant,
   } = useProductModal(props);
 
   const { isOpen, setIsOpen, title, type, catName, categories, initPromotion } =
@@ -101,12 +116,20 @@ export default function ProductModal(props: Props) {
   return (
     <>
       <Modal
+        type={props.type === "delete" ? "attention" : "normal"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         additionalButtons={additionalButtons}
         title={title}
       >
         <div className="flex flex-col gap-4 max-h-[70vh] overflow-y-scroll px-6">
+          {props.type === "delete" && (
+            <div className="flex justify-center">
+              <span className="text-lg font-bold text-red-500">
+                DO YOU WANT TO DELETE THIS PRODUCT?
+              </span>
+            </div>
+          )}
           <div className="flex flex-col gap-2">
             <label htmlFor="category">Category</label>
             {type === "add" && (
@@ -121,7 +144,7 @@ export default function ProductModal(props: Props) {
                 onChange={onCategoryChange}
               />
             )}
-            {type === "edit" && (
+            {(type === "edit" || type === "delete") && (
               <input
                 type="text"
                 name="category"
@@ -140,7 +163,8 @@ export default function ProductModal(props: Props) {
               id="serial"
               value={serial}
               onChange={onSerialChange}
-              className="p-2 border-2 rounded-lg border-blue-950"
+              className="p-2 border-2 rounded-lg border-blue-950 disabled:bg-gray-300"
+              disabled={props.type === "delete" || props.type === "edit"}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -152,6 +176,7 @@ export default function ProductModal(props: Props) {
               value={name}
               onChange={onNameChange}
               className="p-2 border-2 rounded-lg border-blue-950"
+              disabled={props.type === "delete"}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -162,6 +187,7 @@ export default function ProductModal(props: Props) {
               value={priceStr}
               onChange={onPriceChange}
               className="p-2 border-2 rounded-lg border-blue-950"
+              disabled={props.type === "delete"}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -173,6 +199,7 @@ export default function ProductModal(props: Props) {
               value={intro}
               onChange={onIntroChange}
               className="p-2 border-2 rounded-lg border-blue-950"
+              disabled={props.type === "delete"}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -183,24 +210,35 @@ export default function ProductModal(props: Props) {
               value={description}
               onChange={onDescriptionChange}
               className="p-2 border-2 rounded-lg border-blue-950"
+              disabled={props.type === "delete"}
             />
           </div>
           <Promotion
             onChange={onPromotionChange}
             initPromotion={initPromotion}
+            disabled={props.type === "delete"}
           />
           <div className="flex flex-col gap-2">
             <Variants
               initVariants={variants}
               openNewVariantModal={() => setIsNewVariantModalOpen(true)}
-              opentEditDeleteVariantModal={(variant) => {
+              opentEditVariantModal={(variant) => {
                 setBeingEditedVariant(variant);
-                setIsEditDeleteVariantModalOpen(true);
+                setIsEditVariantModalOpen(true);
               }}
+              openRemoveVariantModal={(variant) => {
+                setBeingRemovedVariant(variant);
+                setIsRemoveVariantModalOpen(true);
+              }}
+              disabled={props.type === "delete"}
             />
           </div>
           {!isNewVariantModalOpen && variants.length === 0 ? (
-            <ImagesUpload images={images} setImages={setImages} />
+            <ImagesUpload
+              images={images}
+              setImages={setImages}
+              disabled={props.type === "delete"}
+            />
           ) : null}
         </div>
         {isNewVariantModalOpen && (
@@ -210,12 +248,21 @@ export default function ProductModal(props: Props) {
             afterAdd={afterAddVariant}
           />
         )}{" "}
-        {isEditDeleteVariantModalOpen && beingEditedVariant && (
+        {isEditVariantModalOpen && beingEditedVariant && (
           <EditVariantModal
-            isOpen={isEditDeleteVariantModalOpen}
-            setIsOpen={setIsEditDeleteVariantModalOpen}
+            isOpen={isEditVariantModalOpen}
+            setIsOpen={setIsEditVariantModalOpen}
             afterEdit={afterEditVariant}
             variant={beingEditedVariant}
+            disabled={props.type === "delete"}
+          />
+        )}{" "}
+        {isRemoveVariantModalOpen && beingRemovedVariant && (
+          <RemoveVariantModal
+            isOpen={isRemoveVariantModalOpen}
+            setIsOpen={setIsRemoveVariantModalOpen}
+            afterRemove={afterRemoveVariant}
+            variant={beingRemovedVariant}
           />
         )}{" "}
       </Modal>
@@ -230,38 +277,42 @@ export default function ProductModal(props: Props) {
 const ImagesUpload = ({
   images,
   setImages,
+  disabled,
 }: {
-  images: File[];
-  setImages: Dispatch<SetStateAction<File[]>>;
+  images: (File | ImageType)[];
+  setImages: Dispatch<SetStateAction<(File | ImageType)[]>>;
+  disabled?: boolean;
 }) => (
   <div className="p-4 border-2 rounded-lg border-blue-950">
     <div className="flex gap-4">
       <div className="font-bold">Images</div>
-      <div>
-        <label
-          htmlFor="image"
-          className="px-2 py-1 text-center bg-blue-950 border text-white border-black rounded-lg shadow-sm cursor-pointer hover:bg-blue-950/80 shadow-black w-[150px] mx-auto active:bg-blue-950/60 active:shadow-none"
-        >
-          Add Image(s)
-        </label>
-        <input
-          hidden
-          id="image"
-          name="image"
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={(e) => {
-            e.preventDefault();
-            if (e.target.files) {
-              // get files array from e.target.files
-              // and set it to images state
-              const files = Array.from(e.target.files);
-              setImages([...images, ...files]);
-            }
-          }}
-        />
-      </div>
+      {!disabled && (
+        <div>
+          <label
+            htmlFor="image"
+            className="px-2 py-1 text-center bg-blue-950 border text-white border-black rounded-lg shadow-sm cursor-pointer hover:bg-blue-950/80 shadow-black w-[150px] mx-auto active:bg-blue-950/60 active:shadow-none"
+          >
+            Add Image(s)
+          </label>
+          <input
+            hidden
+            id="image"
+            name="image"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => {
+              e.preventDefault();
+              if (e.target.files) {
+                // get files array from e.target.files
+                // and set it to images state
+                const files = Array.from(e.target.files);
+                setImages([...images, ...files]);
+              }
+            }}
+          />
+        </div>
+      )}
     </div>
 
     <div className="flex justify-center">
@@ -272,8 +323,32 @@ const ImagesUpload = ({
               key={index}
               className="relative w-[150px] h-[150px] border rounded-lg border-blue-950"
             >
+              {!disabled && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="absolute z-10 w-6 h-6 text-white bg-black rounded-full shadow-md cursor-pointer top-1 right-1 hover:text-red-500 hover:shadow-lg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  onClick={() => {
+                    const newImages = [...images];
+                    newImages.splice(index, 1);
+                    setImages(newImages);
+                  }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              )}
+
               <Image
-                src={URL.createObjectURL(image)}
+                src={
+                  isImageType(image) ? image.src : URL.createObjectURL(image)
+                }
                 alt="product image"
                 fill
                 className="object-fill rounded-lg"
