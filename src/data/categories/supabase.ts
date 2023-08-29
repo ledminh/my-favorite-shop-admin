@@ -2,6 +2,7 @@ import type {
   WithID,
   Category as CategoryType,
   Image as ImageType,
+  CategoriesRequest,
   CategoryRequest,
 } from "@/types";
 import getID from "@/utils/getID";
@@ -18,7 +19,7 @@ type GetCategories = ({
   sortBy,
   order,
   searchTerm,
-}: CategoryRequest) => Promise<{
+}: CategoriesRequest) => Promise<{
   total: number;
   items: WithID<CategoryType>[];
 }>;
@@ -140,11 +141,7 @@ export const deleteCategory = async (id: string): Promise<void> => {
 //  * // }
 //  */
 
-type GetCategoryProps = {
-  slug?: string;
-  id?: string;
-};
-type GetCategory = (props: GetCategoryProps) => Promise<WithID<CategoryType>>;
+type GetCategory = (props: CategoryRequest) => Promise<WithID<CategoryType>>;
 
 export const getCategory: GetCategory = async ({ slug, id }) => {
   const categoryDB = await prisma.category.findFirst({

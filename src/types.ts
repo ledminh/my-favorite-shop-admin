@@ -137,7 +137,13 @@ export type UpdateMessageResponse = ServerResponse<WithID<CustomerMessage>>;
 export type DeleteOrderResponse = ServerResponse<WithID<Order>>;
 export type UpdateOrderResponse = ServerResponse<WithID<Order>>;
 
+// Category
 export type CategoryRequest = {
+  slug?: string;
+  id?: string;
+};
+
+export type CategoriesRequest = {
   offset?: number;
   limit?: number;
   searchTerm?: string;
@@ -145,7 +151,8 @@ export type CategoryRequest = {
   order: "asc" | "desc";
 };
 
-export type CategoryResponse = ServerResponse<
-  WithID<Category> | WithID<Category>[]
->;
+export type CategoryResponse = ServerResponse<WithID<Category>>;
+export type CategoriesResponse = ServerResponse<WithID<Category>[]>;
+
+// Product
 export type ProductResponse = ServerResponse<WithID<Product>>;

@@ -5,7 +5,13 @@ import {
   deleteCategory,
   getCategories,
 } from "@/data/categories";
-import { CategoryRequest, CategoryResponse, Image as ImageType } from "@/types";
+import {
+  CategoriesRequest,
+  CategoriesResponse,
+  CategoryRequest,
+  CategoryResponse,
+  Image as ImageType,
+} from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 import uploadImage from "@/utils/uploadImage";
@@ -37,7 +43,7 @@ export async function POST(
 
 export async function GET(
   request: NextRequest
-): Promise<NextResponse<CategoryResponse>> {
+): Promise<NextResponse<CategoryResponse | CategoriesResponse>> {
   try {
     const type = request.nextUrl.searchParams.get("type");
 
@@ -194,8 +200,8 @@ async function getMultiple(request: NextRequest) {
   const { items: categories } = await getCategories({
     offset: offsetStr ? parseInt(offsetStr) : undefined,
     limit: limitStr ? parseInt(limitStr) : undefined,
-    sortBy: sortByStr as CategoryRequest["sortBy"],
-    order: orderStr as CategoryRequest["order"],
+    sortBy: sortByStr as CategoriesRequest["sortBy"],
+    order: orderStr as CategoriesRequest["order"],
     searchTerm: searchTermStr ? searchTermStr : undefined,
   });
 

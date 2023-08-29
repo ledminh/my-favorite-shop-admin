@@ -1,13 +1,13 @@
-import { CategoryResponse, Category as CategoryType, WithID } from "@/types";
+import {
+  CategoriesRequest,
+  CategoriesResponse,
+  CategoryResponse,
+  Category as CategoryType,
+  WithID,
+} from "@/types";
 
-const getCategories = async (props: {
-  offset?: number;
-  limit?: number;
-  sortBy: "name" | "createdAt" | "modifiedAt";
-  order: "asc" | "desc";
-  searchTerm?: string;
-}) => {
-  const { offset, limit, sortBy, order, searchTerm } = props;
+const getCategories = async (req: CategoriesRequest) => {
+  const { offset, limit, sortBy, order, searchTerm } = req;
 
   const res = await fetch(
     `/api/categories?type=multiple${offset ? "&offset=" + offset : ""}${
@@ -17,7 +17,7 @@ const getCategories = async (props: {
     }`
   );
 
-  const { errorMessage, data } = (await res.json()) as CategoryResponse;
+  const { errorMessage, data } = (await res.json()) as CategoriesResponse;
 
   if (errorMessage) {
     throw new Error(errorMessage);

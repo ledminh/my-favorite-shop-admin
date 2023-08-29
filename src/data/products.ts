@@ -27,7 +27,7 @@ type GetProductsParams = {
   order: "asc" | "desc";
 
   catID: string;
-  searchTerm: string;
+  searchTerm?: string;
 
   filter: "with-variants" | "with-promotion" | null;
 };
