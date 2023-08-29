@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+import getCategories from "@/api-calls/getCategories";
 import CardContent from "@/components/products/CardContent";
-import { getCategories } from "@/data/categories";
 
 import { itemsPerPage } from "@/config";
 import {
@@ -46,12 +46,12 @@ export default function ProductList({
 
   useEffect(() => {
     (async () => {
-      const { items } = await getCategories({
+      const { categories } = await getCategories({
         sortBy: "name",
         order: "asc",
       });
 
-      setCategories(items);
+      setCategories(categories);
     })();
   }, []);
 

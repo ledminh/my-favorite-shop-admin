@@ -1,7 +1,9 @@
 "use client";
 
-import { CategoryResponse, Category as CategoryType, WithID } from "@/types";
+import { Category as CategoryType, WithID } from "@/types";
 import CatProdList, { AddNewButtonType } from "@/components/layout/CatProdList";
+
+import getCategories from "@/api-calls/getCategories";
 
 import { itemsPerPage } from "@/config";
 import { useEffect, useState } from "react";
@@ -10,6 +12,7 @@ import EditCategoryModal from "@/components/modals/EditCategory";
 import DeleteCategoryModal from "@/components/modals/DeleteCategory";
 
 import FolderPNG from "@/assets/images/folder.png";
+import { set } from "react-hook-form";
 
 type Props = {
   sortBy: "name" | "createdAt" | "modifiedAt";
@@ -27,6 +30,7 @@ export default function CategoryList({
   total,
 }: Props) {
   const [_initCategories, setInitCategories] = useState(initCategories);
+  const [_total, setTotal] = useState(total);
 
   useEffect(() => {
     (async () => {
@@ -69,6 +73,7 @@ export default function CategoryList({
 
   const afterAdd = (newCategory: WithID<CategoryType>) => {
     setInitCategories((prev) => [newCategory, ...prev]);
+    setTotal((prev) => prev + 1);
   };
 
   const afterEdit = (editedCategory: WithID<CategoryType>) => {
@@ -83,13 +88,14 @@ export default function CategoryList({
     setInitCategories((prev) =>
       prev.filter((category) => category.id !== deletedCategory.id)
     );
+    setTotal((prev) => prev - 1);
   };
 
   return (
     <CatProdList
       categories={_initCategories}
       initItems={_initCategories}
-      total={total}
+      total={_total}
       CardContent={CardContent}
       addNewButton={addNewButton}
       AddNewModal={NewCategoryModal}
@@ -115,30 +121,3 @@ type CardContentProps = {
 const CardContent = ({ item }: CardContentProps) => (
   <h2 className="text-lg font-semibold">{item.name}</h2>
 );
-
-/**************************
- * API
- */
-const getCategories = async (props: {
-  offset: number;
-  limit: number;
-  sortBy: "name" | "createdAt" | "modifiedAt";
-  order: "asc" | "desc";
-  searchTerm: string;
-}) => {
-  const { offset, limit, sortBy, order, searchTerm } = props;
-
-  const res = await fetch(
-    `/api/categories?type=multiple&offset=${offset}&limit=${limit}&sortBy=${sortBy}&order=${order}&searchTerm=${searchTerm}`
-  );
-
-  const { errorMessage, data } = (await res.json()) as CategoryResponse;
-
-  if (errorMessage) {
-    throw new Error(errorMessage);
-  }
-
-  return {
-    categories: data as WithID<CategoryType>[],
-  };
-};

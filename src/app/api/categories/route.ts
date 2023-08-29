@@ -196,7 +196,7 @@ async function getMultiple(request: NextRequest) {
     limit: limitStr ? parseInt(limitStr) : undefined,
     sortBy: sortByStr as CategoryRequest["sortBy"],
     order: orderStr as CategoryRequest["order"],
-    searchTerm: searchTermStr as CategoryRequest["searchTerm"],
+    searchTerm: searchTermStr ? searchTermStr : undefined,
   });
 
   return NextResponse.json({
