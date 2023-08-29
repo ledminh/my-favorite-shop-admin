@@ -1,4 +1,10 @@
-import type { Product, Product as ProductType, WithID } from "@/types";
+import type {
+  Product,
+  ProductRequest,
+  Product as ProductType,
+  ProductsRequest,
+  WithID,
+} from "@/types";
 import { faker } from "@faker-js/faker";
 
 import { getCategory } from "./categories";
@@ -19,20 +25,7 @@ const PRODUCTS: WithID<ProductType>[] = _getProducts(50);
  * }>;
  */
 
-type GetProductsParams = {
-  offset?: number;
-  limit?: number;
-
-  sortBy: "name" | "price" | "createdAt" | "modifiedAt";
-  order: "asc" | "desc";
-
-  catID: string;
-  searchTerm?: string;
-
-  filter: "with-variants" | "with-promotion" | null;
-};
-
-type GetProducts = (params: GetProductsParams) => Promise<{
+type GetProducts = (req: ProductsRequest) => Promise<{
   total: number;
   items: WithID<ProductType>[];
 }>;
@@ -125,7 +118,7 @@ export const getProducts: GetProducts = async ({
  * @returns Promise<WithID<Product>>;
  */
 
-type GetProduct = (params: { id: string }) => Promise<WithID<ProductType>>;
+type GetProduct = ({ id }: ProductRequest) => Promise<WithID<ProductType>>;
 
 export const getProduct: GetProduct = async ({ id }) => {
   return new Promise((resolve, reject) => {

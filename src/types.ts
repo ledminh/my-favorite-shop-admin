@@ -155,4 +155,20 @@ export type CategoryResponse = ServerResponse<WithID<Category>>;
 export type CategoriesResponse = ServerResponse<WithID<Category>[]>;
 
 // Product
+
+export type ProductRequest = { id: string };
+export type ProductsRequest = {
+  offset?: number;
+  limit?: number;
+
+  sortBy: "name" | "price" | "createdAt" | "modifiedAt";
+  order: "asc" | "desc";
+
+  catID: string;
+  searchTerm?: string;
+
+  filter: "with-variants" | "with-promotion" | null;
+};
+
 export type ProductResponse = ServerResponse<WithID<Product>>;
+export type ProductsResponse = ServerResponse<WithID<Product>[]>;

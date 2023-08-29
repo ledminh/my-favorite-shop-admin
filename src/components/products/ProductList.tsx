@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 
 import getCategories from "@/api-calls/getCategories";
+import getProducts from "@/api-calls/getProducts";
+
 import CardContent from "@/components/products/CardContent";
 
 import { itemsPerPage } from "@/config";
@@ -17,8 +19,6 @@ import NewProductModal from "@/components/modals/NewProduct";
 
 import EditProductModal from "@/components/modals/EditProduct";
 import DeleteProductModal from "@/components/modals/DeleteProduct";
-
-import { getProducts } from "@/data/products";
 
 import ParcelPNG from "@/assets/images/parcel.png";
 
@@ -57,7 +57,7 @@ export default function ProductList({
 
   useEffect(() => {
     (async () => {
-      const { items } = await getProducts({
+      const { products } = await getProducts({
         offset: 0,
         limit: itemsPerPage,
         sortBy,
@@ -67,7 +67,7 @@ export default function ProductList({
         searchTerm,
       });
 
-      setInitProducts(items);
+      setInitProducts(products);
     })();
   }, [sortBy, order, filter, catID, searchTerm]);
 
@@ -90,7 +90,7 @@ export default function ProductList({
     offset: number;
     limit: number;
   }) => {
-    const { items } = await getProducts({
+    const { products } = await getProducts({
       offset,
       limit,
       filter,
@@ -100,7 +100,7 @@ export default function ProductList({
       order,
     });
 
-    return items;
+    return products;
   };
 
   const addNewButton: AddNewButtonType = {
