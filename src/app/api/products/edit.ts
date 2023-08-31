@@ -1,6 +1,6 @@
 import { StorageError } from "@supabase/storage-js";
 
-import { getProduct, updateProduct } from "@/data/products";
+import { getProduct, updateProduct } from "@/data/products/mock-data";
 
 import {
   WithID,

@@ -8,7 +8,7 @@ import {
   ShippingAddress,
   WithID,
 } from "@/types";
-import { _getProducts } from "./products";
+import { _getProducts } from "./products/mock-data";
 import getOrderPrice from "@/utils/getOrderPrice";
 
 const ORDERS = _getOrders(200);

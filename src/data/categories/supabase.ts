@@ -7,7 +7,7 @@ import type {
 } from "@/types";
 import getID from "@/utils/getID";
 
-import prisma from "../prismaClient";
+import getClient from "../prismaClient";
 
 // /*****************************************
 //  * API
@@ -31,6 +31,8 @@ export const getCategories: GetCategories = async ({
   sortBy,
   order,
 }) => {
+  const prisma = await getClient();
+
   const categoriesDB = await prisma.category.findMany({
     skip: offset,
     take: limit,
@@ -66,6 +68,8 @@ export const getCategories: GetCategories = async ({
 export const addCategory = async (
   category: Omit<CategoryType, "id" | "createdAt" | "modifiedAt">
 ): Promise<WithID<CategoryType>> => {
+  const prisma = await getClient();
+
   const categoryDB = await prisma.category.create({
     data: {
       ...category,
@@ -84,6 +88,8 @@ export const updateCategory = async (
   id: string,
   category: Partial<Omit<CategoryType, "id" | "createdAt" | "modifiedAt">>
 ): Promise<WithID<CategoryType>> => {
+  const prisma = await getClient();
+
   const categoryDB = await prisma.category.update({
     where: {
       id,
@@ -101,6 +107,8 @@ export const updateCategory = async (
 };
 
 export const deleteCategory = async (id: string): Promise<void> => {
+  const prisma = await getClient();
+
   await prisma.category.delete({
     where: {
       id,
@@ -144,6 +152,8 @@ export const deleteCategory = async (id: string): Promise<void> => {
 type GetCategory = (props: CategoryRequest) => Promise<WithID<CategoryType>>;
 
 export const getCategory: GetCategory = async ({ slug, id }) => {
+  const prisma = await getClient();
+
   const categoryDB = await prisma.category.findFirst({
     where: {
       OR: [

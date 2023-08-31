@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProduct } from "@/data/products";
+import { getProduct } from "@/data/products/mock-data";
 
 export default async function getSingle(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");

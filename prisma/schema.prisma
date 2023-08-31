@@ -10,35 +10,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
- 
-// export type Image = {
-//   src: string;
-//   alt: string;
-// };
-
-// export type ComponentWithChildren = FC<{ children: ReactNode }>;
-
-// /**********************
-//  * Category types
-//  */
-
-// export type Category = {
-//   name: string;
-//   description: string;
-//   link: string;
-//   image: Image;
-//   createdAt: Date;
-//   modifiedAt: Date;
-// };
-
 model Category {
-  id          String   @id 
+  id          String    @id @default(uuid())
   name        String
   description String
   link        String
   image       String
-  createdAt   DateTime @default(now())
-  modifiedAt  DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  modifiedAt  DateTime  @updatedAt
+  Product     Product[]
 }
 
+// /**********************
+//  * Product types
+//  */
+// export type Promotion =
+//   | {
+//       type: "discount";
+//       discountPercent: number;
+//       description: string;
+//     }
+//   | {
+//       type: "sale";
+//       salePrice: number;
+//       description: string;
+//     };
 
+// export type Variant = {
+//   name: string;
+//   price: number;
+//   promotion?: Promotion;
+//   image: Image;
+//   shown: boolean;
+// };
+
+// export type Product = {
+//   category: WithID<Category>;
+//   link: string;
+//   name: string;
+//   price: number;
+//   intro: string;
+//   description: string;
+//   mainImageID: string;
+//   images: WithID<Image>[];
+//   promotion?: Promotion;
+//   variants?: WithID<Variant>[];
+//   createdAt: Date;
+//   modifiedAt: Date;
+// };
+
+
+model Product {
+  id          String    @id
+  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  link        String
+  name        String
+  price       Float
+  intro       String
+  description String
+  mainImageID   String
+  images      String[]
+  promotion   String?
+  variants    String[]
+  createdAt   DateTime  @default(now())
+  modifiedAt  DateTime  @updatedAt
+}

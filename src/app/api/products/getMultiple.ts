@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProducts } from "@/data/products";
+import { getProducts } from "@/data/products/mock-data";
 
 import { ProductsRequest } from "@/types";
 

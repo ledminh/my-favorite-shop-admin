@@ -1,6 +1,6 @@
 import { StorageError } from "@supabase/storage-js";
 
-import { addProduct } from "@/data/products";
+import { addProduct } from "@/data/products/mock-data";
 
 import { WithID, Promotion, Variant as VariantType } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
