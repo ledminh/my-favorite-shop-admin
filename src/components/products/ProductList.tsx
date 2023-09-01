@@ -24,7 +24,7 @@ import ParcelPNG from "@/assets/images/parcel.png";
 
 type Props = {
   initProducts: WithID<Product>[];
-  total: number;
+  initTotal: number;
   sortBy: "name" | "price" | "createdAt" | "modifiedAt";
   order: "asc" | "desc";
   filter: "with-variants" | "with-promotion" | null;
@@ -34,7 +34,7 @@ type Props = {
 
 export default function ProductList({
   initProducts,
-  total,
+  initTotal,
   filter,
   catID,
   searchTerm,
@@ -43,6 +43,8 @@ export default function ProductList({
 }: Props) {
   const [_initProducts, setInitProducts] = useState(initProducts);
   const [categories, setCategories] = useState<WithID<CategoryType>[]>([]);
+
+  const [total, setTotal] = useState(initTotal);
 
   useEffect(() => {
     (async () => {
@@ -110,6 +112,7 @@ export default function ProductList({
 
   const afterAdd = (newProduct: WithID<ProductType>) => {
     setInitProducts((prev) => [newProduct, ...prev]);
+    setTotal((prev) => prev + 1);
   };
 
   const afterEdit = (editedProduct: WithID<ProductType>) => {
@@ -124,6 +127,8 @@ export default function ProductList({
     setInitProducts((prev) =>
       prev.filter((product) => product.id !== deletedProduct.id)
     );
+
+    setTotal((prev) => prev - 1);
   };
 
   return (

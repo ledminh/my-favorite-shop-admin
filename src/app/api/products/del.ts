@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getProduct, deleteProduct } from "@/data/products/mock-data";
+import { getProduct, deleteProduct } from "@/data/products";
 import deleteImages from "@/utils/deleteImages";
 
 export default async function del(request: NextRequest) {

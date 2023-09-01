@@ -1,13 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 
-let prisma: PrismaClient | null = null;
+let prismaClient: PrismaClient;
 
-export default async function getClient() {
-  if (!prisma) {
-    prisma = new PrismaClient();
+if (process.env.NODE_ENV === "production") {
+  prismaClient = new PrismaClient();
+} else {
+  if (!(global as any).prismaClient) {
+    (global as any).prismaClient = new PrismaClient();
   }
-
-  await prisma.$connect();
-
-  return prisma;
+  prismaClient = (global as any).prismaClient as PrismaClient;
 }
+
+export default prismaClient;

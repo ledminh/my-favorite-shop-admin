@@ -7,7 +7,7 @@ import type {
 } from "@/types";
 import getID from "@/utils/getID";
 
-import getClient from "../prismaClient";
+import prismaClient from "../prismaClient";
 
 // /*****************************************
 //  * API
@@ -31,9 +31,7 @@ export const getCategories: GetCategories = async ({
   sortBy,
   order,
 }) => {
-  const prisma = await getClient();
-
-  const categoriesDB = await prisma.category.findMany({
+  const categoriesDB = await prismaClient.category.findMany({
     skip: offset,
     take: limit,
     orderBy: {
@@ -51,7 +49,7 @@ export const getCategories: GetCategories = async ({
     image: JSON.parse(category.image) as ImageType,
   }));
 
-  const total = await prisma.category.count({
+  const total = await prismaClient.category.count({
     where: {
       name: {
         contains: searchTerm,
@@ -68,9 +66,7 @@ export const getCategories: GetCategories = async ({
 export const addCategory = async (
   category: Omit<CategoryType, "id" | "createdAt" | "modifiedAt">
 ): Promise<WithID<CategoryType>> => {
-  const prisma = await getClient();
-
-  const categoryDB = await prisma.category.create({
+  const categoryDB = await prismaClient.category.create({
     data: {
       ...category,
       id: "category-" + getID(),
@@ -88,9 +84,7 @@ export const updateCategory = async (
   id: string,
   category: Partial<Omit<CategoryType, "id" | "createdAt" | "modifiedAt">>
 ): Promise<WithID<CategoryType>> => {
-  const prisma = await getClient();
-
-  const categoryDB = await prisma.category.update({
+  const categoryDB = await prismaClient.category.update({
     where: {
       id,
     },
@@ -107,9 +101,7 @@ export const updateCategory = async (
 };
 
 export const deleteCategory = async (id: string): Promise<void> => {
-  const prisma = await getClient();
-
-  await prisma.category.delete({
+  await prismaClient.category.delete({
     where: {
       id,
     },
@@ -152,9 +144,7 @@ export const deleteCategory = async (id: string): Promise<void> => {
 type GetCategory = (props: CategoryRequest) => Promise<WithID<CategoryType>>;
 
 export const getCategory: GetCategory = async ({ slug, id }) => {
-  const prisma = await getClient();
-
-  const categoryDB = await prisma.category.findFirst({
+  const categoryDB = await prismaClient.category.findFirst({
     where: {
       OR: [
         {

@@ -21,49 +21,10 @@ model Category {
   Product     Product[]
 }
 
-// /**********************
-//  * Product types
-//  */
-// export type Promotion =
-//   | {
-//       type: "discount";
-//       discountPercent: number;
-//       description: string;
-//     }
-//   | {
-//       type: "sale";
-//       salePrice: number;
-//       description: string;
-//     };
-
-// export type Variant = {
-//   name: string;
-//   price: number;
-//   promotion?: Promotion;
-//   image: Image;
-//   shown: boolean;
-// };
-
-// export type Product = {
-//   category: WithID<Category>;
-//   link: string;
-//   name: string;
-//   price: number;
-//   intro: string;
-//   description: string;
-//   mainImageID: string;
-//   images: WithID<Image>[];
-//   promotion?: Promotion;
-//   variants?: WithID<Variant>[];
-//   createdAt: Date;
-//   modifiedAt: Date;
-// };
-
-
 model Product {
   id          String    @id
-  category    Category  @relation(fields: [categoryId], references: [id])
-  categoryId  String
+  category    Category  @relation(fields: [categoryID], references: [id])
+  categoryID  String
   link        String
   name        String
   price       Float

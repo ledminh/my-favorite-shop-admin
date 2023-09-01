@@ -7,10 +7,8 @@ import {
   Variant as VariantType,
 } from "@/types";
 
-import { Product as ProductDB } from "@prisma/client";
-
 import getID from "@/utils/getID";
-import getClient from "../prismaClient";
+import prismaClient from "../prismaClient";
 
 /***********************************
  * getProducts
@@ -30,9 +28,7 @@ export const getProducts: GetProducts = async ({
   searchTerm,
   filter,
 }) => {
-  const prisma = await getClient();
-
-  const productsPromise = prisma.product.findMany({
+  const productsPromise = await prismaClient.product.findMany({
     skip: offset,
     take: limit,
     orderBy: {
@@ -57,13 +53,12 @@ export const getProducts: GetProducts = async ({
         },
       }),
     },
-
     include: {
       category: true,
     },
   });
 
-  const totalPromise = prisma.product.count({
+  const totalPromise = prismaClient.product.count({
     where: {
       ...(catID !== "" && { categoryID: catID }),
       ...(searchTerm && {
@@ -99,16 +94,8 @@ export const getProducts: GetProducts = async ({
         JSON.parse(variant)
       ) as WithID<VariantType>[],
       category: {
-        id: "test",
-        name: "test",
-        image: {
-          src: "test",
-          alt: "test",
-        },
-        description: "test",
-        link: "test",
-        createdAt: new Date(),
-        modifiedAt: new Date(),
+        ...product.category,
+        image: JSON.parse(product.category.image) as ImageType,
       },
     })) as WithID<ProductType>[],
   };
@@ -123,9 +110,7 @@ export const getProducts: GetProducts = async ({
 type GetProduct = ({ id }: ProductRequest) => Promise<WithID<ProductType>>;
 
 export const getProduct: GetProduct = async ({ id }) => {
-  const prisma = await getClient();
-
-  const product = await prisma.product.findUnique({
+  const product = await prismaClient.product.findUnique({
     where: {
       id,
     },
@@ -166,9 +151,7 @@ export const addProduct = async (
     categoryID: string;
   }
 ): Promise<WithID<ProductType>> => {
-  const prisma = await getClient();
-
-  const category = await prisma.category.findUnique({
+  const category = await prismaClient.category.findUnique({
     where: {
       id: product.categoryID,
     },
@@ -178,15 +161,19 @@ export const addProduct = async (
     throw new Error("Category not found");
   }
 
-  const productDB = await prisma.product.create({
+  const productDB = await prismaClient.product.create({
     data: {
-      ...product,
       category: {
         connect: {
           id: product.categoryID,
         },
       },
-      id: "product-" + getID(),
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      intro: product.intro,
+      description: product.description,
+      mainImageID: product.mainImageID,
       images: product.images.map((image) => JSON.stringify(image)),
       promotion: product.promotion
         ? JSON.stringify(product.promotion)
@@ -229,9 +216,7 @@ export const updateProduct = async (
     categoryID: string;
   }
 ): Promise<WithID<ProductType>> => {
-  const prisma = await getClient();
-
-  const category = await prisma.category.findUnique({
+  const category = await prismaClient.category.findUnique({
     where: {
       id: product.categoryID,
     },
@@ -241,12 +226,17 @@ export const updateProduct = async (
     throw new Error("Category not found");
   }
 
-  const productDB = await prisma.product.update({
+  const productDB = await prismaClient.product.update({
     where: {
       id: product.id,
     },
     data: {
-      ...product,
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      intro: product.intro,
+      description: product.description,
+      mainImageID: product.mainImageID,
       category: {
         connect: {
           id: product.categoryID,
@@ -287,9 +277,7 @@ export const updateProduct = async (
  */
 
 export const deleteProduct = async (id: string) => {
-  const prisma = await getClient();
-
-  await prisma.product.delete({
+  await prismaClient.product.delete({
     where: {
       id,
     },

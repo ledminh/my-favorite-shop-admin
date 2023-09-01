@@ -1,6 +1,6 @@
 import { StorageError } from "@supabase/storage-js";
 
-import { getProduct, updateProduct } from "@/data/products/mock-data";
+import { getProduct, updateProduct } from "@/data/products";
 
 import {
   WithID,
@@ -67,10 +67,12 @@ export default async function edit(request: NextRequest) {
     (img) => ("product/" + img.split("/").pop()) as string
   );
 
-  const { error: deleteImageError } = await deleteImages(filePaths);
+  if (filePaths.length > 0) {
+    const { error: deleteImageError } = await deleteImages(filePaths);
 
-  if (deleteImageError) {
-    throw new Error(deleteImageError.message);
+    if (deleteImageError) {
+      throw new Error(deleteImageError.message);
+    }
   }
 
   // update product
@@ -81,7 +83,7 @@ export default async function edit(request: NextRequest) {
     price: parseInt(price),
     intro,
     description,
-    mainImageID: `image-${name}-1`,
+    mainImageID: images[0].id,
     images,
     variants,
     promotion: promotion ? promotion : undefined,
@@ -224,7 +226,7 @@ async function processImages(formData: FormData, productName: string) {
       imageFiles.push(image);
     } else {
       imageFiles.push({
-        id: `image-${productName}-${getID()}`,
+        id: `image-${productName.split(" ").join("-")}-${getID()}`,
         src: images[i].imagePath as string,
         alt: productName,
       });

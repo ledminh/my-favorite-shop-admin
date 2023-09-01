@@ -1,6 +1,6 @@
 export {
-  getProducts,
   getProduct,
+  getProducts,
   addProduct,
   updateProduct,
   deleteProduct,

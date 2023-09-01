@@ -13,7 +13,9 @@ const CardContent = ({ item }: Props) => {
   return (
     <>
       <Content item={item} />
-      {item.variants && <Variants variants={item.variants} />}
+      {item.variants && item.variants.length > 0 && (
+        <Variants variants={item.variants} />
+      )}
       {item.promotion && <Promotion promotion={item.promotion} />}
     </>
   );

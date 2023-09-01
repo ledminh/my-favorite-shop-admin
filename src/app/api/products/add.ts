@@ -1,6 +1,6 @@
 import { StorageError } from "@supabase/storage-js";
 
-import { addProduct } from "@/data/products/mock-data";
+import { addProduct } from "@/data/products";
 
 import { WithID, Promotion, Variant as VariantType } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
@@ -50,7 +50,7 @@ export default async function add(request: NextRequest) {
     price: parseInt(price),
     intro,
     description,
-    mainImageID: `image-${name}-1`,
+    mainImageID: images[0].id,
     images,
     variants,
     promotion: promotion ? promotion : undefined,

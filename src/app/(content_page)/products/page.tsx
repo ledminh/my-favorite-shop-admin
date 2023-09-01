@@ -60,7 +60,7 @@ export default async function ProductsPage({ searchParams }: Props) {
       </div>
       <ProductList
         initProducts={initProducts}
-        total={total}
+        initTotal={total}
         catID={_catID}
         searchTerm={_searchTerm}
         filter={_filter}

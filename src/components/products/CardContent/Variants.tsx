@@ -1,7 +1,7 @@
-import { Variant as VariantType } from "@/types";
+import { Variant as VariantType, WithID } from "@/types";
 
 type Props = {
-  variants: VariantType[];
+  variants: WithID<VariantType>[];
 };
 
 const Variants = ({ variants }: Props) => {
@@ -25,7 +25,7 @@ export default Variants;
 const List = ({ variants }: Props) => {
   return (
     <ul className="px-4 py-1 overflow-y-scroll bg-gray-300 border-2 rounded-full border-blue-950 max-h-12">
-      {variants.map((variant: VariantType) => (
+      {variants.map((variant) => (
         <li
           key={variant.id}
           className="flex justify-between py-2 border-b border-b-blue-950"

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getProducts } from "@/data/products/mock-data";
+import { getProducts } from "@/data/products";
 
 import { ProductsRequest } from "@/types";
 
@@ -12,10 +12,6 @@ export default async function getMultiple(request: NextRequest) {
   const searchTermStr = request.nextUrl.searchParams.get("searchTerm");
   const filterStr = request.nextUrl.searchParams.get("filter");
 
-  if (!catID) {
-    throw new Error("catID is required");
-  }
-
   if (!sortByStr) {
     throw new Error("sortBy is required");
   }
@@ -24,16 +20,12 @@ export default async function getMultiple(request: NextRequest) {
     throw new Error("order is required");
   }
 
-  if (!filterStr) {
-    throw new Error("filter is required");
-  }
-
   const { items: products } = await getProducts({
     offset: offsetStr ? parseInt(offsetStr) : undefined,
     limit: limitStr ? parseInt(limitStr) : undefined,
     sortBy: sortByStr as ProductsRequest["sortBy"],
     order: orderStr as ProductsRequest["order"],
-    catID: catID,
+    catID: catID ? catID : "",
     searchTerm: searchTermStr ? searchTermStr : undefined,
     filter: filterStr !== "" ? (filterStr as ProductsRequest["filter"]) : null,
   });
