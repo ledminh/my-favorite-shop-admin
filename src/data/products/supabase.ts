@@ -243,9 +243,7 @@ export const updateProduct = async (
         },
       },
       images: product.images.map((image) => JSON.stringify(image)),
-      promotion: product.promotion
-        ? JSON.stringify(product.promotion)
-        : undefined,
+      promotion: product.promotion ? JSON.stringify(product.promotion) : null,
       variants: product.variants
         ? product.variants.map((variant) => JSON.stringify(variant))
         : [],

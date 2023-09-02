@@ -37,6 +37,8 @@ export default function ControlPanel({
   initFilterID,
 }: Props) {
   const {
+    sortByID,
+    orderID,
     filterID,
     searchTerm,
     onSearch,
@@ -86,6 +88,8 @@ export default function ControlPanel({
           <Sorts
             setSortByID={setSortByID}
             setOrderID={setOrderID}
+            defaultSortByID={sortByID}
+            defaultOrderID={orderID}
             sortByOptions={sortByOptions}
             orderOptions={orderOptions}
           />

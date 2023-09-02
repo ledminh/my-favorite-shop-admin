@@ -78,6 +78,8 @@ export default function useControlPanel({
     filterID: "with-variants" | "with-promotion" | null
   ) => setFilterID(filterID);
   return {
+    sortByID,
+    orderID,
     filterID,
     searchTerm,
     onSearch,

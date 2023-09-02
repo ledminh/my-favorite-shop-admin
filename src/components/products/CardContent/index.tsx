@@ -45,13 +45,19 @@ const Promotion = ({ promotion }: { promotion: PromotionType }) => {
   return (
     <div className="absolute top-0 right-0 px-2 overflow-hidden text-sm text-white rounded-bl-md bg-blue-950 sm:text-base sm:bg-gray-950/80">
       {promotion.type === "discount" && (
-        <p>
-          <span>Discount:</span> <span>${promotion.discountPercent}%</span>
+        <p className="flex flex-col">
+          <div>
+            <span>Discount:</span> <span>{promotion.discountPercent}%</span>
+          </div>
+          <span>{promotion.description}</span>
         </p>
       )}
       {promotion.type === "sale" && (
-        <p>
-          <span>Sale:</span> <span>${promotion.salePrice}</span>
+        <p className="flex flex-col">
+          <div>
+            <span>Sale:</span> <span>${promotion.salePrice}</span>
+          </div>
+          <span>{promotion.description}</span>
         </p>
       )}
     </div>

@@ -28,9 +28,10 @@ export default async function edit(request: NextRequest) {
 
   // promotion
   const promotionStr = formData.get("promotion") as string;
+
   const promotion = isValidJSON(promotionStr)
     ? (JSON.parse(promotionStr) as Promotion)
-    : null;
+    : undefined;
 
   // variants
   const numberOfVariants = parseInt(formData.get("numberOfVariants") as string);
