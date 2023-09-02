@@ -59,7 +59,7 @@ export default function ProductList({
 
   useEffect(() => {
     (async () => {
-      const { products } = await getProducts({
+      const { products, total } = await getProducts({
         offset: 0,
         limit: itemsPerPage,
         sortBy,
@@ -69,6 +69,7 @@ export default function ProductList({
         searchTerm,
       });
 
+      setTotal(total);
       setInitProducts(products);
     })();
   }, [sortBy, order, filter, catID, searchTerm]);

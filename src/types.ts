@@ -171,4 +171,7 @@ export type ProductsRequest = {
 };
 
 export type ProductResponse = ServerResponse<WithID<Product>>;
-export type ProductsResponse = ServerResponse<WithID<Product>[]>;
+export type ProductsResponse = ServerResponse<{
+  products: WithID<Product>[];
+  total: number;
+}>;

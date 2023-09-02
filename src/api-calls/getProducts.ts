@@ -22,7 +22,12 @@ export default async function getProducts(request: ProductsRequest) {
     throw new Error(errorMessage);
   }
 
+  if (!data) {
+    throw new Error("data not found");
+  }
+
   return {
-    products: data as WithID<ProductType>[],
+    products: data.products as WithID<ProductType>[],
+    total: data.total,
   };
 }

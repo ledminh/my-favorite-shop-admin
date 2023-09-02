@@ -40,7 +40,7 @@ export async function GET(
       case "single":
         return getSingle(request);
       case "multiple":
-        return getMultiple(request);
+        return getMultiple(request) as Promise<NextResponse<ProductsResponse>>;
 
       default:
         throw new Error("type not found");

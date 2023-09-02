@@ -20,7 +20,7 @@ export default async function getMultiple(request: NextRequest) {
     throw new Error("order is required");
   }
 
-  const { items: products } = await getProducts({
+  const { items: products, total } = await getProducts({
     offset: offsetStr ? parseInt(offsetStr) : undefined,
     limit: limitStr ? parseInt(limitStr) : undefined,
     sortBy: sortByStr as ProductsRequest["sortBy"],
@@ -31,6 +31,6 @@ export default async function getMultiple(request: NextRequest) {
   });
 
   return NextResponse.json({
-    data: products,
+    data: { products, total },
   });
 }
