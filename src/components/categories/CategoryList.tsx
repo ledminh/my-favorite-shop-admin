@@ -29,12 +29,12 @@ export default function CategoryList({
   initCategories,
   total,
 }: Props) {
-  const [_initCategories, setInitCategories] = useState(initCategories);
+  const [_initCategories, setInitCategories] = useState(initCategories || []);
   const [_total, setTotal] = useState(total);
 
   useEffect(() => {
     (async () => {
-      const { categories } = await getCategories({
+      const { categories, total } = await getCategories({
         offset: 0,
         limit: itemsPerPage,
         searchTerm,
@@ -43,6 +43,7 @@ export default function CategoryList({
       });
 
       setInitCategories(categories);
+      setTotal(total);
     })();
   }, [sortBy, order, searchTerm]);
 

@@ -72,7 +72,7 @@ export default function CatProdList<T>({
   EditModal,
   DeleteModal,
 }: CatProdListProps<T>) {
-  const [items, setItems] = useState(initItems);
+  const [items, setItems] = useState(initItems || []);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -112,7 +112,7 @@ export default function CatProdList<T>({
   };
 
   useEffect(() => {
-    setItems(initItems);
+    setItems(initItems || []);
   }, [initItems]);
 
   return (

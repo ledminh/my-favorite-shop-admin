@@ -1,10 +1,4 @@
-import {
-  CategoriesRequest,
-  CategoriesResponse,
-  CategoryResponse,
-  Category as CategoryType,
-  WithID,
-} from "@/types";
+import { CategoriesRequest, CategoriesResponse } from "@/types";
 
 const getCategories = async (req: CategoriesRequest) => {
   const { offset, limit, sortBy, order, searchTerm } = req;
@@ -23,8 +17,13 @@ const getCategories = async (req: CategoriesRequest) => {
     throw new Error(errorMessage);
   }
 
+  if (!data) {
+    throw new Error("data not found");
+  }
+
   return {
-    categories: data as WithID<CategoryType>[],
+    categories: data.categories,
+    total: data.total,
   };
 };
 

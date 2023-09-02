@@ -152,7 +152,10 @@ export type CategoriesRequest = {
 };
 
 export type CategoryResponse = ServerResponse<WithID<Category>>;
-export type CategoriesResponse = ServerResponse<WithID<Category>[]>;
+export type CategoriesResponse = ServerResponse<{
+  categories: WithID<Category>[];
+  total: number;
+}>;
 
 // Product
 

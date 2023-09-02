@@ -40,6 +40,7 @@ export const getCategories: GetCategories = async ({
     where: {
       name: {
         contains: searchTerm,
+        mode: "insensitive",
       },
     },
   });
