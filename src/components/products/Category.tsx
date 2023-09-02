@@ -6,6 +6,7 @@ import { WithID, Category as CategoryType } from "@/types";
 import { useState } from "react";
 
 import CategoryListModal from "@/components/modals/CategoryList";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 type Props = {
   categories: WithID<CategoryType>[];
@@ -13,6 +14,10 @@ type Props = {
 };
 
 export default function Category({ categories, initCatID }: Props) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [currentCategory, setCurrentCategory] = useState(
     categories.find((c) => c.id === initCatID) || null
   );
@@ -20,7 +25,19 @@ export default function Category({ categories, initCatID }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onChange = (catID: string | null) => {
-    setCurrentCategory(categories.find((c) => c.id === catID) || null);
+    const category = categories.find((c) => c.id === catID);
+
+    setCurrentCategory(category || null);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (category) {
+      params.set("catID", category.id);
+    } else {
+      params.delete("catID");
+    }
+
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
