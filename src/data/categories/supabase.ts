@@ -5,6 +5,7 @@ import type {
   CategoriesRequest,
   CategoryRequest,
 } from "@/types";
+
 import getID from "@/utils/getID";
 
 import prismaClient from "../prismaClient";
@@ -40,7 +41,6 @@ export const getCategories: GetCategories = async ({
     where: {
       name: {
         contains: searchTerm,
-        mode: "insensitive",
       },
     },
   });

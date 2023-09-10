@@ -73,8 +73,8 @@ const editProduct: EditProduct = (product, cb) => {
   formData.append("numberOfVariants", product.variants.length.toString());
 
   for (let i = 0; i < product.images.length; i++) {
-    if (isImageType(product.images[i])) {
-      formData.append("image-" + (i + 1), product.images[i]);
+    if (!isImageType(product.images[i])) {
+      formData.append("image-" + (i + 1), product.images[i] as File);
     } else {
       formData.append("image-" + (i + 1), JSON.stringify(product.images[i]));
     }

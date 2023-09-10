@@ -17,6 +17,7 @@ export default function useProductModal({
   submitButton,
   onSubmit,
   afterSubmit,
+  initCategoryID,
   initSerial,
   initName,
   initPriceStr,
@@ -30,7 +31,7 @@ export default function useProductModal({
    */
 
   const [categoryID, setCategoryID] = useState<string>(
-    type === "add" ? categories[0].id : ""
+    (type === "add" ? categories[0].id : initCategoryID) || ""
   );
   const [serial, setSerial] = useState<string>(initSerial || "");
   const [name, setName] = useState<string>(initName || "");
@@ -69,7 +70,7 @@ export default function useProductModal({
   };
 
   useEffect(() => {
-    setCategoryID(categories ? categories[0].id : "");
+    setCategoryID((categories ? categories[0].id : initCategoryID) || "");
     setSerial(initSerial || "");
     setName(initName || "");
     setPriceStr(initPriceStr || "");
@@ -80,6 +81,7 @@ export default function useProductModal({
     setImages(initImages || []);
   }, [
     categories,
+    initCategoryID,
     initSerial,
     initName,
     initPriceStr,
@@ -122,9 +124,7 @@ export default function useProductModal({
       intro === "" ||
       description === "" ||
       (promotion !== null && !isFilledPromotion(promotion)) ||
-      // At least one variant or one image but not both
-      (variants.length === 0 && images.length === 0) ||
-      (variants.length !== 0 && images.length !== 0)
+      images.length === 0
     );
   };
 

@@ -23,6 +23,17 @@ export default function CategoryListModal({
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="Categories" size="sm">
       <ul className="flex flex-col gap-2 max-h-[60vh] overflow-y-scroll p-6">
+        <li key="all">
+          <button
+            className="w-full px-4 py-2 text-sm font-semibold text-white rounded-md bg-blue-950/60 hover:bg-blue-950 active:bg-blue-900"
+            onClick={() => {
+              onChange(null);
+              setIsOpen(false);
+            }}
+          >
+            ALL
+          </button>
+        </li>
         {categories.map((cat) => (
           <li key={cat.id}>
             <button

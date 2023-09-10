@@ -30,6 +30,7 @@ export default function EditProductModal({
       submitButton={submitButton}
       onSubmit={onEdit}
       afterSubmit={afterEdit}
+      initCategoryID={item.category.id}
       initSerial={id}
       initName={name}
       initPriceStr={price.toString()}

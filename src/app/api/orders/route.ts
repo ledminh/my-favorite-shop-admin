@@ -1,43 +1,47 @@
-import { DeleteOrderResponse, UpdateOrderResponse, OrderStatus } from "@/types";
+import { SubmitOrderResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
-import { deleteOrder, updateOrder } from "@/data/orders";
+import submit from "./submit";
+// import del from "./del";
+// import edit from "./edit";
+// import getMultiple from "./getMultiple";
 
-export async function DELETE(
+export async function POST(
   request: NextRequest
-): Promise<NextResponse<DeleteOrderResponse>> {
+): Promise<NextResponse<SubmitOrderResponse>> {
   try {
-    const id = request.nextUrl.searchParams.get("id");
+    const action = request.nextUrl.searchParams.get("action");
 
-    if (!id) {
-      throw new Error("id not found");
+    switch (action) {
+      case "submit": // submit to temporary orders to proceed to checkout
+        return submit(request);
+
+      // case "edit":
+      //   return edit(request);
+      // case "delete":
+      //   return del(request);
+
+      default:
+        throw new Error("action not found");
     }
-
-    const order = await deleteOrder(id);
-
-    return NextResponse.json({ data: order });
   } catch (error: any) {
     return NextResponse.json({ errorMessage: error.message });
   }
 }
 
-export async function PATCH(
+export async function GET(
   request: NextRequest
-): Promise<NextResponse<UpdateOrderResponse>> {
+): Promise<NextResponse<SubmitOrderResponse>> {
   try {
-    const id = request.nextUrl.searchParams.get("id");
+    const type = request.nextUrl.searchParams.get("type");
 
-    if (!id) {
-      throw new Error("id not found");
+    switch (type) {
+      // case "multiple":
+      //   return getMultiple(request);
+
+      default:
+        throw new Error("type not found");
     }
-
-    const body: { status: OrderStatus } = await request.json();
-
-    const { status } = body;
-
-    const order = await updateOrder(id, status);
-
-    return NextResponse.json({ data: order });
   } catch (error: any) {
     return NextResponse.json({ errorMessage: error.message });
   }

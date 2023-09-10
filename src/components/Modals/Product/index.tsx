@@ -63,6 +63,7 @@ export type Props = (
   onSubmit: (props: OnSubmitProps) => Promise<{ data: WithID<ProductType> }>;
   afterSubmit: (product: WithID<ProductType>) => void;
 
+  initCategoryID?: string;
   initSerial?: string;
   initName?: string;
   initPriceStr?: string;
@@ -112,6 +113,31 @@ export default function ProductModal(props: Props) {
 
   const { isOpen, setIsOpen, title, type, catName, categories, initPromotion } =
     props;
+
+  if (type === "add" && categories.length === 0) {
+    return (
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        type="attention"
+        title="No Categories"
+      >
+        <div className="flex flex-col gap-4 max-h-[70vh] overflow-y-scroll px-6">
+          <div className="flex justify-center">
+            <span className="text-lg font-bold text-red-500">
+              NO CATEGORIES FOUND
+            </span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="category">Category</label>
+            <div className="p-2 bg-gray-300 border rounded-lg border-blue-950">
+              No categories found. Please add some categories first.
+            </div>
+          </div>
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <>
@@ -233,7 +259,7 @@ export default function ProductModal(props: Props) {
               disabled={props.type === "delete"}
             />
           </div>
-          {!isNewVariantModalOpen && variants.length === 0 ? (
+          {!isNewVariantModalOpen ? (
             <ImagesUpload
               images={images}
               setImages={setImages}

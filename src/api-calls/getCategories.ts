@@ -18,7 +18,7 @@ const getCategories = async (req: CategoriesRequest) => {
   }
 
   if (!data) {
-    throw new Error("data not found");
+    throw new Error("No data returned");
   }
 
   return {
