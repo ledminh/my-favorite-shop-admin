@@ -71,7 +71,7 @@ const OrderTab = ({ item, setIsModalOpen, setCurrentItem }: OrderTabProps) => {
           <span className="font-mono">{Status}</span>
         </div>
         <div className="flex justify-end gap-2 text-sm font-semibold">
-          <span className="text-red-800">${price.toFixed(2)}</span>
+          <span className="text-red-800">${price.toLocaleString()}</span>
         </div>
       </div>
       <div className="flex justify-between text-sm">

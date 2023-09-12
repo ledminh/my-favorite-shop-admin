@@ -54,7 +54,7 @@ model Order {
   taxes           Float
   status          String
   createdAt       DateTime @default(now())
-  modifiedAt      DateTime
+  modifiedAt      DateTime @updatedAt
 }
 
 model OrderToSubmit {

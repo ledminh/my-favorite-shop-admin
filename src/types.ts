@@ -1,3 +1,4 @@
+import { type } from "os";
 import { FC, ReactNode } from "react";
 
 export type Image = {
@@ -78,12 +79,6 @@ export type ShippingAddress = {
   email: string;
 };
 
-export type PaymentInfo = {
-  cardType: "Visa" | "MasterCard" | "American Express";
-  lastFourDigits: string;
-  expireDate: Date;
-};
-
 export type OrderStatus = "processing" | "shipped" | "delivered";
 
 export type Order = {
@@ -91,11 +86,15 @@ export type Order = {
   orderedProducts: WithID<OrderedProduct>[];
   shippingFee: number;
   taxes: number;
-  paymentInfo: PaymentInfo;
   status: OrderStatus;
   createdAt: Date;
   modifiedAt: Date;
 };
+
+export type OrderToSubmit = Omit<
+  Order,
+  "createdAt" | "modifiedAt" | "taxes" | "shippingFee"
+>;
 
 /***********************
  * Customer Message
@@ -130,12 +129,6 @@ type ServerResponse<T> =
       errorMessage: string;
       data?: undefined;
     };
-
-export type DeleteMessageResponse = ServerResponse<WithID<CustomerMessage>>;
-export type UpdateMessageResponse = ServerResponse<WithID<CustomerMessage>>;
-
-export type DeleteOrderResponse = ServerResponse<WithID<Order>>;
-export type UpdateOrderResponse = ServerResponse<WithID<Order>>;
 
 // Category
 export type CategoryRequest = {
@@ -178,3 +171,28 @@ export type ProductsResponse = ServerResponse<{
   products: WithID<Product>[];
   total: number;
 }>;
+
+// Order
+export type OrdersRequest = {
+  offset?: number;
+  limit?: number;
+  sortBy: "customer" | "price" | "createdAt" | "modifiedAt";
+  order: "asc" | "desc";
+  searchTerm?: string;
+  filter: OrderStatus | null;
+};
+
+export type SubmitOrderResponse = ServerResponse<WithID<OrderToSubmit>>;
+
+export type OrderResponse = ServerResponse<WithID<Order>>;
+export type OrdersResponse = ServerResponse<{
+  orders: WithID<Order>[];
+  total: number;
+}>;
+
+export type DeleteOrderResponse = ServerResponse<WithID<Order>>;
+
+// Message
+export type MessageResponse = ServerResponse<WithID<CustomerMessage>>;
+export type DeleteMessageResponse = ServerResponse<WithID<CustomerMessage>>;
+export type UpdateMessageResponse = ServerResponse<WithID<CustomerMessage>>;

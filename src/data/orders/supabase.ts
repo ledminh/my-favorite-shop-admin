@@ -40,13 +40,10 @@ export async function getOrderToSubmit(
 
   return {
     id: orderToSubmit.id,
-    shippingAddress: JSON.parse(
-      orderToSubmit.shippingAddress
-    ) as WithID<OrderToSubmit>["shippingAddress"],
+    shippingAddress: JSON.parse(orderToSubmit.shippingAddress),
     orderedProducts: orderToSubmit.orderedProducts.map((orderedProduct) =>
       JSON.parse(orderedProduct)
-    ) as WithID<OrderToSubmit>["orderedProducts"],
-
+    ),
     status: orderToSubmit.status as OrderStatus,
   };
 }
@@ -109,31 +106,129 @@ export async function getOrder(id: string): Promise<WithID<Order>> {
   };
 }
 
-// type getOrdersProps = {
-//   offset: number;
-//   limit: number;
-//   sortBy: "customer" | "price" | "createdAt" | "modifiedAt";
-//   sortedOrder: "asc" | "desc";
-//   searchTerm?: string;
-//   filter: OrderStatus | null;
-// };
+type getOrdersProps = {
+  offset: number;
+  limit: number;
+  sortBy: "customer" | "price" | "createdAt" | "modifiedAt";
+  sortedOrder: "asc" | "desc";
+  searchTerm?: string;
+  filter: OrderStatus | null;
+};
 
-// export function getOrders({
-//   offset,
-//   limit,
-//   sortBy,
-//   sortedOrder,
-//   searchTerm,
-//   filter,
-// }: getOrdersProps): Promise<{ items: WithID<Order>[]; total: number }> {
-// }
+export function getOrders({
+  offset,
+  limit,
+  sortBy,
+  sortedOrder,
+  searchTerm,
+  filter,
+}: getOrdersProps): Promise<{ items: WithID<Order>[]; total: number }> {
+  return prismaClient.$transaction(async (prisma) => {
+    const orders = await prisma.order.findMany({
+      skip: offset,
+      take: limit,
+      orderBy: {
+        [sortBy]: sortedOrder,
+      },
+      where: {
+        status: filter === null ? undefined : filter,
+        ...(searchTerm && {
+          OR: [
+            {
+              shippingAddress: {
+                contains: searchTerm,
+              },
+            },
+            {
+              orderedProducts: {
+                hasSome: [searchTerm],
+              },
+            },
+            {
+              id: {
+                contains: searchTerm,
+              },
+            },
+          ],
+        }),
+      },
+    });
+
+    const total = await prisma.order.count({
+      where: {
+        status: filter === null ? undefined : filter,
+        ...(searchTerm && {
+          OR: [
+            {
+              shippingAddress: {
+                contains: searchTerm,
+              },
+            },
+            {
+              orderedProducts: {
+                hasSome: [searchTerm],
+              },
+            },
+            {
+              id: {
+                contains: searchTerm,
+              },
+            },
+          ],
+        }),
+      },
+    });
+
+    return {
+      items: orders.map((order) => ({
+        id: order.id,
+        shippingAddress: JSON.parse(
+          order.shippingAddress
+        ) as WithID<Order>["shippingAddress"],
+        orderedProducts: order.orderedProducts.map((orderedProduct) =>
+          JSON.parse(orderedProduct)
+        ) as WithID<Order>["orderedProducts"],
+        shippingFee: order.shippingFee,
+        taxes: order.taxes,
+        status: order.status as OrderStatus,
+        createdAt: order.createdAt,
+        modifiedAt: order.modifiedAt,
+      })),
+      total,
+    };
+  });
+}
 
 // export function deleteOrder(id: string): Promise<WithID<Order>> {
 // }
 
-// export function updateOrder(
-//   id: string,
-//   status: OrderStatus
-// ): Promise<WithID<Order>> {
+export function updateOrder(
+  id: string,
+  status: OrderStatus
+): Promise<WithID<Order>> {
+  return prismaClient.$transaction(async (prisma) => {
+    const order = await prisma.order.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
 
-// }
+    return {
+      id: order.id,
+      shippingAddress: JSON.parse(
+        order.shippingAddress
+      ) as WithID<Order>["shippingAddress"],
+      orderedProducts: order.orderedProducts.map((orderedProduct) =>
+        JSON.parse(orderedProduct)
+      ) as WithID<Order>["orderedProducts"],
+      shippingFee: order.shippingFee,
+      taxes: order.taxes,
+      status: order.status as OrderStatus,
+      createdAt: order.createdAt,
+      modifiedAt: order.modifiedAt,
+    };
+  });
+}

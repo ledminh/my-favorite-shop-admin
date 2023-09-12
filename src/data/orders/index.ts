@@ -1,10 +1,10 @@
 export {
-  //   getOrders,
   //   deleteOrder,
-  //   updateOrder,
+  updateOrder,
   addOrder,
   addOrderToSubmit,
   getOrderToSubmit,
   deleteOrderToSubmit,
   getOrder,
+  getOrders,
 } from "./supabase";

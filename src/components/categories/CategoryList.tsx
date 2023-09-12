@@ -12,7 +12,6 @@ import EditCategoryModal from "@/components/modals/EditCategory";
 import DeleteCategoryModal from "@/components/modals/DeleteCategory";
 
 import FolderPNG from "@/assets/images/folder.png";
-import { set } from "react-hook-form";
 
 type Props = {
   sortBy: "name" | "createdAt" | "modifiedAt";

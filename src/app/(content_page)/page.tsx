@@ -1,8 +1,8 @@
 import NewCatButton from "@/components/home/NewCatButton";
-import NewMessages from "@/components/home/NewMessages";
+// import NewMessages from "@/components/home/NewMessages";
 import NewOrders from "@/components/home/NewOrders";
 import NewProdButton from "@/components/home/NewProdButton";
-import { getCustomerMessages } from "@/data/customerMessages";
+// import { getCustomerMessages } from "@/data/customerMessages";
 import { getOrders } from "@/data/orders";
 import { getCategories } from "@/data/categories";
 import { ReactNode, FC } from "react";
@@ -16,40 +16,38 @@ export default async function Home() {
     sortedOrder: "asc",
   });
 
-  const getMessagesPromise = getCustomerMessages({
-    offset: 0,
-    limit: 7,
-    filter: "unread",
-    sortedBy: "createdAt",
-    sortedOrder: "desc",
-  });
+  // const getMessagesPromise = getCustomerMessages({
+  //   offset: 0,
+  //   limit: 7,
+  //   filter: "unread",
+  //   sortedBy: "createdAt",
+  //   sortedOrder: "desc",
+  // });
 
-  const getCategoriesPromise = getCategories({ sortBy: "name", order: "asc" });
+  // const getCategoriesPromise = getCategories({ sortBy: "name", order: "asc" });
 
   const [
     { items: orders },
-    { items: customerMessages },
-    { items: categories },
+    // { items: customerMessages },
+    // { items: categories },
   ] = await Promise.all([
     getOrdersPromise,
-    getMessagesPromise,
-    getCategoriesPromise,
+    // getMessagesPromise,
+    // getCategoriesPromise,
   ]);
 
   return (
     <Wrapper>
-      <Section>
-        <NewMessages initMessages={customerMessages} />
-      </Section>
+      <Section>{/* <NewMessages initMessages={customerMessages} /> */}</Section>
       <Section>
         <NewOrders initOrders={orders} />
       </Section>
-      <Section>
+      {/* <Section>
         <div className="flex justify-start gap-[4%]">
           <NewCatButton />
           <NewProdButton categories={categories} />
         </div>
-      </Section>
+      </Section> */}
     </Wrapper>
   );
 }
