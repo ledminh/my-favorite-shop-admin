@@ -1,5 +1,5 @@
 export {
-  //   deleteOrder,
+  deleteOrder,
   updateOrder,
   addOrder,
   addOrderToSubmit,

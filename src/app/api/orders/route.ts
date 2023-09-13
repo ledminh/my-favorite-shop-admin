@@ -2,7 +2,7 @@ import { OrdersResponse, SubmitOrderResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 // import submit from "./submit";
-// import del from "./del";
+import del from "./del";
 import edit from "./edit";
 import getMultiple from "./getMultiple";
 
@@ -17,8 +17,8 @@ export async function POST(
       //   return submit(request);
       case "edit":
         return edit(request);
-      // case "delete":
-      //   return del(request);
+      case "delete":
+        return del(request);
 
       default:
         throw new Error("action not found");

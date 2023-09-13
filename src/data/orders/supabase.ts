@@ -196,8 +196,30 @@ export function getOrders({
   });
 }
 
-// export function deleteOrder(id: string): Promise<WithID<Order>> {
-// }
+export function deleteOrder(id: string): Promise<WithID<Order>> {
+  return prismaClient.$transaction(async (prisma) => {
+    const order = await prisma.order.delete({
+      where: {
+        id,
+      },
+    });
+
+    return {
+      id: order.id,
+      shippingAddress: JSON.parse(
+        order.shippingAddress
+      ) as WithID<Order>["shippingAddress"],
+      orderedProducts: order.orderedProducts.map((orderedProduct) =>
+        JSON.parse(orderedProduct)
+      ) as WithID<Order>["orderedProducts"],
+      shippingFee: order.shippingFee,
+      taxes: order.taxes,
+      status: order.status as OrderStatus,
+      createdAt: order.createdAt,
+      modifiedAt: order.modifiedAt,
+    };
+  });
+}
 
 export function updateOrder(
   id: string,
