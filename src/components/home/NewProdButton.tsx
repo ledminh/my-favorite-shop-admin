@@ -19,6 +19,7 @@ export default function NewProdButton({ categories }: Props) {
       <NewProdModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        afterAdd={(item) => console.log(item)}
         categories={categories}
       />
     </>

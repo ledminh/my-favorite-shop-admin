@@ -4,7 +4,7 @@ import NewOrders from "@/components/home/NewOrders";
 import NewProdButton from "@/components/home/NewProdButton";
 import { getCustomerMessages } from "@/data/customerMessages";
 import { getOrders } from "@/data/orders";
-// import { getCategories } from "@/data/categories";
+import { getCategories } from "@/data/categories";
 import { ReactNode, FC } from "react";
 
 export default async function Home() {
@@ -24,16 +24,16 @@ export default async function Home() {
     order: "asc",
   });
 
-  // const getCategoriesPromise = getCategories({ sortBy: "name", order: "asc" });
+  const getCategoriesPromise = getCategories({ sortBy: "name", order: "asc" });
 
   const [
     { items: orders },
     { items: customerMessages },
-    // { items: categories },
+    { items: categories },
   ] = await Promise.all([
     getOrdersPromise,
     getMessagesPromise,
-    // getCategoriesPromise,
+    getCategoriesPromise,
   ]);
 
   return (
@@ -44,12 +44,12 @@ export default async function Home() {
       <Section>
         <NewOrders initOrders={orders} />
       </Section>
-      {/* <Section>
+      <Section>
         <div className="flex justify-start gap-[4%]">
           <NewCatButton />
           <NewProdButton categories={categories} />
         </div>
-      </Section> */}
+      </Section>
     </Wrapper>
   );
 }
