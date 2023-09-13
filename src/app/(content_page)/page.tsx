@@ -13,7 +13,7 @@ export default async function Home() {
     limit: 7,
     filter: "processing",
     sortBy: "createdAt",
-    sortedOrder: "asc",
+    order: "asc",
   });
 
   // const getMessagesPromise = getCustomerMessages({

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCategories } from "@/data/categories";
+import { getOrders } from "@/data/orders";
 
-import { CategoriesRequest } from "@/types";
+import { OrderStatus, OrdersRequest } from "@/types";
 
 export default async function getMultiple(request: NextRequest) {
   const offsetStr = request.nextUrl.searchParams.get("offset");
@@ -9,6 +9,7 @@ export default async function getMultiple(request: NextRequest) {
   const sortByStr = request.nextUrl.searchParams.get("sortBy");
   const orderStr = request.nextUrl.searchParams.get("order");
   const searchTermStr = request.nextUrl.searchParams.get("searchTerm");
+  const filterStr = request.nextUrl.searchParams.get("filter");
 
   if (!sortByStr) {
     throw new Error("sortBy is required");
@@ -18,17 +19,18 @@ export default async function getMultiple(request: NextRequest) {
     throw new Error("order is required");
   }
 
-  const { items: categories, total } = await getCategories({
+  const { items: orders, total } = await getOrders({
     offset: offsetStr ? parseInt(offsetStr) : undefined,
     limit: limitStr ? parseInt(limitStr) : undefined,
-    sortBy: sortByStr as CategoriesRequest["sortBy"],
-    order: orderStr as CategoriesRequest["order"],
+    sortBy: sortByStr as OrdersRequest["sortBy"],
+    order: orderStr as OrdersRequest["order"],
     searchTerm: searchTermStr ? searchTermStr : undefined,
+    filter: filterStr ? (filterStr as OrderStatus) : null,
   });
 
   return NextResponse.json({
     data: {
-      categories,
+      orders,
       total,
     },
   });

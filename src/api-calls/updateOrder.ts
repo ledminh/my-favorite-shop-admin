@@ -16,7 +16,15 @@ const updateOrder = async (id: string, status: OrderStatus) => {
     throw new Error(errorMessage);
   }
 
-  const updatedOrder = data as WithID<Order>;
+  if (!data) {
+    throw new Error("No data returned");
+  }
+
+  const updatedOrder = {
+    ...data,
+    createdAt: new Date(data.createdAt),
+    modifiedAt: new Date(data.modifiedAt),
+  } as WithID<Order>;
 
   return updatedOrder;
 };

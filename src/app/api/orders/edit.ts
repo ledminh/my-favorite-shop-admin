@@ -21,6 +21,10 @@ export default async function edit(request: NextRequest) {
   const updatedOrder = await updateOrder(id, status);
 
   return NextResponse.json({
-    data: updatedOrder,
+    data: {
+      ...updatedOrder,
+      createdAt: updatedOrder.createdAt.toISOString(),
+      modifiedAt: updatedOrder.modifiedAt.toISOString(),
+    },
   });
 }

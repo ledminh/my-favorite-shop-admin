@@ -1,4 +1,10 @@
-import { OrderStatus, OrderToSubmit, Order, WithID } from "@/types";
+import {
+  OrderStatus,
+  OrderToSubmit,
+  Order,
+  WithID,
+  OrdersRequest,
+} from "@/types";
 
 // import getOrderPrice from "@/utils/getOrderPrice";
 
@@ -106,29 +112,20 @@ export async function getOrder(id: string): Promise<WithID<Order>> {
   };
 }
 
-type getOrdersProps = {
-  offset: number;
-  limit: number;
-  sortBy: "customer" | "price" | "createdAt" | "modifiedAt";
-  sortedOrder: "asc" | "desc";
-  searchTerm?: string;
-  filter: OrderStatus | null;
-};
-
 export function getOrders({
   offset,
   limit,
   sortBy,
-  sortedOrder,
+  order,
   searchTerm,
   filter,
-}: getOrdersProps): Promise<{ items: WithID<Order>[]; total: number }> {
+}: OrdersRequest): Promise<{ items: WithID<Order>[]; total: number }> {
   return prismaClient.$transaction(async (prisma) => {
     const orders = await prisma.order.findMany({
       skip: offset,
       take: limit,
       orderBy: {
-        [sortBy]: sortedOrder,
+        [sortBy]: order,
       },
       where: {
         status: filter === null ? undefined : filter,

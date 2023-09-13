@@ -8,7 +8,7 @@ import OrderModal from "@/components/modals/Order";
 
 import { useState } from "react";
 
-import { getOrders } from "@/data/orders";
+import getOrders from "@/api-calls/getOrders";
 
 type Props = {
   initOrders: WithID<Order>[];
@@ -21,10 +21,10 @@ export default function NewOrders({ initOrders }: Props) {
     getOrders({
       offset: 0,
       limit: 7,
-      filter: "processing",
       sortBy: "createdAt",
-      sortedOrder: "asc",
-    }).then(({ items: _orders }) => {
+      order: "asc",
+      filter: "processing",
+    }).then(({ orders: _orders }) => {
       setOrders(_orders);
     });
   };
@@ -33,10 +33,10 @@ export default function NewOrders({ initOrders }: Props) {
     getOrders({
       offset: 0,
       limit: 7,
-      filter: "processing",
       sortBy: "createdAt",
-      sortedOrder: "asc",
-    }).then(({ items: _orders }) => {
+      order: "asc",
+      filter: "processing",
+    }).then(({ orders: _orders }) => {
       setOrders(_orders);
     });
   };
