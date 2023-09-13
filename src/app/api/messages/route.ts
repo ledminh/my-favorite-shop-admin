@@ -1,10 +1,10 @@
-import { CategoriesResponse, CategoryResponse, MessageResponse } from "@/types";
+import { MessagesResponse, MessageResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
-import add from "./add";
-// import del from "./del";
-// import edit from "./edit";
-// import getMultiple from "./getMultiple";
+// import add from "./add";
+import del from "./del";
+import edit from "./edit";
+import getMultiple from "./getMultiple";
 // import getSingle from "./getSingle";
 
 export async function POST(
@@ -14,12 +14,12 @@ export async function POST(
     const action = request.nextUrl.searchParams.get("action");
 
     switch (action) {
-      case "add":
-        return add(request);
-      // case "edit":
-      //   return edit(request);
-      // case "delete":
-      //   return del(request);
+      // case "add":
+      //   return add(request);
+      case "edit":
+        return edit(request);
+      case "delete":
+        return del(request);
 
       default:
         throw new Error("action not found");
@@ -31,15 +31,15 @@ export async function POST(
 
 export async function GET(
   request: NextRequest
-): Promise<NextResponse<CategoryResponse | CategoriesResponse>> {
+): Promise<NextResponse<MessageResponse | MessagesResponse>> {
   try {
     const type = request.nextUrl.searchParams.get("type");
 
     switch (type) {
       // case "single":
       //   return getSingle(request);
-      // case "multiple":
-      //   return getMultiple(request);
+      case "multiple":
+        return getMultiple(request);
 
       default:
         throw new Error("type not found");

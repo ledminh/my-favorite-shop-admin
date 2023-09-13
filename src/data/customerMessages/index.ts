@@ -1,5 +1,6 @@
-export { addMessage } from "./supabase";
-
-// getCustomerMessages,
-// updateMessage,
-// deleteMessage
+export {
+  // addMessage,
+  getCustomerMessages,
+  updateMessage,
+  deleteMessage,
+} from "./supabase";

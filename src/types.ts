@@ -190,9 +190,20 @@ export type OrdersResponse = ServerResponse<{
   total: number;
 }>;
 
-export type DeleteOrderResponse = ServerResponse<WithID<Order>>;
-
 // Message
+
+export type MessagesRequest = {
+  offset?: number;
+  limit?: number;
+  sortBy: "customer" | "email" | "createdAt";
+  order: "asc" | "desc";
+  searchTerm?: string;
+  filter: CustomerMessageStatus | null;
+};
+
 export type MessageResponse = ServerResponse<WithID<CustomerMessage>>;
-export type DeleteMessageResponse = ServerResponse<WithID<CustomerMessage>>;
-export type UpdateMessageResponse = ServerResponse<WithID<CustomerMessage>>;
+
+export type MessagesResponse = ServerResponse<{
+  messages: WithID<CustomerMessage>[];
+  total: number;
+}>;
