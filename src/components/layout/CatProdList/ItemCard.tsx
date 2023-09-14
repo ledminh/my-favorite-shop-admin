@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import Image from "next/image";
-import { WithID } from "@/types";
+import { Category, WithID } from "@/types";
 
 type ItemCardProps<T> = {
   item: WithID<T>;
@@ -18,6 +18,11 @@ function ItemCard<T>({
   CardContent,
 }: ItemCardProps<T>) {
   const image = getImage(item);
+
+  const isDeleteButtonDisabled = () => {
+    const _i = item as unknown as WithID<Category>;
+    return _i.numProducts !== undefined && _i.numProducts > 0;
+  };
 
   return (
     <ItemWrapper>
@@ -43,7 +48,8 @@ function ItemCard<T>({
           </Button>
           <Button
             onClick={() => onDelete(item.id)}
-            className="text-white bg-red-950 hover:bg-red-950/80 sm:h-full sm:w-20"
+            className="text-white bg-red-950 hover:bg-red-950/80 sm:h-full sm:w-20 disabled:bg-red-950/50 disabled:cursor-not-allowed"
+            disabled={isDeleteButtonDisabled()}
           >
             DELETE
           </Button>
@@ -89,12 +95,14 @@ type ButtonProps = {
   children: ReactNode;
   onClick: () => void;
   className?: string;
+  disabled?: boolean;
 };
 
-const Button = ({ children, onClick, className }: ButtonProps) => {
+const Button = ({ children, onClick, className, disabled }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       className={`px-2 py-1 text-sm md:basis-1/2 md:text-base md:py-3 ${className}`}
     >
       {children}

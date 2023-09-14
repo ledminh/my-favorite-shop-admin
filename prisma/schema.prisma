@@ -13,6 +13,7 @@ model Category {
   description String
   link        String
   image       String
+  numProducts Int
   createdAt   DateTime  @default(now())
   modifiedAt  DateTime  @updatedAt
   Product     Product[]

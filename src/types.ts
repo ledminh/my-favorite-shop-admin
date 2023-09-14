@@ -17,6 +17,7 @@ export type Category = {
   description: string;
   link: string;
   image: Image;
+  numProducts: number;
   createdAt: Date;
   modifiedAt: Date;
 };

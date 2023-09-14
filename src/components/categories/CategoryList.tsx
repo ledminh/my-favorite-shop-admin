@@ -119,5 +119,8 @@ type CardContentProps = {
 };
 
 const CardContent = ({ item }: CardContentProps) => (
-  <h2 className="text-lg font-semibold">{item.name}</h2>
+  <>
+    <h2 className="text-lg font-semibold">{item.name}</h2>
+    <p className="text-sm"># products: {item.numProducts}</p>
+  </>
 );

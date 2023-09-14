@@ -41,6 +41,7 @@ export const getCategories: GetCategories = async ({
     where: {
       name: {
         contains: searchTerm,
+        mode: "insensitive",
       },
     },
   });
@@ -65,13 +66,17 @@ export const getCategories: GetCategories = async ({
 };
 
 export const addCategory = async (
-  category: Omit<CategoryType, "id" | "createdAt" | "modifiedAt">
+  category: Omit<
+    CategoryType,
+    "id" | "createdAt" | "modifiedAt" | "numProducts"
+  >
 ): Promise<WithID<CategoryType>> => {
   const categoryDB = await prismaClient.category.create({
     data: {
       ...category,
       id: "category-" + getID(),
       image: JSON.stringify(category.image),
+      numProducts: 0,
     },
   });
 

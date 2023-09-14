@@ -160,29 +160,41 @@ export const addProduct = async (
     throw new Error("Category not found");
   }
 
-  const productDB = await prismaClient.product.create({
-    data: {
-      category: {
-        connect: {
-          id: product.categoryID,
+  const [_, productDB] = await prismaClient.$transaction([
+    prismaClient.category.update({
+      where: {
+        id: product.categoryID,
+      },
+      data: {
+        numProducts: {
+          increment: 1,
         },
       },
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      intro: product.intro,
-      description: product.description,
-      mainImageID: product.mainImageID,
-      images: product.images.map((image) => JSON.stringify(image)),
-      promotion: product.promotion
-        ? JSON.stringify(product.promotion)
-        : undefined,
-      variants: product.variants
-        ? product.variants.map((variant) => JSON.stringify(variant))
-        : [],
-      link: `${product.id}`,
-    },
-  });
+    }),
+    prismaClient.product.create({
+      data: {
+        category: {
+          connect: {
+            id: product.categoryID,
+          },
+        },
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        intro: product.intro,
+        description: product.description,
+        mainImageID: product.mainImageID,
+        images: product.images.map((image) => JSON.stringify(image)),
+        promotion: product.promotion
+          ? JSON.stringify(product.promotion)
+          : undefined,
+        variants: product.variants
+          ? product.variants.map((variant) => JSON.stringify(variant))
+          : [],
+        link: `${product.id}`,
+      },
+    }),
+  ]);
 
   return {
     ...productDB,
@@ -273,9 +285,21 @@ export const updateProduct = async (
  */
 
 export const deleteProduct = async (id: string) => {
-  await prismaClient.product.delete({
-    where: {
-      id,
-    },
-  });
+  await prismaClient.$transaction([
+    prismaClient.product.delete({
+      where: {
+        id,
+      },
+    }),
+    prismaClient.category.update({
+      where: {
+        id,
+      },
+      data: {
+        numProducts: {
+          decrement: 1,
+        },
+      },
+    }),
+  ]);
 };
