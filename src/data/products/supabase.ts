@@ -285,6 +285,16 @@ export const updateProduct = async (
  */
 
 export const deleteProduct = async (id: string) => {
+  const product = await prismaClient.product.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!product) {
+    throw new Error("Product not found");
+  }
+
   await prismaClient.$transaction([
     prismaClient.product.delete({
       where: {
@@ -293,7 +303,7 @@ export const deleteProduct = async (id: string) => {
     }),
     prismaClient.category.update({
       where: {
-        id,
+        id: product.categoryID,
       },
       data: {
         numProducts: {
