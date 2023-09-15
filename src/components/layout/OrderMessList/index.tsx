@@ -22,7 +22,7 @@ type Props<T> = {
     setCurrentItem: (item: WithID<T>) => void;
   }>;
   ItemModal: FC<{
-    item: WithID<T>;
+    initItem: WithID<T>;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
     afterDelete: (o: WithID<T>) => void;
@@ -97,7 +97,8 @@ export default function OrderMessList<T>({
         </ul>
         {getTotalPrice && (
           <div className="flex justify-end p-4 text-xl font-bold text-blue-950">
-            Total: ${getTotalPrice(items).toFixed(2)} ({items.length} items)
+            Total: ${getTotalPrice(items).toLocaleString()} ({items.length}{" "}
+            items)
           </div>
         )}
       </div>
@@ -106,7 +107,7 @@ export default function OrderMessList<T>({
         <ItemModal
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
-          item={currentItem}
+          initItem={currentItem}
           afterDelete={afterDelete}
           afterUpdate={afterUpdate}
         />

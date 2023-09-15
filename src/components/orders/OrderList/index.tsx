@@ -10,8 +10,7 @@ import { Props } from "./types";
 import useOrders from "./hooks";
 
 export default function OrderList(props: Props) {
-  const { total } = props;
-  const { _initOrders, onLoadMore, afterDelete, afterUpdate } =
+  const { _initOrders, onLoadMore, afterDelete, afterUpdate, total } =
     useOrders(props);
 
   return (
