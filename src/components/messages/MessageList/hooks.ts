@@ -1,54 +1,55 @@
-import { useState, useEffect, use } from "react";
-import { getCustomerMessages } from "@/data/customerMessages";
+import { useState, useEffect } from "react";
+import getCustomerMessages from "@/api-calls/getMessages";
+
 import { smallItemsPerPage } from "@/config";
 
 import { Props } from "./types";
 import { CustomerMessage, WithID } from "@/types";
 
 export default function useMessageList(props: Props) {
-  const { initMessages, sortedBy, sortedOrder, searchTerm, filter } = props;
+  const { initMessages, sortedBy, sortedOrder, searchTerm, filter, total } =
+    props;
 
   const [_initMessages, setInitMessages] = useState(initMessages);
+  const [_total, setTotal] = useState(total);
 
   useEffect(() => {
     (async () => {
-      const { items } = await getCustomerMessages({
+      const { messages, total } = await getCustomerMessages({
         offset: 0,
         limit: smallItemsPerPage,
-        sortedBy,
-        sortedOrder,
+        sortBy: sortedBy,
+        order: sortedOrder,
         searchTerm,
         filter,
       });
 
-      setInitMessages(items);
+      setTotal(total);
+      setInitMessages(messages);
     })();
   }, [sortedBy, sortedOrder, searchTerm, filter]);
 
   /*************************
    * Public
    */
-  const onLoadMore = async ({
-    offset,
-    limit,
-  }: {
-    offset: number;
-    limit: number;
-  }) => {
-    const { items } = await getCustomerMessages({
+  const onLoadMore = async ({ offset }: { offset: number }) => {
+    const { messages, total } = await getCustomerMessages({
       offset,
-      limit,
-      sortedBy,
-      sortedOrder,
+      limit: smallItemsPerPage,
+      sortBy: sortedBy,
+      order: sortedOrder,
       searchTerm,
       filter,
     });
 
-    return items;
+    setTotal(total);
+
+    return messages;
   };
 
   const afterDelete = (message: WithID<CustomerMessage>) => {
     setInitMessages((prev) => prev.filter((item) => item.id !== message.id));
+    setTotal((prev) => prev - 1);
   };
 
   const afterUpdate = (message: WithID<CustomerMessage>) => {

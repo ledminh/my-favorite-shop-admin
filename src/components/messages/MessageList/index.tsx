@@ -8,8 +8,7 @@ import useMessageList from "./hooks";
 import { Props } from "./types";
 
 export default function MessageList(props: Props) {
-  const { total } = props;
-  const { _initMessages, onLoadMore, afterDelete, afterUpdate } =
+  const { _initMessages, onLoadMore, afterDelete, afterUpdate, total } =
     useMessageList(props);
 
   return (
