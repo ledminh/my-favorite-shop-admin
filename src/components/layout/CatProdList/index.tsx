@@ -14,6 +14,8 @@ export type AddNewButtonType = {
 };
 
 type CatProdListProps<T> = {
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
   initItems: WithID<T>[];
   total: number;
   onLoadMore: ({
@@ -38,6 +40,8 @@ type CatProdListProps<T> = {
   AddNewModal: FC<{
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    setLoading: (loading: boolean) => void;
+
     categories: WithID<Category>[];
     afterAdd: (item: WithID<T>) => void;
   }>;
@@ -45,6 +49,7 @@ type CatProdListProps<T> = {
   EditModal: FC<{
     item: WithID<T>;
     isOpen: boolean;
+    setLoading: (loading: boolean) => void;
     setIsOpen: (isOpen: boolean) => void;
     afterEdit: (item: WithID<T>) => void;
   }>;
@@ -53,11 +58,15 @@ type CatProdListProps<T> = {
     item: WithID<T>;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    setLoading: (loading: boolean) => void;
+
     afterDelete: (item: WithID<T>) => void;
   }>;
 };
 
 export default function CatProdList<T>({
+  loading,
+  setLoading,
   initItems,
   total,
   onLoadMore,
@@ -123,6 +132,7 @@ export default function CatProdList<T>({
           <AddNewModal
             isOpen={isAddNewModalOpen}
             setIsOpen={setIsAddNewModalOpen}
+            setLoading={setLoading}
             categories={categories}
             afterAdd={afterAdd}
           />
@@ -134,6 +144,7 @@ export default function CatProdList<T>({
           <EditModal
             item={currentItem}
             isOpen={isEditModalOpen}
+            setLoading={setLoading}
             setIsOpen={setIsEditModalOpen}
             afterEdit={afterEdit}
           />
@@ -146,6 +157,7 @@ export default function CatProdList<T>({
           <DeleteModal
             item={currentItem}
             isOpen={isDeleteModalOpen}
+            setLoading={setLoading}
             setIsOpen={setIsDeleteModalOpen}
             afterDelete={afterDelete}
           />
@@ -177,6 +189,7 @@ export default function CatProdList<T>({
                 <ItemCard
                   item={item}
                   onEdit={onEdit}
+                  isLoading={currentItem?.id === item.id ? loading : false}
                   onDelete={onDelete}
                   getImage={getImage}
                   CardContent={CardContent}

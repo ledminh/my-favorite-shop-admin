@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Category as CategoryType, Image as ImageType, WithID } from "@/types";
 
 import isImageType from "@/utils/isImageType";
@@ -6,7 +7,13 @@ import { CategoryResponse } from "@/types";
 
 import { OnSubmitProps } from "../Category";
 
-export default function useEditCategoryModal(item: WithID<CategoryType>) {
+export default function useEditCategoryModal(initItem: WithID<CategoryType>) {
+  const [item, setItem] = useState<WithID<CategoryType>>(initItem);
+
+  useEffect(() => {
+    setItem(initItem);
+  }, [initItem]);
+
   /**********************
    * Public
    */
@@ -44,6 +51,7 @@ export default function useEditCategoryModal(item: WithID<CategoryType>) {
   };
 
   return {
+    item,
     onSave,
     submitButton,
   };

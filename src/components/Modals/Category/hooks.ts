@@ -15,6 +15,7 @@ export default function useCategoryModal(props: Props) {
     initDescription,
     initImage,
     submitButton,
+    setLoading,
     onSubmit,
     afterSubmit,
   } = props;
@@ -32,9 +33,6 @@ export default function useCategoryModal(props: Props) {
   }, [initName, initDescription, initImage]);
 
   // Functions
-  const onClose = () => {
-    setImage(null);
-  };
 
   const reset = () => {
     setName("");
@@ -43,6 +41,7 @@ export default function useCategoryModal(props: Props) {
   };
 
   const _onSubmit = () => {
+    setLoading(true);
     onSubmit({
       name,
       description,
@@ -101,7 +100,6 @@ export default function useCategoryModal(props: Props) {
     image,
     name,
     description,
-    onClose,
     onNameChange,
     onDescriptionChange,
     onImageChange,

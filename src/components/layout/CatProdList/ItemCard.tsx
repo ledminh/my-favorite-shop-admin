@@ -1,8 +1,13 @@
+"use client";
+
 import { FC, ReactNode } from "react";
 import Image from "next/image";
 import { Category, WithID } from "@/types";
 
+import { useState, useEffect } from "react";
+
 type ItemCardProps<T> = {
+  isLoading: boolean;
   item: WithID<T>;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
@@ -11,29 +16,46 @@ type ItemCardProps<T> = {
 };
 
 function ItemCard<T>({
-  item,
+  isLoading,
+  item: _item,
   onEdit,
   onDelete,
   getImage,
   CardContent,
 }: ItemCardProps<T>) {
-  const image = getImage(item);
+  const [item, setItem] = useState(_item);
+  const [image, setImage] = useState<{ src: string; alt: string } | null>(null);
+
+  useEffect(() => {
+    setImage(getImage(item));
+  }, [item]);
+
+  useEffect(() => {
+    setItem(_item);
+  }, [_item]);
 
   const isDeleteButtonDisabled = () => {
     const _i = item as unknown as WithID<Category>;
     return _i.numProducts !== undefined && _i.numProducts > 0;
   };
 
-  return (
-    <ItemWrapper>
+  const Content = (
+    <>
       <ImageWrapper>
-        <Image
-          src={image.src}
-          alt={image.alt}
-          fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 33vw"
-          className="object-cover object-center"
-        />
+        {
+          // Show div as an image placeholder
+          image === null ? (
+            <div className="w-full h-full bg-neutral-200"></div>
+          ) : (
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 33vw"
+              className="object-cover object-center"
+            />
+          )
+        }
       </ImageWrapper>
       <div className="flex flex-col self-stretch justify-between flex-grow py-2 sm:flex-row sm:items-center sm:py-0 md:flex-col">
         <ContentWrapper>
@@ -55,6 +77,38 @@ function ItemCard<T>({
           </Button>
         </ButtonsWrapper>
       </div>
+    </>
+  );
+
+  return (
+    <ItemWrapper>
+      {isLoading ? (
+        <div className="flex items-center justify-center w-full h-full">
+          {/* Show loading*/}
+          <svg
+            className="w-10 h-10 text-blue-950 animate-spin"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            ></path>
+          </svg>
+
+          {/* Show content */}
+        </div>
+      ) : (
+        Content
+      )}
     </ItemWrapper>
   );
 }

@@ -1,15 +1,14 @@
 "use client";
 
 import Modal from "@/components/layout/Modal";
-import {
-  CustomerMessage,
-  DeleteMessageResponse,
-  UpdateMessageResponse,
-  WithID,
-} from "@/types";
+import { CustomerMessage, WithID } from "@/types";
+
+import { useState } from "react";
+import updateMessage from "@/api-calls/updateMessage";
+import deleteMessage from "@/api-calls/deleteMessage";
 
 type MessageModalProps = {
-  item: WithID<CustomerMessage>;
+  initItem: WithID<CustomerMessage>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   afterDelete: (item: WithID<CustomerMessage>) => void;
@@ -17,52 +16,36 @@ type MessageModalProps = {
 };
 
 const MessageModal = ({
-  item,
+  initItem,
   isOpen,
   setIsOpen,
   afterDelete,
   afterUpdate,
 }: MessageModalProps) => {
-  const { firstName, lastName, email, phone, message, createdAt, status } =
-    item;
+  const [item, setItem] = useState(initItem);
 
   const additionalButtons = [
     {
       text: "DELETE",
       className: "text-red-600 bg-white hover:bg-red-100",
       onClick: () => {
-        deleteMessage(item.id, (res) => {
-          if (res.errorMessage) {
-            throw new Error(res.errorMessage);
-          }
-
-          afterDelete(res.data as WithID<CustomerMessage>);
+        deleteMessage(item.id).then(() => {
+          afterDelete(item);
         });
       },
     },
     {
-      text: status === "read" ? "MARK AS UNREAD" : "MARK AS READ",
+      text: item.status === "read" ? "MARK AS UNREAD" : "MARK AS READ",
       className:
         "text-stone-800 bg-white hover:bg-neutral-300 active:bg-neutral-400",
       onClick: () => {
         updateMessage(
           item.id,
-          {
-            status: status === "read" ? "unread" : "read",
-          },
-          (res) => {
-            if (res.errorMessage) {
-              throw new Error(res.errorMessage);
-            }
-
-            const message: WithID<CustomerMessage> = {
-              ...res.data,
-              createdAt: new Date(res.data?.createdAt || ""),
-            } as WithID<CustomerMessage>;
-
-            afterUpdate(message);
-          }
-        );
+          item.status === "unread" ? "read" : "unread"
+        ).then((updatedMessage) => {
+          afterUpdate(updatedMessage);
+          setItem(updatedMessage);
+        });
       },
     },
   ];
@@ -76,18 +59,18 @@ const MessageModal = ({
     >
       <div className="flex justify-between border-b-2 border-blue-950">
         <span className="text-lg font-semibold">
-          {firstName} {lastName}
+          {item.firstName} {item.lastName}
         </span>
-        <span className="italic">{createdAt.toDateString()}</span>
+        <span className="italic">{item.createdAt.toDateString()}</span>
       </div>
       <div className="mt-2 mb-4">
-        <InfoTab label="Email" value={email} />
-        {phone && <InfoTab label="Phone" value={phone} />}
+        <InfoTab label="Email" value={item.email} />
+        {item.phone && <InfoTab label="Phone" value={item.phone} />}
       </div>
       <div className="flex flex-col gap-2">
         <span className="font-semibold">Message</span>
         <span className="p-4 text-sm border-2 rounded-md border-neutral-700 max-h-[50vh] overflow-y-scroll">
-          {message}
+          {item.message}
         </span>
       </div>
     </Modal>
@@ -106,35 +89,4 @@ const InfoTab = ({ label, value }: { label: string; value: string }) => {
       <span>{value}</span>
     </div>
   );
-};
-
-/***************************
- * Utils
- */
-
-const deleteMessage = (
-  id: string,
-  cb: (res: DeleteMessageResponse) => void
-) => {
-  fetch(`/api/messages?id=${id}`, {
-    method: "DELETE",
-  })
-    .then((res) => res.json())
-    .then((res: DeleteMessageResponse) => cb(res));
-};
-
-const updateMessage = (
-  id: string,
-  data: { status: string },
-  cb: (res: UpdateMessageResponse) => void
-) => {
-  fetch(`/api/messages?id=${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((res) => res.json())
-    .then((res: UpdateMessageResponse) => cb(res));
 };

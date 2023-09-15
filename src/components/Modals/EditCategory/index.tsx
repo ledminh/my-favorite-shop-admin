@@ -1,3 +1,5 @@
+"use client";
+
 import { Category as CategoryType, WithID } from "@/types";
 import useEditCategoryModal from "./hooks";
 
@@ -8,9 +10,16 @@ type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   afterEdit: (item: WithID<CategoryType>) => void;
+  setLoading: (loading: boolean) => void;
 };
 
-const EditCategoryModal = ({ item, isOpen, setIsOpen, afterEdit }: Props) => {
+const EditCategoryModal = ({
+  item,
+  isOpen,
+  setIsOpen,
+  afterEdit,
+  setLoading,
+}: Props) => {
   const { submitButton, onSave } = useEditCategoryModal(item);
 
   return (
@@ -19,6 +28,7 @@ const EditCategoryModal = ({ item, isOpen, setIsOpen, afterEdit }: Props) => {
       title="Edit Category"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
+      setLoading={setLoading}
       submitButton={submitButton}
       onSubmit={onSave}
       afterSubmit={afterEdit}

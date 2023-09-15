@@ -1,20 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import Modal from "@/components/layout/Modal";
 
-import {
-  Order,
-  OrderStatus,
-  WithID,
-  DeleteOrderResponse,
-  UpdateOrderResponse,
-} from "@/types";
+import { Order, OrderStatus, WithID } from "@/types";
 
 import ChangeButton from "./ChangeButton";
 import getOrderProductName from "@/utils/getOrderProductName";
+import updateOrder from "@/api-calls/updateOrder";
+import deleteOrder from "@/api-calls/deleteOrder";
 
 type Props = {
-  item: WithID<Order>;
+  initItem: WithID<Order>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   afterDelete: (o: WithID<Order>) => void;
@@ -22,34 +19,29 @@ type Props = {
 };
 
 const OrderModal = ({
-  item,
+  initItem,
   isOpen,
   setIsOpen,
   afterDelete,
   afterUpdate,
 }: Props) => {
+  const [item, setItem] = useState(initItem);
+
   const additionalButtons = [
     {
       text: "DELETE",
       className: "text-red-600 bg-white hover:bg-red-100",
       onClick: () =>
-        deleteOrder(item.id, (res) => {
-          if (res.errorMessage) {
-            throw new Error(res.errorMessage);
-          }
-
+        deleteOrder(item.id).then(() => {
           afterDelete(item);
         }),
     },
   ];
 
   const updateStatus = (status: OrderStatus) => {
-    updateOrder(item.id, { status }, (res) => {
-      if (res.errorMessage) {
-        throw new Error(res.errorMessage);
-      }
-
-      afterUpdate({ ...item, status });
+    updateOrder(item.id, status).then((updatedOrder) => {
+      afterUpdate(updatedOrder);
+      setItem(updatedOrder);
     });
   };
 
@@ -131,31 +123,4 @@ const InfoTab = ({
       {Button}
     </div>
   );
-};
-
-/****************************
- * Utils
- */
-function deleteOrder(id: string, cb: (res: DeleteOrderResponse) => void) {
-  fetch(`/api/orders?id=${id}`, {
-    method: "DELETE",
-  })
-    .then((res) => res.json())
-    .then((res: DeleteOrderResponse) => cb(res));
-}
-
-const updateOrder = (
-  id: string,
-  data: { status: string },
-  cb: (res: UpdateOrderResponse) => void
-) => {
-  fetch(`/api/orders?id=${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((res) => res.json())
-    .then((res) => cb(res));
 };

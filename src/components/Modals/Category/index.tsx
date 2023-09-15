@@ -18,6 +18,7 @@ export type Props = {
   title: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  setLoading: (loading: boolean) => void;
   submitButton: {
     text: string;
     className: string;
@@ -33,7 +34,6 @@ export type Props = {
 
 export default function CategoryModal(props: Props) {
   const {
-    onClose,
     additionalButtons,
     image,
     name,
@@ -51,7 +51,6 @@ export default function CategoryModal(props: Props) {
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title={title}
-      onClose={onClose}
       additionalButtons={additionalButtons}
     >
       <div className="flex flex-col gap-4">

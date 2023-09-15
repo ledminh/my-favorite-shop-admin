@@ -30,6 +30,7 @@ export default function CategoryList({
 }: Props) {
   const [_initCategories, setInitCategories] = useState(initCategories || []);
   const [_total, setTotal] = useState(total);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -74,14 +75,16 @@ export default function CategoryList({
   const afterAdd = (newCategory: WithID<CategoryType>) => {
     setInitCategories((prev) => [newCategory, ...prev]);
     setTotal((prev) => prev + 1);
+    setLoading(false);
   };
 
   const afterEdit = (editedCategory: WithID<CategoryType>) => {
     setInitCategories((prev) =>
       prev.map((category) =>
-        category.id === editedCategory.id ? editedCategory : category
+        category.id === editedCategory.id ? { ...editedCategory } : category
       )
     );
+    setLoading(false);
   };
 
   const afterDelete = (deletedCategory: WithID<CategoryType>) => {
@@ -89,10 +92,13 @@ export default function CategoryList({
       prev.filter((category) => category.id !== deletedCategory.id)
     );
     setTotal((prev) => prev - 1);
+    setLoading(false);
   };
 
   return (
     <CatProdList
+      loading={loading}
+      setLoading={setLoading}
       categories={_initCategories}
       initItems={_initCategories}
       total={_total}
