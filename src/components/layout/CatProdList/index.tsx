@@ -89,6 +89,8 @@ export default function CatProdList<T>({
 
   const [currentItem, setCurrentItem] = useState<WithID<T> | null>(null);
 
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
   const onAddNew = () => {
     setIsAddNewModalOpen(true);
   };
@@ -112,11 +114,13 @@ export default function CatProdList<T>({
   };
 
   const _onLoadMore = () => {
+    setIsLoadingMore(true);
     onLoadMore({
       offset: items.length,
       limit: itemsPerPage,
     }).then((newItems) => {
       setItems((prevItems) => [...prevItems, ...newItems]);
+      setIsLoadingMore(false);
     });
   };
 
@@ -200,7 +204,12 @@ export default function CatProdList<T>({
         </ul>
         {
           // Show load more button if there are more items to load
-          items.length < total && <LoadMoreButton onClick={_onLoadMore} />
+          items.length < total && (
+            <LoadMoreButton
+              onClick={_onLoadMore}
+              isLoadingMore={isLoadingMore}
+            />
+          )
         }
       </div>
     </>
@@ -211,15 +220,17 @@ export default function CatProdList<T>({
  * Components
  */
 type LoadMoreButtonProps = {
+  isLoadingMore: boolean;
   onClick: () => void;
 };
 
-const LoadMoreButton = ({ onClick }: LoadMoreButtonProps) => (
+const LoadMoreButton = ({ onClick, isLoadingMore }: LoadMoreButtonProps) => (
   <button
-    className="w-40 py-3 m-auto text-lg font-bold border-2 rounded-lg border-blue-950 hover:bg-gray-200 hover:ring hover:ring-gray-600 active:ring active:ring-gray-600 active:bg-gray-300"
+    className="flex items-center justify-center w-40 gap-4 py-3 m-auto text-lg font-bold border-2 rounded-lg border-blue-950 hover:bg-gray-200 hover:ring hover:ring-gray-600 active:ring active:ring-gray-600 active:bg-gray-300"
     onClick={onClick}
   >
-    LOAD MORE
+    <span>LOAD MORE</span>
+    {isLoadingMore && <LoadingMoreCircle />}
   </button>
 );
 
@@ -239,4 +250,26 @@ const AddNewButton = ({
       <span className="text-2xl font-semibold">{text}</span>
     </div>
   </button>
+);
+
+const LoadingMoreCircle = () => (
+  <svg
+    className="w-6 h-6 text-gray-600 animate-spin"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    ></circle>
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+    ></path>
+  </svg>
 );
