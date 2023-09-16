@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { WithID } from "@/types";
 
-import { useState } from "react";
+import { useState, JSX } from "react";
 
 type Props<T> = {
   items: WithID<T>[];
@@ -28,6 +28,7 @@ type Props<T> = {
 
   afterDelete: () => void;
   afterUpdate: () => void;
+  refresh: () => void;
 };
 
 export default function Card<T>({
@@ -38,6 +39,7 @@ export default function Card<T>({
   button,
   afterDelete,
   afterUpdate,
+  refresh,
 }: Props<T>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<T | null>(null);
@@ -77,6 +79,7 @@ export default function Card<T>({
               {button.text}
             </button>
           </Link>
+          <RefreshButton onClick={refresh} />
         </Footer>
       </Wrapper>
 
@@ -113,5 +116,32 @@ const Body = ({ children }: { children: React.ReactNode }) => (
 );
 
 const Footer = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex justify-end p-2 bg-blue-950/80">{children}</div>
+  <div className="flex justify-end gap-2 p-2 bg-blue-950/80">{children}</div>
+);
+
+const RefreshButton = (props: { onClick: () => void }) => (
+  <button
+    className="flex items-center justify-center gap-2 p-2 font-bold text-white border-2 rounded-lg border-white/80 bg-blue-950/40 hover:bg-blue-950"
+    onClick={props.onClick}
+  >
+    <span>REFRESH</span>
+    <RefreshIcon />
+  </button>
+);
+
+const RefreshIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    className="w-6 h-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+    />
+  </svg>
 );

@@ -17,19 +17,7 @@ type Props = {
 export default function NewOrders({ initOrders }: Props) {
   const [orders, setOrders] = useState(initOrders);
 
-  const afterDelete = () => {
-    getOrders({
-      offset: 0,
-      limit: 7,
-      sortBy: "createdAt",
-      order: "asc",
-      filter: "processing",
-    }).then(({ orders: _orders }) => {
-      setOrders(_orders);
-    });
-  };
-
-  const afterUpdate = () => {
+  const reloadOrders = () => {
     getOrders({
       offset: 0,
       limit: 7,
@@ -48,8 +36,9 @@ export default function NewOrders({ initOrders }: Props) {
       items={orders}
       ItemTab={OrderTab}
       ItemModal={OrderModal}
-      afterDelete={afterDelete}
-      afterUpdate={afterUpdate}
+      afterDelete={reloadOrders}
+      afterUpdate={reloadOrders}
+      refresh={reloadOrders}
     />
   );
 }

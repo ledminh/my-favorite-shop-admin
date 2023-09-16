@@ -16,19 +16,7 @@ type Props = {
 export default function NewMessages({ initMessages }: Props) {
   const [customerMessages, setCustomerMessages] = useState(initMessages);
 
-  const afterDelete = () => {
-    getMessages({
-      offset: 0,
-      limit: 7,
-      sortBy: "createdAt",
-      order: "desc",
-      filter: "unread",
-    }).then(({ messages: updatedMessages }) => {
-      setCustomerMessages(updatedMessages);
-    });
-  };
-
-  const afterUpdate = () => {
+  const reloadMessages = () => {
     getMessages({
       offset: 0,
       limit: 7,
@@ -47,8 +35,9 @@ export default function NewMessages({ initMessages }: Props) {
       items={customerMessages}
       ItemTab={MessageTab}
       ItemModal={MessageModal}
-      afterDelete={afterDelete}
-      afterUpdate={afterUpdate}
+      afterDelete={reloadMessages}
+      afterUpdate={reloadMessages}
+      refresh={reloadMessages}
     />
   );
 }

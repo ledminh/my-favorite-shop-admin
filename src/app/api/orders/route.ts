@@ -34,12 +34,10 @@ export async function GET(
   try {
     const type = request.nextUrl.searchParams.get("type");
 
-    switch (type) {
-      case "multiple":
-        return getMultiple(request);
-
-      default:
-        throw new Error("type not found");
+    if (type === "multiple") {
+      return getMultiple(request);
+    } else {
+      throw new Error("type not found");
     }
   } catch (error: any) {
     return NextResponse.json({ errorMessage: error.message });
