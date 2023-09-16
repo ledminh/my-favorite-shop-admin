@@ -31,13 +31,13 @@ export default function useProductModal({
    */
 
   const [categoryID, setCategoryID] = useState<string>(
-    (type === "add" ? categories[0].id : initCategoryID) || ""
+    (type === "add" ? categories[0].id : initCategoryID) ?? ""
   );
-  const [serial, setSerial] = useState<string>(initSerial || "");
-  const [name, setName] = useState<string>(initName || "");
-  const [priceStr, setPriceStr] = useState<string>(initPriceStr || "");
-  const [intro, setIntro] = useState<string>(initIntro || "");
-  const [description, setDescription] = useState<string>(initDescription || "");
+  const [serial, setSerial] = useState<string>(initSerial ?? "");
+  const [name, setName] = useState<string>(initName ?? "");
+  const [priceStr, setPriceStr] = useState<string>(initPriceStr ?? "");
+  const [intro, setIntro] = useState<string>(initIntro ?? "");
+  const [description, setDescription] = useState<string>(initDescription ?? "");
   const [promotion, setPromotion] = useState<Promotion | null>(null); // initPromotion is processed in Promotion component
 
   const [isNewVariantModalOpen, setIsNewVariantModalOpen] =
@@ -146,7 +146,7 @@ export default function useProductModal({
     let priceStr = e.target.value.replace(/^0+/, "0");
 
     // Only allow digits and a single optional dot
-    const regex = /^[0-9]*(\.[0-9]*)?$/;
+    const regex = /^\d*(\.\d*)?$/;
 
     if (!regex.test(priceStr)) {
       // Remove all characters that are not digits or dots

@@ -46,6 +46,8 @@ export default function ProductList({
 
   const [total, setTotal] = useState(initTotal);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     (async () => {
       const { categories } = await getCategories({
@@ -134,6 +136,8 @@ export default function ProductList({
 
   return (
     <CatProdList
+      loading={loading}
+      setLoading={setLoading}
       initItems={_initProducts}
       total={total}
       CardContent={CardContent}

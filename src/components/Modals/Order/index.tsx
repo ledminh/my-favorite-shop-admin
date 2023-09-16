@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import Modal from "@/components/layout/Modal";
 
 import { Order, OrderStatus, WithID } from "@/types";
@@ -26,6 +26,10 @@ const OrderModal = ({
   afterUpdate,
 }: Props) => {
   const [item, setItem] = useState(initItem);
+
+  useEffect(() => {
+    setItem(initItem);
+  }, [initItem]);
 
   const additionalButtons = [
     {
