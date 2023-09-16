@@ -15,10 +15,10 @@ type Props = {
 };
 
 export default async function MessagesPage({ searchParams }: Props) {
-  const _sortBy = searchParams?.sortBy || "createdAt"; //TODO
-  const _order = searchParams?.order || "desc";
-  const _searchTerm = searchParams?.searchTerm || "";
-  const _filter = searchParams?.filter || null;
+  const _sortBy = searchParams?.sortBy ?? "createdAt"; //TODO
+  const _order = searchParams?.order ?? "desc";
+  const _searchTerm = searchParams?.searchTerm ?? "";
+  const _filter = searchParams?.filter ?? null;
 
   const { items, total } = await getCustomerMessages({
     offset: 0,

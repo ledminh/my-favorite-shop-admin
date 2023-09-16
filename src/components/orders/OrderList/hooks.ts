@@ -67,6 +67,7 @@ export default function useOrders(props: Props) {
   };
 
   return {
+    total: _total,
     _initOrders,
     onLoadMore,
     afterDelete,

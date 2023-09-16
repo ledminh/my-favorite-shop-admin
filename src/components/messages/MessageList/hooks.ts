@@ -63,6 +63,7 @@ export default function useMessageList(props: Props) {
   };
 
   return {
+    total: _total,
     _initMessages,
     onLoadMore,
     afterDelete,
