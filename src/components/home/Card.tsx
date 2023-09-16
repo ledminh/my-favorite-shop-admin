@@ -28,7 +28,8 @@ type Props<T> = {
 
   afterDelete: () => void;
   afterUpdate: () => void;
-  refresh: () => void;
+  onRefresh: () => void;
+  isRefreshing: boolean;
 };
 
 export default function Card<T>({
@@ -39,7 +40,8 @@ export default function Card<T>({
   button,
   afterDelete,
   afterUpdate,
-  refresh,
+  onRefresh,
+  isRefreshing,
 }: Props<T>) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<T | null>(null);
@@ -79,7 +81,7 @@ export default function Card<T>({
               {button.text}
             </button>
           </Link>
-          <RefreshButton onClick={refresh} />
+          <RefreshButton onClick={onRefresh} isRefreshing={isRefreshing} />
         </Footer>
       </Wrapper>
 
@@ -119,24 +121,27 @@ const Footer = ({ children }: { children: React.ReactNode }) => (
   <div className="flex justify-end gap-2 p-2 bg-blue-950/80">{children}</div>
 );
 
-const RefreshButton = (props: { onClick: () => void }) => (
+const RefreshButton = (props: {
+  onClick: () => void;
+  isRefreshing: boolean;
+}) => (
   <button
     className="flex items-center justify-center gap-2 p-2 font-bold text-white border-2 rounded-lg border-white/80 bg-blue-950/40 hover:bg-blue-950"
     onClick={props.onClick}
   >
     <span>REFRESH</span>
-    <RefreshIcon />
+    <RefreshIcon isRefreshing={props.isRefreshing} />
   </button>
 );
 
-const RefreshIcon = () => (
+const RefreshIcon = (props: { isRefreshing: boolean }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     stroke-width="1.5"
     stroke="currentColor"
-    className="w-6 h-6"
+    className={`w-6 h-6 ${props.isRefreshing && "animate-[spin_2s]"}`}
   >
     <path
       stroke-linecap="round"

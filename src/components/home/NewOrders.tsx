@@ -16,8 +16,14 @@ type Props = {
 
 export default function NewOrders({ initOrders }: Props) {
   const [orders, setOrders] = useState(initOrders);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const reloadOrders = () => {
+  // refresh is a boolean that is true when the function is called from the onRefresh prop of Card
+  const reloadOrders = ({ refresh }: { refresh?: boolean }) => {
+    if (refresh) {
+      setIsRefreshing(true);
+    }
+
     getOrders({
       offset: 0,
       limit: 7,
@@ -26,6 +32,10 @@ export default function NewOrders({ initOrders }: Props) {
       filter: "processing",
     }).then(({ orders: _orders }) => {
       setOrders(_orders);
+
+      if (refresh) {
+        setIsRefreshing(false);
+      }
     });
   };
 
@@ -36,9 +46,10 @@ export default function NewOrders({ initOrders }: Props) {
       items={orders}
       ItemTab={OrderTab}
       ItemModal={OrderModal}
-      afterDelete={reloadOrders}
-      afterUpdate={reloadOrders}
-      refresh={reloadOrders}
+      afterDelete={() => reloadOrders({ refresh: false })}
+      afterUpdate={() => reloadOrders({ refresh: false })}
+      onRefresh={() => reloadOrders({ refresh: true })}
+      isRefreshing={isRefreshing}
     />
   );
 }

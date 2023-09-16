@@ -15,8 +15,13 @@ type Props = {
 
 export default function NewMessages({ initMessages }: Props) {
   const [customerMessages, setCustomerMessages] = useState(initMessages);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const reloadMessages = () => {
+  const reloadMessages = ({ refresh }: { refresh?: boolean }) => {
+    if (refresh) {
+      setIsRefreshing(true);
+    }
+
     getMessages({
       offset: 0,
       limit: 7,
@@ -25,6 +30,9 @@ export default function NewMessages({ initMessages }: Props) {
       filter: "unread",
     }).then(({ messages: updatedMessages }) => {
       setCustomerMessages(updatedMessages);
+      if (refresh) {
+        setIsRefreshing(false);
+      }
     });
   };
 
@@ -35,9 +43,10 @@ export default function NewMessages({ initMessages }: Props) {
       items={customerMessages}
       ItemTab={MessageTab}
       ItemModal={MessageModal}
-      afterDelete={reloadMessages}
-      afterUpdate={reloadMessages}
-      refresh={reloadMessages}
+      afterDelete={() => reloadMessages({ refresh: false })}
+      afterUpdate={() => reloadMessages({ refresh: false })}
+      onRefresh={() => reloadMessages({ refresh: true })}
+      isRefreshing={isRefreshing}
     />
   );
 }
