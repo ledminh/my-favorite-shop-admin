@@ -1,0 +1,2 @@
+- Make product's price and product's variant not exist at the same time.
+- Make at least 1 variant shown before being able to submit
