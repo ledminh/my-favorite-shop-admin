@@ -48,6 +48,10 @@ export default function ProductList({
 
   const [loading, setLoading] = useState(false);
 
+  const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
     (async () => {
       const { categories } = await getCategories({
@@ -60,6 +64,8 @@ export default function ProductList({
   }, []);
 
   useEffect(() => {
+    setLoading(true);
+
     (async () => {
       const { products, total } = await getProducts({
         offset: 0,
@@ -73,6 +79,8 @@ export default function ProductList({
 
       setTotal(total);
       setInitProducts(products);
+
+      setLoading(false);
     })();
   }, [sortBy, order, filter, catID, searchTerm]);
 
@@ -116,6 +124,7 @@ export default function ProductList({
   const afterAdd = (newProduct: WithID<ProductType>) => {
     setInitProducts((prev) => [newProduct, ...prev]);
     setTotal((prev) => prev + 1);
+    setIsAdding(false);
   };
 
   const afterEdit = (editedProduct: WithID<ProductType>) => {
@@ -124,6 +133,8 @@ export default function ProductList({
         product.id === editedProduct.id ? editedProduct : product
       )
     );
+
+    setIsEditing(false);
   };
 
   const afterDelete = (deletedProduct: WithID<ProductType>) => {
@@ -132,12 +143,20 @@ export default function ProductList({
     );
 
     setTotal((prev) => prev - 1);
+
+    setIsDeleting(false);
   };
 
   return (
     <CatProdList
       loading={loading}
+      isAdding={isAdding}
+      isEditing={isEditing}
+      isDeleting={isDeleting}
       setLoading={setLoading}
+      setIsAdding={setIsAdding}
+      setIsEditing={setIsEditing}
+      setIsDeleting={setIsDeleting}
       initItems={_initProducts}
       total={total}
       CardContent={CardContent}

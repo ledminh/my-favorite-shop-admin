@@ -30,7 +30,12 @@ export default function CategoryList({
 }: Props) {
   const [_initCategories, setInitCategories] = useState(initCategories || []);
   const [_total, setTotal] = useState(total);
+
   const [loading, setLoading] = useState(false);
+
+  const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -77,7 +82,7 @@ export default function CategoryList({
   const afterAdd = (newCategory: WithID<CategoryType>) => {
     setInitCategories((prev) => [newCategory, ...prev]);
     setTotal((prev) => prev + 1);
-    setLoading(false);
+    setIsAdding(false);
   };
 
   const afterEdit = (editedCategory: WithID<CategoryType>) => {
@@ -86,7 +91,7 @@ export default function CategoryList({
         category.id === editedCategory.id ? { ...editedCategory } : category
       )
     );
-    setLoading(false);
+    setIsEditing(false);
   };
 
   const afterDelete = (deletedCategory: WithID<CategoryType>) => {
@@ -94,13 +99,19 @@ export default function CategoryList({
       prev.filter((category) => category.id !== deletedCategory.id)
     );
     setTotal((prev) => prev - 1);
-    setLoading(false);
+    setIsDeleting(false);
   };
 
   return (
     <CatProdList
       loading={loading}
+      isAdding={isAdding}
+      isEditing={isEditing}
+      isDeleting={isDeleting}
       setLoading={setLoading}
+      setIsAdding={setIsAdding}
+      setIsEditing={setIsEditing}
+      setIsDeleting={setIsDeleting}
       categories={_initCategories}
       initItems={_initCategories}
       total={_total}

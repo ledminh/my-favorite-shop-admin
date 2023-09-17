@@ -15,7 +15,15 @@ export type AddNewButtonType = {
 
 type CatProdListProps<T> = {
   loading: boolean;
+  isAdding: boolean;
+  isEditing: boolean;
+  isDeleting: boolean;
+
   setLoading: (loading: boolean) => void;
+  setIsAdding: (isAdding: boolean) => void;
+  setIsEditing: (isEditing: boolean) => void;
+  setIsDeleting: (isDeleting: boolean) => void;
+
   initItems: WithID<T>[];
   total: number;
   onLoadMore: ({
@@ -66,7 +74,13 @@ type CatProdListProps<T> = {
 
 export default function CatProdList<T>({
   loading,
+  isAdding,
+  isEditing,
+  isDeleting,
   setLoading,
+  setIsAdding,
+  setIsEditing,
+  setIsDeleting,
   initItems,
   total,
   onLoadMore,
@@ -136,7 +150,7 @@ export default function CatProdList<T>({
           <AddNewModal
             isOpen={isAddNewModalOpen}
             setIsOpen={setIsAddNewModalOpen}
-            setLoading={setLoading}
+            setLoading={setIsAdding}
             categories={categories}
             afterAdd={afterAdd}
           />
@@ -148,7 +162,7 @@ export default function CatProdList<T>({
           <EditModal
             item={currentItem}
             isOpen={isEditModalOpen}
-            setLoading={setLoading}
+            setLoading={setIsEditing}
             setIsOpen={setIsEditModalOpen}
             afterEdit={afterEdit}
           />
@@ -161,7 +175,7 @@ export default function CatProdList<T>({
           <DeleteModal
             item={currentItem}
             isOpen={isDeleteModalOpen}
-            setLoading={setLoading}
+            setLoading={setIsDeleting}
             setIsOpen={setIsDeleteModalOpen}
             afterDelete={afterDelete}
           />
@@ -185,6 +199,37 @@ export default function CatProdList<T>({
             <AddNewButton {...addNewButton} onClick={onAddNew} />
           </li>
 
+          {isAdding && (
+            <li
+              key={"adding"}
+              className="overflow-hidden border rounded-lg border-blue-950 md:basis-[48%] lg:basis-[31%] xl:basis-[23%]"
+            >
+              <div className="flex flex-col items-center justify-center w-full h-full gap-4 p-4 bg-gray-200">
+                {/* Animation icon */}
+                <svg
+                  className="w-12 h-12 text-gray-600 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  ></path>
+                </svg>
+                <span className="text-2xl font-semibold">Adding ...</span>
+              </div>
+            </li>
+          )}
+
           {loading ? (
             <div className="flex items-center justify-center">
               <span className="text-xl font-semibold">Loading ...</span>
@@ -199,7 +244,11 @@ export default function CatProdList<T>({
                   <ItemCard
                     item={item}
                     onEdit={onEdit}
-                    isLoading={currentItem?.id === item.id ? loading : false}
+                    isLoading={
+                      currentItem?.id === item.id
+                        ? isAdding || isEditing || isDeleting
+                        : false
+                    }
                     onDelete={onDelete}
                     getImage={getImage}
                     CardContent={CardContent}
