@@ -1,10 +1,6 @@
 import Variants from "./Variants";
 
-import {
-  Product as ProductType,
-  Promotion as PromotionType,
-  Variant as VariantType,
-} from "@/types";
+import { Product as ProductType, Promotion as PromotionType } from "@/types";
 
 type Props = {
   item: ProductType;

@@ -49,16 +49,23 @@ export type Product = {
   category: WithID<Category>;
   link: string;
   name: string;
-  price: number;
   intro: string;
   description: string;
   mainImageID: string;
   images: WithID<Image>[];
   promotion?: Promotion;
-  variants?: WithID<Variant>[];
   createdAt: Date;
   modifiedAt: Date;
-};
+} & (
+  | {
+      price: number;
+      variants?: undefined;
+    }
+  | {
+      price?: undefined;
+      variants: WithID<Variant>[];
+    }
+);
 
 /**********************
  * Order types

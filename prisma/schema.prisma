@@ -23,7 +23,7 @@ model Product {
   id          String   @id
   link        String
   name        String
-  price       Float
+  price       Float?
   intro       String
   description String
   mainImageID String
