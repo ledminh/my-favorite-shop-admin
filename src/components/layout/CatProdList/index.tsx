@@ -184,23 +184,30 @@ export default function CatProdList<T>({
           >
             <AddNewButton {...addNewButton} onClick={onAddNew} />
           </li>
-          {items.map((item) => {
-            return (
-              <li
-                key={item.id}
-                className="overflow-hidden border rounded-lg border-blue-950 md:basis-[48%] lg:basis-[31%] xl:basis-[23%]"
-              >
-                <ItemCard
-                  item={item}
-                  onEdit={onEdit}
-                  isLoading={currentItem?.id === item.id ? loading : false}
-                  onDelete={onDelete}
-                  getImage={getImage}
-                  CardContent={CardContent}
-                />
-              </li>
-            );
-          })}
+
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <span className="text-xl font-semibold">Loading ...</span>
+            </div>
+          ) : (
+            items.map((item) => {
+              return (
+                <li
+                  key={item.id}
+                  className="overflow-hidden border rounded-lg border-blue-950 md:basis-[48%] lg:basis-[31%] xl:basis-[23%]"
+                >
+                  <ItemCard
+                    item={item}
+                    onEdit={onEdit}
+                    isLoading={currentItem?.id === item.id ? loading : false}
+                    onDelete={onDelete}
+                    getImage={getImage}
+                    CardContent={CardContent}
+                  />
+                </li>
+              );
+            })
+          )}
         </ul>
         {
           // Show load more button if there are more items to load

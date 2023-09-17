@@ -33,6 +33,7 @@ export default function CategoryList({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     (async () => {
       const { categories, total } = await getCategories({
         offset: 0,
@@ -44,6 +45,7 @@ export default function CategoryList({
 
       setInitCategories(categories);
       setTotal(total);
+      setLoading(false);
     })();
   }, [sortBy, order, searchTerm]);
 
