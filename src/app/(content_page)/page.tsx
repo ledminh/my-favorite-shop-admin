@@ -47,7 +47,7 @@ export default async function Home() {
       <Section>
         <div className="flex justify-start gap-[4%]">
           <NewCatButton />
-          <NewProdButton categories={categories} />
+          <NewProdButton initCategories={categories} />
         </div>
       </Section>
     </Wrapper>

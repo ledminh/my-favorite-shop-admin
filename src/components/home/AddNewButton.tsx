@@ -9,6 +9,8 @@ import { WithID, Category } from "@/types";
 import { useState } from "react";
 import Button from "./Button";
 
+import { useRouter } from "next/navigation";
+
 type Props<T> = {
   title: string;
   notificationTitle: string;
@@ -46,9 +48,13 @@ export default function AddNewButton<T>({
   const [loading, setLoading] = useState(false);
   const [newItem, setNewItem] = useState<WithID<T> | null>(null);
 
+  const router = useRouter();
+
   const afterAdd = (item: WithID<T>) => {
     setLoading(false);
     setNewItem(item);
+
+    router.refresh();
   };
 
   return (

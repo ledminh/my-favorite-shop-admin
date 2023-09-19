@@ -8,16 +8,25 @@ import { Category, Product, WithID } from "@/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import getCategories from "@/api-calls/getCategories";
+// import getCategories from "@/api-calls/getCategories";
 
-export default function NewProdButton() {
-  const [categories, setCategories] = useState<WithID<Category>[]>([]);
+export default function NewProdButton({
+  initCategories,
+}: {
+  initCategories: WithID<Category>[];
+}) {
+  const [categories, setCategories] =
+    useState<WithID<Category>[]>(initCategories);
 
   useEffect(() => {
-    getCategories({ sortBy: "name", order: "asc" }).then(({ categories }) =>
-      setCategories(categories)
-    );
-  }, []);
+    setCategories(initCategories);
+  }, [initCategories]);
+
+  // useEffect(() => {
+  //   getCategories({ sortBy: "name", order: "asc" }).then(({ categories }) =>
+  //     setCategories(categories)
+  //   );
+  // }, []);
 
   return categories.length > 0 ? (
     <AddNewButton
@@ -29,7 +38,10 @@ export default function NewProdButton() {
     />
   ) : (
     <div className="flex items-center justify-center">
-      <span className="text-sm text-black">Loading...</span>
+      <span className="text-sm text-black">
+        No Category found. Please add at least 1 category to start adding
+        product.
+      </span>
     </div>
   );
 }

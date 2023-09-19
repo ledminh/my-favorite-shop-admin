@@ -97,8 +97,8 @@ export default function OrderMessList<T>({
         </ul>
         {getTotalPrice && (
           <div className="flex justify-end p-4 text-xl font-bold text-blue-950">
-            Total: ${getTotalPrice(items).toLocaleString()} ({items.length}{" "}
-            items)
+            Total: ${getTotalPrice(items).toLocaleString()} ({items.length} item
+            {items.length > 1 ? "s" : ""} / {total} item{total > 1 ? "s" : ""})
           </div>
         )}
       </div>
