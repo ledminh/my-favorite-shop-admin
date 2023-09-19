@@ -45,32 +45,37 @@ const editProduct: EditProduct = (product, cb) => {
   formData.append("id", product.id);
   formData.append("categoryID", product.categoryID);
   formData.append("name", product.name);
-  formData.append("price", product.price.toString());
+
   formData.append("intro", product.intro);
   formData.append("description", product.description);
 
   formData.append("promotion", JSON.stringify(product.promotion));
 
-  for (let i = 0; i < product.variants.length; i++) {
-    const { shown, name, price, image, promotion } = product.variants[i];
+  if (product.price) {
+    formData.append("price", product.price.toString());
+    formData.append("numberOfVariants", "0");
+  } else if (product.variants) {
+    for (let i = 0; i < product.variants.length; i++) {
+      const { shown, name, price, image, promotion } = product.variants[i];
 
-    const variantJSON = {
-      shown,
-      name,
-      price,
-      promotion,
-    };
+      const variantJSON = {
+        shown,
+        name,
+        price,
+        promotion,
+      };
 
-    formData.append("variant-" + (i + 1), JSON.stringify(variantJSON));
+      formData.append("variant-" + (i + 1), JSON.stringify(variantJSON));
 
-    if (isImageType(image)) {
-      formData.append("variant-image-" + (i + 1), JSON.stringify(image));
-    } else {
-      formData.append("variant-image-" + (i + 1), image as File);
+      if (isImageType(image)) {
+        formData.append("variant-image-" + (i + 1), JSON.stringify(image));
+      } else {
+        formData.append("variant-image-" + (i + 1), image as File);
+      }
     }
-  }
 
-  formData.append("numberOfVariants", product.variants.length.toString());
+    formData.append("numberOfVariants", product.variants.length.toString());
+  }
 
   for (let i = 0; i < product.images.length; i++) {
     if (!isImageType(product.images[i])) {

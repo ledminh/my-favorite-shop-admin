@@ -8,6 +8,7 @@ type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   afterDelete: (item: WithID<ProductType>) => void;
+  setLoading: (loading: boolean) => void;
 };
 
 const DeleteProductModal = ({
@@ -15,14 +16,39 @@ const DeleteProductModal = ({
   isOpen,
   setIsOpen,
   afterDelete,
+  setLoading,
 }: Props) => {
   const { submitButton, onDelete } = useDeleteProductModal();
   const { id, name, price, intro, description, promotion, variants, images } =
     item;
 
+  if (price === undefined) {
+    return (
+      <ProductModal
+        type="delete"
+        setLoading={setLoading}
+        catName={item.category.name}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        title="Delete Product"
+        submitButton={submitButton}
+        onSubmit={onDelete}
+        afterSubmit={afterDelete}
+        initSerial={id}
+        initName={name}
+        initIntro={intro}
+        initDescription={description}
+        initPromotion={promotion}
+        initVariants={variants}
+        initImages={images}
+      />
+    );
+  }
+
   return (
     <ProductModal
       type="delete"
+      setLoading={setLoading}
       catName={item.category.name}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
@@ -36,7 +62,6 @@ const DeleteProductModal = ({
       initIntro={intro}
       initDescription={description}
       initPromotion={promotion}
-      initVariants={variants}
       initImages={images}
     />
   );

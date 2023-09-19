@@ -15,7 +15,7 @@ export default async function add(request: NextRequest) {
   const id = formData.get("id") as string;
   const categoryID = formData.get("categoryID") as string;
   const name = formData.get("name") as string;
-  const price = formData.get("price") as string;
+  const price = formData.get("price") as string | null;
   const intro = formData.get("intro") as string;
   const description = formData.get("description") as string;
 
@@ -43,18 +43,32 @@ export default async function add(request: NextRequest) {
   // images
   const images = await processImages(formData, name);
 
-  const newProduct = await addProduct({
-    id,
-    categoryID,
-    name,
-    price: parseInt(price),
-    intro,
-    description,
-    mainImageID: images[0].id,
-    images,
-    variants,
-    promotion: promotion ? promotion : undefined,
-  });
+  let productToAdd =
+    price === null
+      ? {
+          id,
+          categoryID,
+          name,
+          intro,
+          description,
+          mainImageID: images[0].id,
+          images,
+          variants,
+          promotion: promotion ? promotion : undefined,
+        }
+      : {
+          id,
+          categoryID,
+          name,
+          price: parseInt(price),
+          intro,
+          description,
+          mainImageID: images[0].id,
+          images,
+          promotion: promotion ? promotion : undefined,
+        };
+
+  const newProduct = await addProduct(productToAdd);
 
   return NextResponse.json({
     data: newProduct,

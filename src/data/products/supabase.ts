@@ -83,24 +83,47 @@ export const getProducts: GetProducts = async ({
 
   return {
     total: total,
-    items: products.map((product) => ({
-      ...product,
-      price: product.price,
+    items: products.map((product) => {
+      let returnedProduct: WithID<ProductType>;
 
-      images: product.images.map(
-        (image) => JSON.parse(image) as WithID<ImageType>
-      ),
-      promotion: product.promotion ? JSON.parse(product.promotion) : undefined,
-      variants: product.variants
-        ? (product.variants.map((variant) =>
+      if (product.price === null) {
+        returnedProduct = {
+          ...product,
+          price: undefined,
+          images: product.images.map(
+            (image) => JSON.parse(image) as WithID<ImageType>
+          ),
+          promotion: product.promotion
+            ? JSON.parse(product.promotion)
+            : undefined,
+          variants: product.variants.map((variant) =>
             JSON.parse(variant)
-          ) as WithID<VariantType>[])
-        : undefined,
-      category: {
-        ...product.category,
-        image: JSON.parse(product.category.image) as ImageType,
-      },
-    })) as WithID<ProductType>[],
+          ) as WithID<VariantType>[],
+          category: {
+            ...product.category,
+            image: JSON.parse(product.category.image) as ImageType,
+          },
+        };
+      } else {
+        returnedProduct = {
+          ...product,
+          price: product.price,
+          images: product.images.map(
+            (image) => JSON.parse(image) as WithID<ImageType>
+          ),
+          promotion: product.promotion
+            ? JSON.parse(product.promotion)
+            : undefined,
+          variants: undefined,
+          category: {
+            ...product.category,
+            image: JSON.parse(product.category.image) as ImageType,
+          },
+        };
+      }
+
+      return returnedProduct;
+    }),
   };
 };
 
@@ -296,7 +319,7 @@ export const updateProduct = async (
     data: {
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: product.price ? product.price : null,
       intro: product.intro,
       description: product.description,
       mainImageID: product.mainImageID,
@@ -306,7 +329,9 @@ export const updateProduct = async (
         },
       },
       images: product.images.map((image) => JSON.stringify(image)),
-      promotion: product.promotion ? JSON.stringify(product.promotion) : null,
+      promotion: product.promotion
+        ? JSON.stringify(product.promotion)
+        : undefined,
       variants: product.variants
         ? product.variants.map((variant) => JSON.stringify(variant))
         : [],

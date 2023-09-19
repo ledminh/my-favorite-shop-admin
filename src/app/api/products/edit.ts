@@ -22,13 +22,12 @@ export default async function edit(request: NextRequest) {
   const id = formData.get("id") as string;
   const categoryID = formData.get("categoryID") as string;
   const name = formData.get("name") as string;
-  const price = formData.get("price") as string;
+  const price = formData.get("price") as string | null;
   const intro = formData.get("intro") as string;
   const description = formData.get("description") as string;
 
   // promotion
   const promotionStr = formData.get("promotion") as string;
-
   const promotion = isValidJSON(promotionStr)
     ? (JSON.parse(promotionStr) as Promotion)
     : undefined;
@@ -77,18 +76,33 @@ export default async function edit(request: NextRequest) {
   }
 
   // update product
-  const updatedProduct = await updateProduct({
-    id,
-    categoryID,
-    name,
-    price: parseInt(price),
-    intro,
-    description,
-    mainImageID: images[0].id,
-    images,
-    variants,
-    promotion: promotion ? promotion : undefined,
-  });
+
+  let productToUpdate =
+    price === null
+      ? {
+          id,
+          categoryID,
+          name,
+          intro,
+          description,
+          mainImageID: images[0].id,
+          images,
+          variants,
+          promotion: promotion ? promotion : undefined,
+        }
+      : {
+          id,
+          categoryID,
+          name,
+          price: parseInt(price),
+          intro,
+          description,
+          mainImageID: images[0].id,
+          images,
+          promotion: promotion ? promotion : undefined,
+        };
+
+  const updatedProduct = await updateProduct(productToUpdate);
 
   return NextResponse.json({
     data: updatedProduct,

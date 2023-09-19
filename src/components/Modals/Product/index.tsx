@@ -30,13 +30,20 @@ export type OnSubmitProps = {
   categoryID: string;
 
   name: string;
-  price: number;
   intro: string;
   description: string;
   promotion: PromotionType | null;
-  variants: (WithID<Variant> | VariantData)[];
   images: (File | ImageType)[];
-};
+} & (
+  | {
+      price: number;
+      variants?: undefined;
+    }
+  | {
+      price?: undefined;
+      variants: (WithID<Variant> | VariantData)[];
+    }
+);
 
 export type Props = (
   | {
@@ -52,6 +59,7 @@ export type Props = (
       categories?: undefined;
     }
 ) & {
+  setLoading: (loading: boolean) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   title: string;
@@ -205,17 +213,20 @@ export default function ProductModal(props: Props) {
               disabled={props.type === "delete"}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="name">Price</label>
-            <input
-              name="price"
-              id="price"
-              value={priceStr}
-              onChange={onPriceChange}
-              className="p-2 border-2 rounded-lg border-blue-950"
-              disabled={props.type === "delete"}
-            />
-          </div>
+          {priceStr !== undefined && (
+            <div className="flex flex-col gap-2">
+              <label htmlFor="name">Price</label>
+              <input
+                name="price"
+                id="price"
+                value={priceStr}
+                onChange={onPriceChange}
+                className="p-2 border-2 rounded-lg border-blue-950"
+                disabled={props.type === "delete"}
+              />
+            </div>
+          )}
+
           <div className="flex flex-col gap-2">
             <label htmlFor="name">Intro</label>
             <input
@@ -244,21 +255,24 @@ export default function ProductModal(props: Props) {
             initPromotion={initPromotion}
             disabled={props.type === "delete"}
           />
-          <div className="flex flex-col gap-2">
-            <Variants
-              initVariants={variants}
-              openNewVariantModal={() => setIsNewVariantModalOpen(true)}
-              opentEditVariantModal={(variant) => {
-                setBeingEditedVariant(variant);
-                setIsEditVariantModalOpen(true);
-              }}
-              openRemoveVariantModal={(variant) => {
-                setBeingRemovedVariant(variant);
-                setIsRemoveVariantModalOpen(true);
-              }}
-              disabled={props.type === "delete"}
-            />
-          </div>
+          {variants !== undefined && (
+            <div className="flex flex-col gap-2">
+              <Variants
+                initVariants={variants}
+                openNewVariantModal={() => setIsNewVariantModalOpen(true)}
+                opentEditVariantModal={(variant) => {
+                  setBeingEditedVariant(variant);
+                  setIsEditVariantModalOpen(true);
+                }}
+                openRemoveVariantModal={(variant) => {
+                  setBeingRemovedVariant(variant);
+                  setIsRemoveVariantModalOpen(true);
+                }}
+                disabled={props.type === "delete"}
+              />
+            </div>
+          )}
+
           {!isNewVariantModalOpen ? (
             <ImagesUpload
               images={images}

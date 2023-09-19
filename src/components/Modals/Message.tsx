@@ -3,7 +3,7 @@
 import Modal from "@/components/layout/Modal";
 import { CustomerMessage, WithID } from "@/types";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import updateMessage from "@/api-calls/updateMessage";
 import deleteMessage from "@/api-calls/deleteMessage";
 
@@ -23,6 +23,10 @@ const MessageModal = ({
   afterUpdate,
 }: MessageModalProps) => {
   const [item, setItem] = useState(initItem);
+
+  useEffect(() => {
+    setItem(initItem);
+  }, [initItem]);
 
   const additionalButtons = [
     {

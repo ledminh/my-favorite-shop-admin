@@ -13,6 +13,7 @@ import isFilledPromotion from "@/utils/isFilledPromotion";
 
 export default function useProductModal({
   type,
+  setLoading,
   categories,
   submitButton,
   onSubmit,
@@ -31,11 +32,13 @@ export default function useProductModal({
    */
 
   const [categoryID, setCategoryID] = useState<string>(
-    (type === "add" ? categories[0].id : initCategoryID) ?? ""
+    (type === "add" && categories.length > 0
+      ? categories[0].id
+      : initCategoryID) ?? ""
   );
   const [serial, setSerial] = useState<string>(initSerial ?? "");
   const [name, setName] = useState<string>(initName ?? "");
-  const [priceStr, setPriceStr] = useState<string>(initPriceStr ?? "");
+  const [priceStr, setPriceStr] = useState<string | undefined>(initPriceStr);
   const [intro, setIntro] = useState<string>(initIntro ?? "");
   const [description, setDescription] = useState<string>(initDescription ?? "");
   const [promotion, setPromotion] = useState<Promotion | null>(null); // initPromotion is processed in Promotion component
@@ -43,8 +46,8 @@ export default function useProductModal({
   const [isNewVariantModalOpen, setIsNewVariantModalOpen] =
     useState<boolean>(false);
   const [variants, setVariants] = useState<
-    (WithID<VariantType> | VariantData)[]
-  >(initVariants || []);
+    (WithID<VariantType> | VariantData)[] | undefined
+  >(initVariants);
 
   const [beingEditedVariant, setBeingEditedVariant] = useState<
     WithID<VariantType> | VariantData | null
@@ -58,27 +61,34 @@ export default function useProductModal({
   const [isRemoveVariantModalOpen, setIsRemoveVariantModalOpen] =
     useState<boolean>(false);
 
-  const [images, setImages] = useState<(File | ImageType)[]>(initImages || []);
+  const [images, setImages] = useState<(File | ImageType)[]>(initImages ?? []);
 
   const reset = () => {
     setCategoryID(categories ? categories[0].id : "");
     setSerial("");
     setName("");
-    setPriceStr("");
+    setPriceStr(undefined);
     setIntro("");
     setDescription("");
+    setPromotion(null);
+    setVariants(undefined);
+    setImages([]);
   };
 
   useEffect(() => {
-    setCategoryID((categories ? categories[0].id : initCategoryID) || "");
-    setSerial(initSerial || "");
-    setName(initName || "");
-    setPriceStr(initPriceStr || "");
-    setIntro(initIntro || "");
-    setDescription(initDescription || "");
+    setCategoryID(
+      (type === "add" && categories.length > 0
+        ? categories[0].id
+        : initCategoryID) ?? ""
+    );
+    setSerial(initSerial ?? "");
+    setName(initName ?? "");
+    setPriceStr(initPriceStr ?? "");
+    setIntro(initIntro ?? "");
+    setDescription(initDescription ?? "");
     setPromotion(null);
-    setVariants(initVariants || []);
-    setImages(initImages || []);
+    setVariants(initVariants ?? []);
+    setImages(initImages ?? []);
   }, [
     categories,
     initCategoryID,
@@ -91,19 +101,83 @@ export default function useProductModal({
     initImages,
   ]);
 
+  useEffect(() => {
+    if (initPriceStr === undefined && initVariants === undefined) {
+      console.log(
+        "initializing priceStr and variants, initPriceStr",
+        initPriceStr,
+        "initVariants",
+        initVariants,
+        "priceStr",
+        priceStr,
+        "variants",
+        variants
+      );
+      setPriceStr("");
+      setVariants([]);
+    }
+  }, [initPriceStr, initVariants]);
+
+  useEffect(() => {
+    if (priceStr !== undefined) {
+      console.log(
+        `priceStr changed, priceStr =`,
+        priceStr,
+        "variants =",
+        variants
+      );
+      if (priceStr === "") {
+        setVariants([]);
+      } else {
+        setVariants(undefined);
+      }
+    }
+  }, [priceStr]);
+
+  useEffect(() => {
+    if (variants !== undefined) {
+      console.log(
+        "variants changed, priceStr =",
+        priceStr,
+        "variants =",
+        variants
+      );
+      if (variants.length === 0) {
+        setPriceStr("");
+      } else {
+        setPriceStr(undefined);
+      }
+    }
+  }, [variants, variants?.length]);
+
   // For submit button
   const _onSubmit = () => {
-    onSubmit({
-      id: serial,
-      categoryID,
-      name,
-      price: parseFloat(priceStr),
-      intro,
-      description,
-      promotion,
-      variants,
-      images,
-    })
+    setLoading(true);
+
+    const dataToSubmit =
+      priceStr === undefined && variants !== undefined
+        ? {
+            id: serial,
+            categoryID,
+            name,
+            intro,
+            description,
+            promotion,
+            variants,
+            images,
+          }
+        : {
+            id: serial,
+            categoryID,
+            name,
+            price: parseFloat(priceStr as string),
+            intro,
+            description,
+            promotion,
+            images,
+          };
+
+    onSubmit(dataToSubmit)
       .then(({ data: product }) => {
         if (product) {
           afterSubmit(product);
@@ -178,10 +252,17 @@ export default function useProductModal({
   };
 
   const afterAddVariant = (variant: VariantData) => {
+    if (!variants) {
+      return;
+    }
     setVariants([...variants, variant]);
   };
 
   const afterEditVariant = (variant: VariantData) => {
+    if (!variants) {
+      return;
+    }
+
     setVariants(
       variants.map((v) => {
         if (v.name === variant.name) {
@@ -193,6 +274,10 @@ export default function useProductModal({
   };
 
   const afterRemoveVariant = (variant: VariantData) => {
+    if (!variants) {
+      return;
+    }
+
     setVariants(variants.filter((v) => v.name !== variant.name));
   };
 

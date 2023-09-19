@@ -1,4 +1,3 @@
-import isImageType from "@/utils/isImageType";
 import { OnSubmitProps } from "../Product";
 import { WithID, Product as ProductType, ProductResponse } from "@/types";
 

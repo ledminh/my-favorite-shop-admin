@@ -113,6 +113,7 @@ export default function CatProdList<T>({
     const item = items.find((item) => item.id === id);
 
     if (item) {
+      console.log("-------------- OPEN EDIT MODAL --------------");
       setCurrentItem(item);
       setIsEditModalOpen(true);
     }
@@ -141,6 +142,12 @@ export default function CatProdList<T>({
   useEffect(() => {
     setItems(initItems || []);
   }, [initItems]);
+
+  useEffect(() => {
+    if (!isAddNewModalOpen && !isEditModalOpen && !isDeleteModalOpen) {
+      setCurrentItem(null);
+    }
+  }, [isAddNewModalOpen, isEditModalOpen, isDeleteModalOpen]);
 
   return (
     <>
