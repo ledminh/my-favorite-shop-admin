@@ -113,7 +113,6 @@ export default function CatProdList<T>({
     const item = items.find((item) => item.id === id);
 
     if (item) {
-      console.log("-------------- OPEN EDIT MODAL --------------");
       setCurrentItem(item);
       setIsEditModalOpen(true);
     }
