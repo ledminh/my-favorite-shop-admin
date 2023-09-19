@@ -55,6 +55,10 @@ export default function AddNewButton<T>({
     setNewItem(item);
 
     router.refresh();
+
+    setTimeout(() => {
+      setNewItem(null);
+    }, 3000);
   };
 
   return (
