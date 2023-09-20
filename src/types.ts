@@ -53,16 +53,18 @@ export type Product = {
   description: string;
   mainImageID: string;
   images: WithID<Image>[];
-  promotion?: Promotion;
+
   createdAt: Date;
   modifiedAt: Date;
 } & (
   | {
       price: number;
+      promotion?: Promotion;
       variants?: undefined;
     }
   | {
       price?: undefined;
+      promotion?: undefined;
       variants: WithID<Variant>[];
     }
 );

@@ -93,9 +93,7 @@ export const getProducts: GetProducts = async ({
           images: product.images.map(
             (image) => JSON.parse(image) as WithID<ImageType>
           ),
-          promotion: product.promotion
-            ? JSON.parse(product.promotion)
-            : undefined,
+          promotion: undefined,
           variants: product.variants.map((variant) =>
             JSON.parse(variant)
           ) as WithID<VariantType>[],
@@ -158,7 +156,7 @@ export const getProduct: GetProduct = async ({ id }) => {
       images: product.images.map(
         (image) => JSON.parse(image) as WithID<ImageType>
       ),
-      promotion: product.promotion ? JSON.parse(product.promotion) : undefined,
+      promotion: undefined,
       variants: product.variants.map((variant) =>
         JSON.parse(variant)
       ) as WithID<VariantType>[],
@@ -255,9 +253,7 @@ export const addProduct = async (
       images: productDB.images.map(
         (image) => JSON.parse(image) as WithID<ImageType>
       ),
-      promotion: productDB.promotion
-        ? JSON.parse(productDB.promotion)
-        : undefined,
+      promotion: undefined,
       variants: productDB.variants.map((variant) =>
         JSON.parse(variant)
       ) as WithID<VariantType>[],
@@ -329,9 +325,7 @@ export const updateProduct = async (
         },
       },
       images: product.images.map((image) => JSON.stringify(image)),
-      promotion: product.promotion
-        ? JSON.stringify(product.promotion)
-        : undefined,
+      promotion: product.promotion ? JSON.stringify(product.promotion) : null,
       variants: product.variants
         ? product.variants.map((variant) => JSON.stringify(variant))
         : [],
@@ -347,9 +341,7 @@ export const updateProduct = async (
       images: productDB.images.map(
         (image) => JSON.parse(image) as WithID<ImageType>
       ),
-      promotion: productDB.promotion
-        ? JSON.parse(productDB.promotion)
-        : undefined,
+      promotion: undefined,
       variants: productDB.variants.map((variant) =>
         JSON.parse(variant)
       ) as WithID<VariantType>[],
