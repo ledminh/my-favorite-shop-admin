@@ -1,0 +1,1 @@
+- Hide product's promotion when it has variant.
