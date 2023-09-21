@@ -8,12 +8,13 @@ export default function RemoveVariantModal(props: Props) {
   const { submitButton, onRemove } = useRemoveVariantModal();
 
   const { isOpen, setIsOpen, afterRemove, variant } = props;
-  const { shown, name, promotion, price, image } = variant;
+  const { id, shown, name, promotion, price, image } = variant;
 
   return (
     <VariantModal
       type="delete"
       title="Remove Variant"
+      id={id}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       submitButton={submitButton}

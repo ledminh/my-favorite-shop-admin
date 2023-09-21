@@ -86,7 +86,9 @@ const VariantItem = ({
   disabled?: boolean;
 }) => (
   <button
-    className="flex items-center justify-between h-full gap-2 pl-2 pr-1 border rounded-3xl border-blue-950 hover:bg-gray-200 active:bg-gray-300"
+    className={`flex items-center justify-between h-full gap-2 pl-2 pr-1 border rounded-3xl border-blue-950 hover:bg-gray-200 active:bg-gray-300 ${
+      variant.shown ? "bg-gray-300" : ""
+    }`}
     onClick={onClick}
   >
     <div className="relative w-16 h-[80%] rounded-lg overflow-hidden">

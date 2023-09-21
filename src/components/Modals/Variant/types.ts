@@ -1,4 +1,8 @@
-import { Image as ImageType, Promotion as PromotionType } from "@/types";
+import {
+  Image as ImageType,
+  Promotion as PromotionType,
+  WithID,
+} from "@/types";
 
 export type OnSubmitProps = {
   shown: boolean;
@@ -8,8 +12,16 @@ export type OnSubmitProps = {
   promotion?: PromotionType;
 };
 
-export type Props = {
-  type: "add" | "edit" | "delete";
+export type Props = (
+  | {
+      type: "add";
+      id?: undefined;
+    }
+  | {
+      type: "edit" | "delete";
+      id: string;
+    }
+) & {
   title: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -18,8 +30,10 @@ export type Props = {
     className: string;
     disabledClassName: string;
   };
-  onSubmit: (props: OnSubmitProps) => Promise<{ data: OnSubmitProps }>;
-  afterSubmit: (variant: OnSubmitProps) => void;
+  onSubmit: (
+    props: WithID<OnSubmitProps>
+  ) => Promise<{ data: WithID<OnSubmitProps> }>;
+  afterSubmit: (variant: WithID<OnSubmitProps>) => void;
   initShown?: boolean;
   initName?: string;
   initPriceStr?: string;

@@ -10,6 +10,7 @@ import { Props } from "./";
 
 import { OnSubmitProps as VariantData } from "../Variant/types";
 import isFilledPromotion from "@/utils/isFilledPromotion";
+import getID from "@/utils/getID";
 
 export default function useProductModal({
   type,
@@ -46,17 +47,17 @@ export default function useProductModal({
   const [isNewVariantModalOpen, setIsNewVariantModalOpen] =
     useState<boolean>(false);
   const [variants, setVariants] = useState<
-    (WithID<VariantType> | VariantData)[] | undefined
+    (WithID<VariantType> | WithID<VariantData>)[] | undefined
   >(initVariants);
 
   const [beingEditedVariant, setBeingEditedVariant] = useState<
-    WithID<VariantType> | VariantData | null
+    WithID<VariantType> | WithID<VariantData> | null
   >(null);
   const [isEditVariantModalOpen, setIsEditVariantModalOpen] =
     useState<boolean>(false);
 
   const [beingRemovedVariant, setBeingRemovedVariant] = useState<
-    WithID<VariantType> | VariantData | null
+    WithID<VariantType> | WithID<VariantData> | null
   >(null);
   const [isRemoveVariantModalOpen, setIsRemoveVariantModalOpen] =
     useState<boolean>(false);
@@ -103,16 +104,6 @@ export default function useProductModal({
 
   useEffect(() => {
     if (initPriceStr === undefined && initVariants === undefined) {
-      console.log(
-        "initializing priceStr and variants, initPriceStr",
-        initPriceStr,
-        "initVariants",
-        initVariants,
-        "priceStr",
-        priceStr,
-        "variants",
-        variants
-      );
       setPriceStr("");
       setVariants([]);
     }
@@ -120,32 +111,21 @@ export default function useProductModal({
 
   useEffect(() => {
     if (priceStr !== undefined) {
-      console.log(
-        `priceStr changed, priceStr =`,
-        priceStr,
-        "variants =",
-        variants
-      );
-      if (priceStr === "") {
+      if (priceStr === "" && promotion === null) {
         setVariants([]);
       } else {
         setVariants(undefined);
       }
     }
-  }, [priceStr]);
+  }, [priceStr, promotion]);
 
   useEffect(() => {
     if (variants !== undefined) {
-      console.log(
-        "variants changed, priceStr =",
-        priceStr,
-        "variants =",
-        variants
-      );
       if (variants.length === 0) {
         setPriceStr("");
       } else {
         setPriceStr(undefined);
+        setPromotion(null);
       }
     }
   }, [variants, variants?.length]);
@@ -194,10 +174,11 @@ export default function useProductModal({
     return (
       serial === "" ||
       name === "" ||
-      priceStr === "" ||
+      (priceStr === "" && variants && variants.length === 0) ||
       intro === "" ||
       description === "" ||
       (promotion !== null && !isFilledPromotion(promotion)) ||
+      (variants && !variants.some((v) => v.shown)) ||
       images.length === 0
     );
   };
@@ -216,6 +197,7 @@ export default function useProductModal({
     const name = e.target.value;
     setName(name);
   };
+
   const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let priceStr = e.target.value.replace(/^0+/, "0");
 
@@ -255,17 +237,17 @@ export default function useProductModal({
     if (!variants) {
       return;
     }
-    setVariants([...variants, variant]);
+    setVariants([...variants, { ...variant, id: getID() }]);
   };
 
-  const afterEditVariant = (variant: VariantData) => {
+  const afterEditVariant = (variant: WithID<VariantData>) => {
     if (!variants) {
       return;
     }
 
     setVariants(
       variants.map((v) => {
-        if (v.name === variant.name) {
+        if (v.id === variant.id) {
           return variant;
         }
         return v;
@@ -273,12 +255,12 @@ export default function useProductModal({
     );
   };
 
-  const afterRemoveVariant = (variant: VariantData) => {
+  const afterRemoveVariant = (variant: WithID<VariantData>) => {
     if (!variants) {
       return;
     }
 
-    setVariants(variants.filter((v) => v.name !== variant.name));
+    setVariants(variants.filter((v) => v.id !== variant.id));
   };
 
   const additionalButtons = [

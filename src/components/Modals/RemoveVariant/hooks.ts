@@ -1,8 +1,10 @@
+import { WithID } from "@/types";
 import { OnSubmitProps } from "@/components/modals/Variant/types";
 
 export default function useRemoveVariantModal() {
-  const onRemove = (data: OnSubmitProps): Promise<{ data: OnSubmitProps }> =>
-    new Promise((resolve, _) => resolve({ data }));
+  const onRemove = (
+    data: WithID<OnSubmitProps>
+  ): Promise<{ data: WithID<OnSubmitProps> }> => Promise.resolve({ data });
 
   const submitButton = {
     text: "Remove",

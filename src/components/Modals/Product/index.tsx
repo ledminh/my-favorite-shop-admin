@@ -250,11 +250,14 @@ export default function ProductModal(props: Props) {
               disabled={props.type === "delete"}
             />
           </div>
-          <Promotion
-            onChange={onPromotionChange}
-            initPromotion={initPromotion}
-            disabled={props.type === "delete"}
-          />
+          {(variants === undefined || variants.length === 0) && (
+            <Promotion
+              onChange={onPromotionChange}
+              initPromotion={initPromotion}
+              disabled={props.type === "delete"}
+            />
+          )}
+
           {variants !== undefined && (
             <div className="flex flex-col gap-2">
               <Variants
@@ -273,7 +276,7 @@ export default function ProductModal(props: Props) {
             </div>
           )}
 
-          {!isNewVariantModalOpen ? (
+          {!isNewVariantModalOpen && !isEditVariantModalOpen ? (
             <ImagesUpload
               images={images}
               setImages={setImages}

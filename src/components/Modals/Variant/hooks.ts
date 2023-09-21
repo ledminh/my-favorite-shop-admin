@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { Image as ImageType, Promotion as PromotionType } from "@/types";
+import {
+  Image as ImageType,
+  Promotion as PromotionType,
+  WithID,
+} from "@/types";
 
 import { Props, OnSubmitProps } from "./types";
 
@@ -13,6 +17,7 @@ export default function useVariantModal(props: Props) {
 
   // States
   const {
+    id,
     initShown,
     initName,
     initPriceStr,
@@ -24,20 +29,20 @@ export default function useVariantModal(props: Props) {
     disabled,
   } = props;
 
-  const [shown, setShown] = useState(initShown || false);
-  const [name, setName] = useState(initName || "");
-  const [priceStr, setPriceStr] = useState(initPriceStr || "");
+  const [shown, setShown] = useState(initShown ?? false);
+  const [name, setName] = useState(initName ?? "");
+  const [priceStr, setPriceStr] = useState(initPriceStr ?? "");
 
   const [promotion, setPromotion] = useState<PromotionType | null | undefined>(
-    initPromotion || null
+    initPromotion ?? null
   ); // Promotion is undefined when it is enabled but user has not finished filling in the form
   const [image, setImage] = useState<File | ImageType | null>(
-    initImage || null
+    initImage ?? null
   );
 
   useEffect(() => {
-    setName(initName || "");
-    setImage(initImage || null);
+    setName(initName ?? "");
+    setImage(initImage ?? null);
   }, [initName, initImage]);
 
   // Functions
@@ -51,7 +56,8 @@ export default function useVariantModal(props: Props) {
   };
 
   const _onSubmit = () => {
-    const dataToSubmit: OnSubmitProps = {
+    const dataToSubmit: WithID<OnSubmitProps> = {
+      id: id ?? "",
       shown,
       name,
       price: parseFloat(priceStr),

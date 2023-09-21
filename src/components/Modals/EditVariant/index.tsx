@@ -8,14 +8,13 @@ export default function EditVariantModal(props: Props) {
   const { submitButton, onEdit } = useEditVariantModal();
 
   const { isOpen, setIsOpen, afterEdit, variant, disabled } = props;
-  const { shown, name, promotion, price, image } = variant;
-
-  console.log(promotion);
+  const { id, shown, name, promotion, price, image } = variant;
 
   return (
     <VariantModal
       type="edit"
       title="Edit Variant"
+      id={id}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       submitButton={submitButton}

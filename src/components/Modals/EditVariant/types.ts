@@ -1,10 +1,10 @@
-import { Variant as VariantType } from "@/types";
+import { Variant as VariantType, WithID } from "@/types";
 import { OnSubmitProps } from "../Variant/types";
 
 export type Props = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  afterEdit: (item: OnSubmitProps) => void;
-  variant: OnSubmitProps | VariantType;
+  afterEdit: (item: WithID<OnSubmitProps>) => void;
+  variant: WithID<OnSubmitProps> | WithID<VariantType>;
   disabled?: boolean;
 };

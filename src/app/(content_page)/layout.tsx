@@ -4,6 +4,7 @@ import Navigator from "@/components/header/Navigator";
 import { ReactNode, FC } from "react";
 
 import Footer from "@/components/Footer";
+import { UserButton } from "@clerk/nextjs";
 type Props = {
   children: ReactNode;
 };
@@ -16,7 +17,8 @@ export default function Layout({ children }: Props) {
           <Logo />
         </div>
         <div className="flex items-center justify-end pr-1 basis-1/2 sm:basis-1/5">
-          <LogoutButton />
+          {/* <LogoutButton /> */}
+          <UserButton afterSignOutUrl="/sign-in" />
         </div>
         <div className="flex items-center justify-start pl-1 basis-1/2 sm:basis-full sm:pl-0 ">
           <Navigator />
