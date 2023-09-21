@@ -1,4 +1,4 @@
-import { OrdersResponse, SubmitOrderResponse } from "@/types";
+import { OrdersResponse, OrderResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 // import submit from "./submit";
@@ -6,9 +6,19 @@ import del from "./del";
 import edit from "./edit";
 import getMultiple from "./getMultiple";
 
+import { getAuth } from "@clerk/nextjs/server";
+
 export async function POST(
   request: NextRequest
-): Promise<NextResponse<SubmitOrderResponse>> {
+): Promise<NextResponse<OrderResponse>> {
+  const { userId } = await getAuth(request);
+
+  if (!userId) {
+    return NextResponse.json({
+      errorMessage: "You must be logged in to perform this action",
+    });
+  }
+
   try {
     const action = request.nextUrl.searchParams.get("action");
 

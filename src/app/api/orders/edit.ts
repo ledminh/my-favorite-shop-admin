@@ -15,8 +15,6 @@ export default async function edit(request: NextRequest) {
   return NextResponse.json({
     data: {
       ...updatedOrder,
-      createdAt: updatedOrder.createdAt.toISOString(),
-      modifiedAt: updatedOrder.modifiedAt.toISOString(),
     },
   });
 }

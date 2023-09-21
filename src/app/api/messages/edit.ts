@@ -15,7 +15,6 @@ export default async function edit(request: NextRequest) {
   return NextResponse.json({
     data: {
       ...updatedMessage,
-      createdAt: updatedMessage.createdAt.toISOString(),
     },
   });
 }

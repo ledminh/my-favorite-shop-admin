@@ -1,5 +1,6 @@
 import { CategoriesResponse, CategoryResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
+import { getAuth } from "@clerk/nextjs/server";
 
 import add from "./add";
 import del from "./del";
@@ -10,6 +11,14 @@ import getSingle from "./getSingle";
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<CategoryResponse>> {
+  const { userId } = await getAuth(request);
+
+  if (!userId) {
+    return NextResponse.json({
+      errorMessage: "You must be logged in to perform this action",
+    });
+  }
+
   try {
     const action = request.nextUrl.searchParams.get("action");
 

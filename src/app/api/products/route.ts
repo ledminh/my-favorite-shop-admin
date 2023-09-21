@@ -8,9 +8,19 @@ import getMultiple from "./getMultiple";
 import { ProductResponse, ProductsResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
+import { getAuth } from "@clerk/nextjs/server";
+
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<ProductResponse>> {
+  const { userId } = await getAuth(request);
+
+  if (!userId) {
+    return NextResponse.json({
+      errorMessage: "You must be logged in to perform this action",
+    });
+  }
+
   try {
     const action = request.nextUrl.searchParams.get("action");
 
