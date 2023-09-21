@@ -45,6 +45,7 @@ export default function usePromotion(props: Props) {
       initPromotion && initPromotion.type === "discount"
         ? initPromotion.discountPercent.toString()
         : "0";
+
     const initSalePriceStr =
       initPromotion && initPromotion.type === "sale"
         ? initPromotion.salePrice.toString()
