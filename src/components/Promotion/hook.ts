@@ -79,15 +79,13 @@ export default function usePromotion(props: Props) {
 
       setSelectedPromotion(null);
       onChange(null);
-    } else {
-      if (!initPromotion) setSelectedPromotion(promotionList[0]);
-      else {
-        const initSelectedPromotion = promotionList.find(
-          (promotion) => promotion.id === initPromotion.type
-        ) as _PromotionType;
+    } else if (!initPromotion) setSelectedPromotion(promotionList[0]);
+    else {
+      const initSelectedPromotion = promotionList.find(
+        (promotion) => promotion.id === initPromotion.type
+      ) as _PromotionType;
 
-        setSelectedPromotion(initSelectedPromotion);
-      }
+      setSelectedPromotion(initSelectedPromotion);
     }
   }, [enabled]);
 
