@@ -12,7 +12,7 @@ import { getAuth } from "@clerk/nextjs/server";
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<ProductResponse>> {
-  const { userId } = await getAuth(request);
+  const { userId } = getAuth(request);
 
   if (!userId) {
     return NextResponse.json({
