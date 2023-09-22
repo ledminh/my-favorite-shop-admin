@@ -1,8 +1,11 @@
+import { WithID } from "@/types";
+
 import { OnSubmitProps } from "@/components/modals/Variant/types";
 
 export default function useEditVariantModal() {
-  const onEdit = (data: OnSubmitProps): Promise<{ data: OnSubmitProps }> =>
-    new Promise((resolve, _) => resolve({ data }));
+  const onEdit = (
+    data: WithID<OnSubmitProps>
+  ): Promise<{ data: WithID<OnSubmitProps> }> => Promise.resolve({ data });
 
   const submitButton = {
     text: "Save",

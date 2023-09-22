@@ -37,6 +37,8 @@ export default function useControlPanel({
     if (orderOptions) {
       setOrderOptions(orderOptions.orderOptions);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortByID]);
 
   useEffect(() => {
