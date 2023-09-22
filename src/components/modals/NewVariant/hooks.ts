@@ -1,10 +1,12 @@
-import { CategoryResponse, Variant as VariantType, WithID } from "@/types";
+import { WithID } from "@/types";
 
 import { OnSubmitProps } from "@/components/modals/Variant/types";
 
 export default function useNewVariantModal() {
-  const onAdd = (dataToAdd: OnSubmitProps): Promise<{ data: OnSubmitProps }> =>
-    new Promise((resolve, _) => resolve({ data: dataToAdd }));
+  const onAdd = (
+    dataToAdd: WithID<OnSubmitProps>
+  ): Promise<{ data: WithID<OnSubmitProps> }> =>
+    Promise.resolve({ data: dataToAdd });
 
   const submitButton = {
     text: "Add",
