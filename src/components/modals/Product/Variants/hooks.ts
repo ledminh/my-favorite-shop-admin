@@ -1,4 +1,4 @@
-import { Variant as VariantType } from "@/types";
+import { Variant as VariantType, WithID } from "@/types";
 import { OnSubmitProps as VariantData } from "../../Variant/types";
 import { useState, useEffect } from "react";
 import { Props } from "./types";
@@ -15,8 +15,7 @@ export default function useVariantsModal(props: Props) {
    * PRIVATE
    */
 
-  const [variants, setVariants] =
-    useState<(VariantType | VariantData)[]>(initVariants);
+  const [variants, setVariants] = useState(initVariants);
 
   useEffect(() => {
     setVariants(initVariants);
@@ -29,11 +28,11 @@ export default function useVariantsModal(props: Props) {
     openNewVariantModal();
   };
 
-  const edit = (variant: VariantType | VariantData) => {
+  const edit = (variant: WithID<VariantType> | WithID<VariantData>) => {
     opentEditVariantModal(variant);
   };
 
-  const remove = (variant: VariantType | VariantData) => {
+  const remove = (variant: WithID<VariantType> | WithID<VariantData>) => {
     openRemoveVariantModal(variant);
   };
 

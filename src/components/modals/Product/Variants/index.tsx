@@ -1,4 +1,4 @@
-import { Image as ImageType, Variant as VariantType } from "@/types";
+import { Variant as VariantType, WithID } from "@/types";
 
 import Image from "next/image";
 
@@ -19,7 +19,7 @@ export default function Variants(props: Props) {
           {!props.disabled && <Button onClick={addNew}>Add new variant</Button>}
         </Item>
         {variants.map((variant) => (
-          <Item>
+          <Item key={variant.id}>
             <VariantItem
               variant={variant}
               onClick={() => edit(variant)}
@@ -80,9 +80,9 @@ const VariantItem = ({
   remove,
   disabled,
 }: {
-  variant: VariantType | OnSubmitProps;
+  variant: WithID<VariantType> | WithID<OnSubmitProps>;
   onClick: () => void;
-  remove: (variant: VariantType | OnSubmitProps) => void;
+  remove: (variant: WithID<VariantType> | WithID<OnSubmitProps>) => void;
   disabled?: boolean;
 }) => (
   <button
