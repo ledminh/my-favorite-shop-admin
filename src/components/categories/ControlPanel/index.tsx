@@ -59,6 +59,8 @@ export default function ControlPanel({
             setOrderID={setOrderID}
             sortByOptions={sortByOptions}
             orderOptions={orderOptions}
+            defaultOrderID={initOrder}
+            defaultSortByID={initSortBy}
           />
         </div>
       </div>

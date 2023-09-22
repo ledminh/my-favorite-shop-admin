@@ -53,6 +53,8 @@ export default function useControlPanel({
     if (orderOptions) {
       setOrderOptions(orderOptions.orderOptions);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortByID]);
 
   useEffect(() => {
@@ -67,6 +69,8 @@ export default function useControlPanel({
     else params.delete("filter");
 
     router.push(`${pathname}?${params.toString()}`);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortByID, orderID, searchTerm, filterID]);
 
   /*********************

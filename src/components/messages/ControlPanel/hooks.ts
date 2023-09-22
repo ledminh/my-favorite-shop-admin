@@ -51,6 +51,8 @@ export default function useControlPanel({
     else params.delete("filter");
 
     router.push(`${pathname}?${params.toString()}`);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortByID, orderID, searchTerm, filterID]);
 
   /*********************

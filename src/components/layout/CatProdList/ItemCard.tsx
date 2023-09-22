@@ -28,6 +28,7 @@ function ItemCard<T>({
 
   useEffect(() => {
     setImage(getImage(item));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
   useEffect(() => {

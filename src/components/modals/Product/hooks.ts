@@ -90,6 +90,8 @@ export default function useProductModal({
     setPromotion(null);
     setVariants(initVariants ?? []);
     setImages(initImages ?? []);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     categories,
     initCategoryID,
@@ -107,6 +109,8 @@ export default function useProductModal({
       setPriceStr("");
       setVariants([]);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initPriceStr, initVariants]);
 
   useEffect(() => {
@@ -117,6 +121,8 @@ export default function useProductModal({
         setVariants(undefined);
       }
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceStr, promotion]);
 
   useEffect(() => {
@@ -128,6 +134,8 @@ export default function useProductModal({
         setPromotion(null);
       }
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [variants, variants?.length]);
 
   // For submit button
