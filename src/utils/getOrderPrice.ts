@@ -19,5 +19,5 @@ function getPrice(orderedProduct: OrderedProduct): number {
           : selectedVariant.promotion.salePrice;
     }
   }
-  return price * quantity;
+  return (price as number) * quantity;
 }
