@@ -3,7 +3,6 @@ import edit from "./edit";
 import del from "./del";
 
 import getMultiple from "./getMultiple";
-// import getSingle from "./getSingle";
 
 import { ProductResponse, ProductsResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";

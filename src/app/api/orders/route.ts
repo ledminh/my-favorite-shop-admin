@@ -1,7 +1,6 @@
 import { OrdersResponse, OrderResponse } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
-// import submit from "./submit";
 import del from "./del";
 import edit from "./edit";
 import getMultiple from "./getMultiple";
@@ -23,8 +22,6 @@ export async function POST(
     const action = request.nextUrl.searchParams.get("action");
 
     switch (action) {
-      // case "submit": // submit to temporary orders to proceed to checkout
-      //   return submit(request);
       case "edit":
         return edit(request);
       case "delete":
