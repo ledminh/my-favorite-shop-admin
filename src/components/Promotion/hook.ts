@@ -68,6 +68,7 @@ export default function usePromotion(props: Props) {
     setSaleDescription(initSaleDescription);
 
     setInitiated(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initPromotion]);
 
   useEffect(() => {
@@ -87,6 +88,8 @@ export default function usePromotion(props: Props) {
 
       setSelectedPromotion(initSelectedPromotion);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled]);
 
   useEffect(() => {
@@ -97,6 +100,8 @@ export default function usePromotion(props: Props) {
         resetDiscount();
       }
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPromotion]);
 
   useEffect(() => {
@@ -115,6 +120,8 @@ export default function usePromotion(props: Props) {
         });
       }
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     discountPercentStr,
     salePriceStr,
@@ -127,17 +134,17 @@ export default function usePromotion(props: Props) {
     numStr = numStr.replace(/^0+/, "0");
 
     // if the first character is a dot, prepend a 0
-    if (numStr[0] === ".") {
+    if (numStr.startsWith(".")) {
       numStr = "0" + numStr;
     }
 
     // if the first character is a 0 and the second character is not a dot, remove the 0
-    if (numStr.length > 2 && numStr[0] === "0" && numStr[1] !== ".") {
+    if (numStr.length > 2 && numStr.startsWith("0") && numStr[1] !== ".") {
       numStr = numStr.slice(1);
     }
 
     // Only allow digits and a single optional dot
-    const regex = /^[0-9]*(\.[0-9]*)?$/;
+    const regex = /^\d*(\.\d*)?$/;
 
     if (!regex.test(numStr)) {
       // Remove all characters that are not digits or dots
