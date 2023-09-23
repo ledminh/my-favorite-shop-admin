@@ -77,7 +77,6 @@ export default function CatProdList<T>({
   isAdding,
   isEditing,
   isDeleting,
-  setLoading,
   setIsAdding,
   setIsEditing,
   setIsDeleting,
@@ -250,11 +249,8 @@ export default function CatProdList<T>({
                   <ItemCard
                     item={item}
                     onEdit={onEdit}
-                    isLoading={
-                      currentItem?.id === item.id
-                        ? isAdding || isEditing || isDeleting
-                        : false
-                    }
+                    currentItem={currentItem}
+                    isLoading={isAdding || isEditing || isDeleting}
                     onDelete={onDelete}
                     getImage={getImage}
                     CardContent={CardContent}

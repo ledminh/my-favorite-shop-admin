@@ -229,6 +229,7 @@ async function processImages(formData: FormData, productName: string) {
   }
 
   const imageFiles: WithID<ImageType>[] = [];
+  let iImages = 0;
 
   for (let i = 0; i < numberOfImages; i++) {
     const image = isValidJSON(formData.get("image-" + (i + 1)) as string | File)
@@ -242,9 +243,11 @@ async function processImages(formData: FormData, productName: string) {
     } else {
       imageFiles.push({
         id: `image-${productName.split(" ").join("-")}-${getID()}`,
-        src: images[i].imagePath as string,
+        src: images[iImages].imagePath as string,
         alt: productName,
       });
+
+      iImages++;
     }
   }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, use } from "react";
 import Image from "next/image";
 import { Category, WithID } from "@/types";
 
@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 type ItemCardProps<T> = {
   isLoading: boolean;
   item: WithID<T>;
+  currentItem: WithID<T> | null;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
   getImage: (item: WithID<T>) => { src: string; alt: string };
@@ -18,6 +19,7 @@ type ItemCardProps<T> = {
 function ItemCard<T>({
   isLoading,
   item: _item,
+  currentItem,
   onEdit,
   onDelete,
   getImage,
@@ -25,6 +27,16 @@ function ItemCard<T>({
 }: ItemCardProps<T>) {
   const [item, setItem] = useState(_item);
   const [image, setImage] = useState<{ src: string; alt: string } | null>(null);
+
+  const [currentItemID, setCurrentItemID] = useState<string | null>(
+    currentItem?.id || null
+  );
+
+  useEffect(() => {
+    if (currentItem !== null) {
+      setCurrentItemID(currentItem.id);
+    }
+  }, [currentItem]);
 
   useEffect(() => {
     setImage(getImage(item));
@@ -83,7 +95,7 @@ function ItemCard<T>({
 
   return (
     <ItemWrapper>
-      {isLoading ? (
+      {currentItemID === item.id && isLoading ? (
         <div className="flex items-center justify-center w-full h-full">
           {/* Show loading*/}
           <svg
