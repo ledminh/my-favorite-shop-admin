@@ -94,7 +94,7 @@ export default async function edit(request: NextRequest) {
           id,
           categoryID,
           name,
-          price: parseInt(price),
+          price: parseFloat(price),
           intro,
           description,
           mainImageID: images[0].id,
