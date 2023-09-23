@@ -23,7 +23,7 @@ export default async function add(request: NextRequest) {
   const promotionStr = formData.get("promotion") as string;
   const promotion = isValidJSON(promotionStr)
     ? (JSON.parse(promotionStr) as Promotion)
-    : null;
+    : undefined;
 
   // variants
   const numberOfVariants = parseInt(formData.get("numberOfVariants") as string);
@@ -54,18 +54,17 @@ export default async function add(request: NextRequest) {
           mainImageID: images[0].id,
           images,
           variants,
-          promotion: promotion ? promotion : undefined,
         }
       : {
           id,
           categoryID,
           name,
-          price: parseInt(price),
+          price: parseFloat(price),
           intro,
           description,
           mainImageID: images[0].id,
           images,
-          promotion: promotion ? promotion : undefined,
+          promotion,
         };
 
   const newProduct = await addProduct(productToAdd);
@@ -128,7 +127,7 @@ function processVariants(
     variant.id = `variant-${variant.name}-${i + 1}`;
 
     variant.image = {
-      src: variantImages[i].imagePath as string,
+      src: variantImages[i].imagePath,
       alt: variant.name,
     };
 
