@@ -250,7 +250,7 @@ export default function CatProdList<T>({
                     item={item}
                     onEdit={onEdit}
                     currentItem={currentItem}
-                    isLoading={isAdding || isEditing || isDeleting}
+                    isLoading={isEditing || isDeleting}
                     onDelete={onDelete}
                     getImage={getImage}
                     CardContent={CardContent}
