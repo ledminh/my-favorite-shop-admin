@@ -10,7 +10,7 @@ import getMultiple from "./getMultiple";
 export async function POST(
   request: NextRequest
 ): Promise<NextResponse<CategoryResponse>> {
-  const { userId } = await getAuth(request);
+  const { userId } = getAuth(request);
 
   if (!userId) {
     return NextResponse.json({

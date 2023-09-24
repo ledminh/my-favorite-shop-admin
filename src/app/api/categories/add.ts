@@ -21,9 +21,9 @@ export default async function add(request: NextRequest) {
   }
 
   const newCategory = await addCategory({
-    name: name as string,
-    link: name?.toString().toLowerCase().replace(/\s/g, "-") as string,
-    description: description as string,
+    name,
+    link: name?.toString().toLowerCase().replace(/\s/g, "-"),
+    description,
     image: {
       src: imagePath,
       alt: name,

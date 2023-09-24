@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { FileOptions } from "@supabase/storage-js";
+import { supabase_images_bucket } from "@/config";
 
 const supabase = createClient(
   process.env.SUPABASE_STORAGE_URL as string,
@@ -27,7 +28,7 @@ export default async function uploadImage(
   };
 
   const { data, error } = await supabase.storage
-    .from("nail-supply-v3")
+    .from(supabase_images_bucket)
     .upload(filePath, image, fileOptions);
 
   if (error) {

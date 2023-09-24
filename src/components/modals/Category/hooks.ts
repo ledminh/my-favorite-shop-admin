@@ -20,16 +20,16 @@ export default function useCategoryModal(props: Props) {
     afterSubmit,
   } = props;
 
-  const [name, setName] = useState(initName || "");
-  const [description, setDescription] = useState(initDescription || "");
+  const [name, setName] = useState(initName ?? "");
+  const [description, setDescription] = useState(initDescription ?? "");
   const [image, setImage] = useState<File | ImageType | null>(
-    initImage || null
+    initImage ?? null
   );
 
   useEffect(() => {
-    setName(initName || "");
-    setDescription(initDescription || "");
-    setImage(initImage || null);
+    setName(initName ?? "");
+    setDescription(initDescription ?? "");
+    setImage(initImage ?? null);
   }, [initName, initDescription, initImage]);
 
   // Functions

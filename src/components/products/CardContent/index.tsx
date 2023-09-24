@@ -26,7 +26,7 @@ const Content = ({ item }: Props) => {
     <div>
       {!item.variants && (
         <p className="text-sm font-semibold text-blue-900">
-          <span>Price:</span> <span>${item.price}</span>
+          <span>Price:</span> <span>${item.price.toLocaleString()}</span>
         </p>
       )}
 
