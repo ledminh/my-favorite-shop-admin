@@ -30,7 +30,6 @@ export async function POST(
         return edit(request);
       case "delete":
         return del(request);
-
       default:
         throw new Error("action not found");
     }

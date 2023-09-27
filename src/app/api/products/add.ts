@@ -143,7 +143,10 @@ async function processImages(formData: FormData, productName: string) {
     | { error: null; imagePath: string }
   >[] = [];
 
+  console.log("formData", formData.get("numberOfImages"));
   const numberOfImages = parseInt(formData.get("numberOfImages") as string);
+
+  console.log("number", numberOfImages);
 
   for (let i = 0; i < numberOfImages; i++) {
     const imgFile = formData.get("image-" + (i + 1)) as File;
