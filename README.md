@@ -17,8 +17,8 @@ This is the Admin Panel for the third iteration of the shop. You can find the us
 
 [My Favorite Shop Admin](https://my-favorite-shop-admin.vercel.app)
 
-username: store_admin
-password: admin_54321
+- username: store_admin
+- password: admin_54321
 
 ## Deployment Instructions
 
