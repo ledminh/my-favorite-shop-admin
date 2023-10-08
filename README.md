@@ -1,22 +1,17 @@
-# My Favorite Shop - Third Iteration Admin
+# My Favorite Shop - Third Iteration - Admin
 
-Welcome to the Administration section of the third iteration of My Favorite Shop, developed using Next.js.
+This is the Admin Panel for the third iteration of the shop. You can find the user interface section [here](https://github.com/ledninh/my-favorite-shop).
 
-**Note:**
-
-This is the Administration section, you can see the user interface section here: [My Favorite Shop](https://github.com/ledninh/my-favorite-shop).
-
-My Favorite Shop is the third iteration, the first and second iteration are under the name "Nail Supply Shop". If you'd like to review them, you can find them here:
-
-- [Nail Supply Shop V1](https://github.com/ledminh/nail-supply-shop)
-- [Nail Supply Shop V2](https://github.com/ledminh/nail-supply-shop)
-
-## Tech Stack
+## Technology Stack
 
 - **Framework:** Next.js
 - **Database:** Prisma, PostgreSQL
 - **Authentication:** Clerk
-- **Styles:** Tailwind
+- **Styles:** Tailwind CSS
+
+## Screenshot
+![Third Iteration Admin Screenshot](3rd-iteration-admin-screenshot.jpg)
+
 
 ## Live Demo
 
