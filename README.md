@@ -39,7 +39,7 @@ To deploy this project on your local machine, follow these steps:
     
  5. Create a new account on Clerk, add a new application to acquire NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY, then add them to your `.env.local` file.
 
- 6. Add these two variables to your `.env.local` file:
+ 6. Add two following variables to your `.env.local` file:
 
     ```
     NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
